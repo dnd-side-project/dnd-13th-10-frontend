@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "@/styles/globals.css";
+import QueryClientProvider from "./QueryClientProvider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import NextAuthProvider from "./NextAuthProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,7 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <NextAuthProvider>
+        <QueryClientProvider>
+          <body className="mx-auto max-w-[600px] flex flex-col">{children}</body>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </NextAuthProvider>
     </html>
   );
 }
