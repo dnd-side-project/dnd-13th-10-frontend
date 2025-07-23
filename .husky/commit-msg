@@ -1,0 +1,3 @@
+echo "✅commit lint 작동 중..."
+
+pnpm exec commitlint --edit "$1"
