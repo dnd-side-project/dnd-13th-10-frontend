@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
 import Kakao from "next-auth/providers/kakao";
 import Naver from "next-auth/providers/naver";
 
@@ -11,6 +12,10 @@ const authOptions = {
     Naver({
       clientId: process.env.AUTH_NAVER_ID!,
       clientSecret: process.env.AUTH_NAVER_SECRET!,
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     }),
   ],
 };
