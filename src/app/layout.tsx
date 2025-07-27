@@ -15,13 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <NextAuthProvider>
-        <QueryClientProvider>
-          <body className="mx-auto max-w-[600px] flex flex-col">{children}</body>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </NextAuthProvider>
+    <html lang="ko">
+      <body className="mx-auto max-w-[600px] flex flex-col">
+        <NextAuthProvider>
+          <QueryClientProvider>
+            {children}
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </NextAuthProvider>
+      </body>
     </html>
   );
 }
