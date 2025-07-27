@@ -1,7 +1,7 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import Kakao from "next-auth/providers/kakao";
-import Naver from "next-auth/providers/naver";
+import NextAuth from 'next-auth';
+import Kakao from 'next-auth/providers/kakao';
+import Naver from 'next-auth/providers/naver';
+import Google from 'next-auth/providers/google';
 
 const authOptions = {
   providers: [
@@ -26,4 +26,4 @@ export const GET = handler;
 export const POST = handler;
 
 // 캐싱 문제 방지용 옵션
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
