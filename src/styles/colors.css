@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+@theme {
+  /** color */
+  --color-black: #000;
+  --color-white: #fff;
+
+  /** gray scale */
+  --color-gray-900: #222222;
+  --color-gray-800: #3f3f3f;
+  --color-gray-700: #5c5c5c;
+  --color-gray-600: #707070;
+  --color-gray-500: #9b9b9b;
+  --color-gray-400: #bbbbbb;
+  --color-gray-300: #e2e2e2;
+  --color-gray-200: #efefef;
+  --color-gray-100: #f5f5f5;
+  --color-gray-50: #fafafa;
+
+  /** blue scale */
+  --color-blue-900: #1d4c95;
+  --color-blue-800: #1f6bba;
+  --color-blue-700: #217cd1;
+  --color-blue-600: #2390e8;
+  --color-blue-500: #239ffa;
+  --color-blue-400: #30aefc;
+  --color-blue-300: #4cbcfc;
+  --color-blue-200: #7acffd;
+  --color-blue-100: #ace2fe;
+  --color-blue-50: #def4fe;
+
+  /** yellow scale */
+  --color-yellow-900: #ff6116;
+  --color-yellow-800: #ff841d;
+  --color-yellow-700: #ff9720;
+  --color-yellow-600: #ffac25;
+  --color-yellow-500: #ffbc28;
+  --color-yellow-400: #ffc62a;
+  --color-yellow-300: #ffd348;
+  --color-yellow-200: #ffde77;
+  --color-yellow-100: #ffebaa;
+  --color-yellow-50: #fff8dc;
+
+  /** button colors */
+  --color-primary-btn: #30aefc;
+  --color-secondary-btn: #ffd542;
+  --color-black-btn: #2a2a2a;
+  --color-gray-btn: #555555;
+
+  /** foundation colors */
+  --color-foundation-bg: #222222;
+  --color-foundation-box: #2a2a2a;
+  --color-foundation-card: #2a2a2a;
+  --color-foundation-divider: #444444;
+  --color-foundation-disabled: #666666;
+  --color-foundation-secondary: #888888;
+  --color-foundation-primary: #cccccc;
+  --color-foundation-strong: #ffffff;
+}
