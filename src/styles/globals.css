@@ -9,7 +9,7 @@
 
 @theme {
   --font-pretendard: var(--font-pretendard);
-  --container-maxWidth: 600px;
+  --container-maxWidth: 375px;
 }
 
 @media (prefers-color-scheme: dark) {
