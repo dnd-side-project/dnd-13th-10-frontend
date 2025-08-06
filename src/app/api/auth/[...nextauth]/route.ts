@@ -1,14 +1,10 @@
-import NextAuth from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
-import Kakao from "next-auth/providers/kakao";
-import Naver from "next-auth/providers/naver";
+import NextAuth from 'next-auth';
+import Kakao from 'next-auth/providers/kakao';
+import Naver from 'next-auth/providers/naver';
+import Google from 'next-auth/providers/google';
 
-export const authOptions = {
+const authOptions = {
   providers: [
-    GitHubProvider({
-      clientId: process.env.AUTH_GITHUB_ID!,
-      clientSecret: process.env.AUTH_GITHUB_SECRET!,
-    }),
     Kakao({
       clientId: process.env.AUTH_KAKAO_ID!,
       clientSecret: process.env.AUTH_KAKAO_SECRET!,
@@ -16,6 +12,10 @@ export const authOptions = {
     Naver({
       clientId: process.env.AUTH_NAVER_ID!,
       clientSecret: process.env.AUTH_NAVER_SECRET!,
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     }),
   ],
 };
@@ -26,4 +26,4 @@ export const GET = handler;
 export const POST = handler;
 
 // 캐싱 문제 방지용 옵션
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';

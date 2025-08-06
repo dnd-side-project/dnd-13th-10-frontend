@@ -22,11 +22,12 @@ export default function Page() {
       ) : (
         <>
           <p>Not signed in</p>
-          <button onClick={() => signIn('github')}>Sign In with GitHub</button>
-          <br />
           <button onClick={() => signIn('kakao')}>Sign In with Kakao</button>
           <br />
           <button onClick={() => signIn('naver')}>Sign In with Naver</button>
+          <br />
+          <button onClick={() => signIn('google')}>Sign In with Naver</button>
+
         </>
       )}
     </div>
