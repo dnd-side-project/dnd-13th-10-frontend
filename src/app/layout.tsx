@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} font-pretendard antialiased`}>
         <NextAuthProvider>
           <QueryClientProvider>
-            <div className="mx-auto flex min-h-screen w-full max-w-[600px] flex-col bg-white shadow-2xl">
+            <div className="bg-foundation-bg max-w-maxWidth mx-auto flex min-h-screen w-full flex-col text-white">
               {children}
             </div>
             <ReactQueryDevtools />
