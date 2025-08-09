@@ -11,22 +11,22 @@ import CommunityIcon from '@/assets/navigation/community_icon.svg';
 import UserIcon from '@/assets/navigation/user_icon.svg';
 
 const navItems = [
-  { label: PATH.HOME.LABEL, href: PATH.HOME.PATH, icon: HomeIcon },
-  { label: PATH.CALENDAR.LABEL, href: PATH.CALENDAR.PATH, icon: CalendarIcon },
+  { label: PATH.HOME.label, href: PATH.HOME.path, icon: HomeIcon },
+  { label: PATH.CALENDAR.label, href: PATH.CALENDAR.path, icon: CalendarIcon },
   {
-    label: PATH.COMMUNITY.LABEL,
-    href: PATH.COMMUNITY.PATH,
+    label: PATH.COMMUNITY.label,
+    href: PATH.COMMUNITY.path,
     icon: CommunityIcon,
   },
-  { label: PATH.MY.LABEL, href: PATH.MY.PATH, icon: UserIcon },
+  { label: PATH.MY.label, href: PATH.MY.path, icon: UserIcon },
 ];
 
 export default function NavigationBar() {
   const pathName = usePathname();
 
   const isActive = (path: string) => {
-    if (path === PATH.HOME.PATH) {
-      return pathName === PATH.HOME.PATH;
+    if (path === PATH.HOME.path) {
+      return pathName === PATH.HOME.path;
     }
     return pathName === path || pathName.startsWith(path + '/');
   };

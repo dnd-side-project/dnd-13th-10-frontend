@@ -1,6 +1,6 @@
 export const PATH = {
-  HOME: { PATH: '/home', LABEL: '홈' },
-  CALENDAR: { PATH: '/calendar', LABEL: '일정' },
-  COMMUNITY: { PATH: '/community', LABEL: '커뮤니티' },
-  MY: { PATH: '/my-page', LABEL: 'MY' },
+  HOME: { path: '/home', label: '홈' },
+  CALENDAR: { path: '/calendar', label: '일정' },
+  COMMUNITY: { path: '/community', label: '커뮤니티' },
+  MY: { path: '/my-page', label: 'MY' },
 };
