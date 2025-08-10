@@ -15,6 +15,7 @@ interface TabProps {
   className?: string;
   tabClassName?: string;
   activeTabClassName?: string;
+  contentClassName?: string;
   variant?: 'full' | 'fit';
 }
 
@@ -45,6 +46,7 @@ const Tab = ({
   className,
   tabClassName,
   activeTabClassName,
+  contentClassName,
   variant = 'full',
 }: TabProps) => {
   const activeItem = items.find(item => item.id === activeTab);
@@ -60,7 +62,9 @@ const Tab = ({
         variant={variant}
       />
       {activeItem?.content && (
-        <div className="px-5 py-8">{activeItem.content}</div>
+        <div className={cn('px-5 py-8', contentClassName)}>
+          {activeItem.content}
+        </div>
       )}
     </div>
   );
@@ -83,6 +87,7 @@ const TabGroupHeader = ({
         const isActive = item.id === activeTab;
         return (
           <button
+            type="button"
             key={item.id}
             onClick={() => onTabChange(item.id)}
             className={cn(
