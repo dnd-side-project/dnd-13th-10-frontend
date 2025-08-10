@@ -25,7 +25,7 @@ const ToggleGroup = ({
   className,
 }: ToggleGroupProps) => {
   return (
-    <div className={cn('flex gap-2', className)}>
+    <div role="radiogroup" className={cn('flex gap-2', className)}>
       {options.map(option => (
         <ToggleItem
           key={option.id}
@@ -41,6 +41,8 @@ const ToggleGroup = ({
 const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
   return (
     <button
+      role="radio"
+      aria-checked={isSelected}
       onClick={onClick}
       className={cn(
         'typo-body-02 bg-foundation-box h-13 min-w-[106px] cursor-pointer rounded-lg p-2.5 transition-colors',
@@ -55,4 +57,4 @@ const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
 };
 
 export type { ToggleOption };
-export { ToggleItem, ToggleGroup };
+export { ToggleGroup };
