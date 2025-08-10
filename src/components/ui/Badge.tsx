@@ -42,7 +42,16 @@ const Badge = ({
     className,
   );
 
-  return <div className={cn('w-fit', combinedStyles)}>{children}</div>;
+  return (
+    <span
+      className={cn(
+        'inline-flex w-fit items-center whitespace-nowrap',
+        combinedStyles,
+      )}
+    >
+      {children}
+    </span>
+  );
 };
 
 export default Badge;
