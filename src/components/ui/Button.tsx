@@ -1,8 +1,9 @@
+import type { ReactNode, ButtonHTMLAttributes } from 'react';
+
 import { cn } from '@/utils/cn';
 
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  onClick?: () => void;
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'small' | 'medium' | 'large';
@@ -20,19 +21,19 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-  small: 'w-[90px]',
-  medium: 'w-[237px]',
+  small: 'w-btn-small',
+  medium: 'w-btn-medium',
   large: 'w-full',
 };
 
 const Button = ({
   children,
-  onClick,
   type = 'button',
   variant = 'primary',
   size = 'medium',
   disabled = false,
   className,
+  ...props
 }: Props) => {
   const combinedStyles = cn(
     baseStyles,
@@ -47,9 +48,9 @@ const Button = ({
         combinedStyles,
         disabled && 'bg-gray-btn text-foundation-disabled cursor-not-allowed',
       )}
-      onClick={onClick}
       type={type}
       disabled={disabled}
+      {...props}
     >
       {children}
     </button>
