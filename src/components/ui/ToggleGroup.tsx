@@ -1,0 +1,58 @@
+import { cn } from '@/utils/cn';
+
+interface ToggleOption {
+  id: string;
+  text: string;
+}
+
+interface ToggleItemProps {
+  text: string;
+  isSelected?: boolean;
+  onClick?: () => void;
+}
+
+interface ToggleGroupProps {
+  options: ToggleOption[];
+  selectedValue: string;
+  onSelectionChange: (value: string) => void;
+  className?: string;
+}
+
+const ToggleGroup = ({
+  options,
+  selectedValue,
+  onSelectionChange,
+  className,
+}: ToggleGroupProps) => {
+  return (
+    <div className={cn('flex gap-2', className)}>
+      {options.map(option => (
+        <ToggleItem
+          key={option.id}
+          text={option.text}
+          isSelected={selectedValue === option.id}
+          onClick={() => onSelectionChange(option.id)}
+        />
+      ))}
+    </div>
+  );
+};
+
+const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        'typo-body-02 bg-foundation-box h-13 min-w-[106px] cursor-pointer rounded-lg p-2.5 transition-colors',
+        isSelected
+          ? 'text-primary-btn border-primary-btn border'
+          : 'text-foundation-disabled',
+      )}
+    >
+      {text}
+    </button>
+  );
+};
+
+export type { ToggleOption };
+export { ToggleItem, ToggleGroup };
