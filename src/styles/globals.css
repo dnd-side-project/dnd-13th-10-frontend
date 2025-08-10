@@ -12,6 +12,8 @@
   --container-maxWidth: 375px;
 
   --spacing-spacing68: 68px;
+  --spacing-btn-small: 90px;
+  --spacing-btn-medium: 237px;
   --spacing-safe-bottom: env(safe-area-inset-bottom);
   --spacing-nav-safe: calc(12px + var(--spacing-safe-bottom));
   --spacing-nav-total: calc(var(--spacing-spacing68) + var(--spacing-nav-safe));
