@@ -6,8 +6,8 @@ interface Props {
   children: ReactNode;
   className?: string;
   variant?: 'gray' | 'dark' | 'blue' | 'black' | 'yellow';
-  shape?: 'round' | 'square';
-  size?: 'small' | 'large';
+  shape?: 'minimal' | 'round' | 'square';
+  size?: 'xsmall' | 'small' | 'large';
 }
 
 const variantStyles = {
@@ -19,11 +19,13 @@ const variantStyles = {
 };
 
 const sizeStyles = {
+  xsmall: 'typo-caption py-0.5 px-2',
   small: 'typo-caption py-1 px-2',
   large: 'typo-body-01 py-2 px-4',
 };
 
 const shapeStyles = {
+  minimal: 'rounded-sm',
   square: 'rounded-lg',
   round: 'rounded-full',
 };
