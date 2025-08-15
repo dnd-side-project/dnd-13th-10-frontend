@@ -16,12 +16,6 @@ function SelectPicker({
   onClick,
   disabled = false,
 }: Props) {
-  const handleClick = () => {
-    if (!disabled) {
-      onClick();
-    }
-  };
-
   return (
     <div className={cn('w-full', className)}>
       <button
@@ -30,7 +24,8 @@ function SelectPicker({
           'bg-foundation-box flex w-full cursor-pointer items-center gap-2 rounded-xl border border-transparent px-4 py-3 text-left transition-colors duration-200',
           disabled && 'cursor-not-allowed opacity-50',
         )}
-        onClick={handleClick}
+        onClick={onClick}
+        disabled={disabled}
         aria-label={value || placeholder}
         onKeyDown={e => {
           if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
