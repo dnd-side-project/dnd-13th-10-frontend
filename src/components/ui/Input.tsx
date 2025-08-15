@@ -41,7 +41,7 @@ const Input = ({
           )}
           {...props}
         />
-        {icons && (
+        {onClear && value && icons && (
           <button
             type="button"
             onClick={onClear}
