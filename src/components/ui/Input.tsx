@@ -30,7 +30,7 @@ const Input = ({
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="bg-foundation-box focus-within:border-foundation-divider flex items-center gap-2 rounded-xl border border-transparent px-4 py-3 transition-colors duration-200">
+      <div className="bg-foundation-box focus-within:border-foundation-primary flex items-center gap-2 rounded-xl border border-transparent px-4 py-3 transition-colors duration-200">
         <input
           ref={ref}
           value={value}
@@ -57,7 +57,7 @@ const Input = ({
         <div className="mt-1 flex items-center justify-between">
           <div className="typo-body-01">
             {isLengthExceeded && warningText && (
-              <span className="text-red-500">{warningText}</span>
+              <span className="text-warning">{warningText}</span>
             )}
           </div>
 
@@ -65,7 +65,7 @@ const Input = ({
             <div
               className={cn(
                 'text-foundation-disabled typo-body-01',
-                isLengthExceeded && 'text-red-500',
+                isLengthExceeded && 'text-warning',
               )}
             >
               <span>
