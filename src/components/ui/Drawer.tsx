@@ -15,12 +15,12 @@ interface BottomDrawerProps {
   className?: string;
 }
 
-const BottomDrawer = ({
+function BottomDrawer({
   isOpen,
   onOpenChange,
   children,
   className,
-}: BottomDrawerProps) => {
+}: BottomDrawerProps) {
   return (
     <Drawer.Root autoFocus={true} open={isOpen} onOpenChange={onOpenChange}>
       <Drawer.Portal>
@@ -36,7 +36,7 @@ const BottomDrawer = ({
       </Drawer.Portal>
     </Drawer.Root>
   );
-};
+}
 
 function BottomDrawerHandle() {
   return <div className="mx-auto mt-4 h-1.5 w-12 rounded-full bg-gray-300" />;
