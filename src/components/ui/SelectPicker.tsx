@@ -9,13 +9,13 @@ interface Props {
   disabled?: boolean;
 }
 
-const SelectPicker = ({
+function SelectPicker({
   value,
   placeholder = '옵션 선택',
   className,
   onClick,
   disabled = false,
-}: Props) => {
+}: Props) {
   const handleClick = () => {
     if (!disabled) {
       onClick();
@@ -52,6 +52,6 @@ const SelectPicker = ({
       </button>
     </div>
   );
-};
+}
 
 export { SelectPicker };

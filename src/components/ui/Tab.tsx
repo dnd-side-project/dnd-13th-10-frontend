@@ -39,7 +39,7 @@ const stateStyles = {
   inactive: 'text-foundation-disabled',
 };
 
-const Tab = ({
+function Tab({
   items,
   activeTab,
   onTabChange,
@@ -48,7 +48,7 @@ const Tab = ({
   activeTabClassName,
   contentClassName,
   variant = 'full',
-}: TabProps) => {
+}: TabProps) {
   const activeItem = items.find(item => item.id === activeTab);
 
   return (
@@ -68,9 +68,9 @@ const Tab = ({
       )}
     </div>
   );
-};
+}
 
-const TabGroupHeader = ({
+function TabGroupHeader({
   items,
   activeTab,
   onTabChange,
@@ -78,7 +78,7 @@ const TabGroupHeader = ({
   tabClassName,
   activeTabClassName,
   variant = 'full',
-}: TabProps) => {
+}: TabProps) {
   const variantConfig = variantStyles[variant];
 
   return (
@@ -112,7 +112,7 @@ const TabGroupHeader = ({
       })}
     </div>
   );
-};
+}
 
 export type { TabItem, TabProps };
 export { Tab, TabGroupHeader };

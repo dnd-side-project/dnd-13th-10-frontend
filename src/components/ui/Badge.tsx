@@ -28,13 +28,13 @@ const shapeStyles = {
   round: 'rounded-full',
 };
 
-const Badge = ({
+function Badge({
   children,
   className,
   variant = 'gray',
   shape = 'square',
   size = 'small',
-}: Props) => {
+}: Props) {
   const combinedStyles = cn(
     variantStyles[variant],
     sizeStyles[size],
@@ -52,6 +52,6 @@ const Badge = ({
       {children}
     </span>
   );
-};
+}
 
 export { Badge };
