@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { WheelPicker } from './Picker';
 import { clamp, range } from './utils';
+import { Button } from '../Button';
 
 export const MERIDIEMS = ['오전', '오후'] as const;
 export type Meridiem = (typeof MERIDIEMS)[number];
@@ -94,18 +95,17 @@ export function TimePicker({
           rowHeight={34}
         />
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <button
+          <Button
+            type="button"
+            variant="secondary"
+            size="large"
             onClick={cancel}
-            className="h-12 rounded-xl bg-neutral-800 text-neutral-200 hover:bg-neutral-700"
           >
             취소
-          </button>
-          <button
-            onClick={confirm}
-            className="h-12 rounded-xl bg-sky-500 font-semibold text-white hover:bg-sky-400"
-          >
+          </Button>
+          <Button type="button" size="large" onClick={confirm}>
             설정
-          </button>
+          </Button>
         </div>
       </div>
     </div>

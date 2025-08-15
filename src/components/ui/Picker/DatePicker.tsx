@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { clamp, daysInMonth, range } from './utils';
 import { WheelPicker } from './Picker';
+import { Button } from '../Button';
 
 export function DatePicker({
   open,
@@ -111,18 +112,17 @@ export function DatePicker({
           rowHeight={34}
         />
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <button
+          <Button
+            type="button"
+            variant="secondary"
+            size="large"
             onClick={cancel}
-            className="h-12 rounded-xl bg-neutral-800 text-neutral-200 hover:bg-neutral-700"
           >
             취소
-          </button>
-          <button
-            onClick={confirm}
-            className="h-12 rounded-xl bg-sky-500 font-semibold text-white hover:bg-sky-400"
-          >
+          </Button>
+          <Button type="button" size="large" onClick={confirm}>
             설정
-          </button>
+          </Button>
         </div>
       </div>
     </div>
