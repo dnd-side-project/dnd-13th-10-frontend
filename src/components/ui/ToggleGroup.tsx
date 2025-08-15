@@ -42,6 +42,7 @@ const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
   return (
     <button
       role="radio"
+      type="button"
       aria-checked={isSelected}
       onClick={onClick}
       className={cn(
