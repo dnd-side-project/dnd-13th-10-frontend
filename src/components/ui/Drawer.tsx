@@ -27,7 +27,7 @@ function BottomDrawer({
         <Drawer.Overlay className="fixed inset-0 bg-black/50" />
         <Drawer.Content
           className={cn(
-            'bg-foundation-bg max-w-maxWidth fixed right-0 bottom-0 left-0 z-50 mx-auto flex h-fit max-h-[96%] w-full flex-col rounded-t-[20px]',
+            'bg-foundation-bg max-w-maxWidth fixed right-0 bottom-0 left-0 z-50 mx-auto flex h-fit max-h-[70%] w-full flex-col rounded-t-[20px]',
             className,
           )}
         >
@@ -59,7 +59,7 @@ function BottomDrawerHeader({
 }: BottomDrawerHeaderProps) {
   return (
     <>
-      <div className="flex items-center justify-between p-5">
+      <div className="flex shrink-0 items-center justify-between p-5">
         {title && (
           <Drawer.Title className="typo-headline text-foundation-primary">
             {title}
@@ -91,7 +91,11 @@ function BottomDrawerContent({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn('flex-1', className)}>{children}</div>;
+  return (
+    <div className={cn('min-h-0 flex-1 overflow-y-auto', className)}>
+      {children}
+    </div>
+  );
 }
 
 function BottomDrawerFooter({
@@ -101,7 +105,7 @@ function BottomDrawerFooter({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn('p-4', className)}>{children}</div>;
+  return <div className={cn('shrink-0 p-4', className)}>{children}</div>;
 }
 
 interface DrawerItem {
