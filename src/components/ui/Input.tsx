@@ -13,7 +13,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   onClear?: () => void;
 }
 
-const Input = ({
+function Input({
   icons = <ClearIcon />,
   showCharCount = false,
   className,
@@ -24,7 +24,7 @@ const Input = ({
   warningText = '입력 글자 수를 초과했어요.',
   ref,
   ...props
-}: Props) => {
+}: Props) {
   const currentLength = String(value || '').length;
   const isLengthExceeded = maxLength ? currentLength > maxLength : false;
 
@@ -77,6 +77,6 @@ const Input = ({
       )}
     </div>
   );
-};
+}
 
 export { Input };
