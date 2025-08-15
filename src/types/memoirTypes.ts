@@ -47,7 +47,7 @@ export interface CreateQuickMemoirsRequest {
   questions: QuestionRequest[];
 }
 
-export interface QuickMemoir {
+export interface Memoir {
   id: number;
   type: MemoirType;
   interviewStatus: InterviewStatus;
@@ -58,9 +58,51 @@ export interface QuickMemoir {
   firstQuestion: string;
 }
 
-// 퀵 회고 조회
-export interface QuickMemoirsResponse {
+// 회고 리스트 조회
+export interface MemoirsResponse {
   code: string;
   message: string;
-  data: QuickMemoir[];
+  data: Memoir[];
+}
+
+export interface User {
+  name: string;
+}
+
+export interface Question {
+  id: number;
+  questionType: QuestionType | string;
+  content: string;
+  answer: string | null;
+  displayOrder: number;
+}
+
+export interface MemoirData {
+  id: number;
+  user: User;
+  attachments: string | null;
+  questions: Question[];
+  type: MemoirType | string;
+  interviewFormat: InterviewFormat | string;
+  interviewMood: InterviewMood | string;
+  satisfactionNote: SatisfactionNote | string;
+  interviewLevel: InterviewLevel | string | null;
+  interviewStatus: InterviewStatus | string;
+  interviewMethod: InterviewMethod | string;
+  freeNote: string;
+  url: string;
+  companyName: string;
+  position: Position | string;
+  interviewStep: InterviewStep | string;
+  interviewDateTime: string;
+  likeCount: number | null;
+  viewCount: number | null;
+  createdAt: string;
+}
+
+// 회고 상세 조회
+export interface MemoirDetailResponse {
+  code: string;
+  message: string;
+  data: MemoirData;
 }
