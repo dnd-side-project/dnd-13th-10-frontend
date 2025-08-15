@@ -47,7 +47,7 @@ const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
       className={cn(
         'typo-body-02 bg-foundation-box h-13 min-w-[106px] cursor-pointer rounded-lg p-2.5 transition-colors',
         isSelected
-          ? 'text-primary-btn border-primary-btn border'
+          ? 'text-foundation-strong border-foundation-primary border font-bold'
           : 'text-foundation-disabled',
       )}
     >
