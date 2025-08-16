@@ -37,7 +37,7 @@ export function TimePicker({
     setMi(value.minute);
   }, [value]);
 
-  const mers = ['오전', '오후'];
+  const mers = MERIDIEMS;
   const hours = range(1, 12);
   const minutes = range(0, 59);
 
@@ -72,7 +72,7 @@ export function TimePicker({
         <WheelPicker
           columns={[
             {
-              items: mers,
+              items: mers as ['오전', '오후'],
               selectedIndex: merIdx,
               onChangeIndex: i => setMer(mers[i] as Meridiem),
               format: s => String(s),
@@ -90,9 +90,6 @@ export function TimePicker({
               format: n => `${n}`,
             },
           ]}
-          visibleCount={5}
-          selectedHeight={52}
-          rowHeight={34}
         />
         <div className="mt-6 grid grid-cols-2 gap-4">
           <Button

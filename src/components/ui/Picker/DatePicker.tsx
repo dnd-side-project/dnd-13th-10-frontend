@@ -107,9 +107,6 @@ export function DatePicker({
               format: dd => `${dd}일`,
             },
           ]}
-          visibleCount={5}
-          selectedHeight={52}
-          rowHeight={34}
         />
         <div className="mt-6 grid grid-cols-2 gap-4">
           <Button

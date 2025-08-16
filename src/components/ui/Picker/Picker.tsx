@@ -19,9 +19,6 @@ export type WheelColumnConfig<T = unknown> = {
 
 export type WheelPickerProps = {
   columns: WheelColumnConfig[];
-  visibleCount?: number; // 홀수 권장 (기본 5)
-  selectedHeight?: number; // 기본 52
-  rowHeight?: number; // 기본 34
 };
 
 function Column<T>({
