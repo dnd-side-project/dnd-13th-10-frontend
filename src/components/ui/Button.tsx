@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn';
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'yellow';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   className?: string;
@@ -15,9 +15,10 @@ const baseStyles =
   'cursor-pointer rounded-lg p-2.5 h-12 shrink-0 typo-subhead-02';
 
 const variantStyles = {
-  primary: 'bg-primary-btn text-white',
+  primary: 'bg-primary-btn text-foundation-bg',
   secondary: 'bg-gray-btn text-foundation-primary',
   outline: 'border border-foundation-secondary text-white bg-transparent',
+  yellow: 'bg-secondary-btn text-black',
 };
 
 const sizeStyles = {
