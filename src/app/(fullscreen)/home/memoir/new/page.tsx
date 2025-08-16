@@ -1,6 +1,14 @@
+import { Metadata } from 'next';
+
 import { Header } from '@/components/ui/Header';
-import MemoirOptionCard from './components/MemoirOptionCard';
 import { PATH } from '@/constants/path';
+
+import MemoirOptionCard from './components/MemoirOptionCard';
+
+export const metadata: Metadata = {
+  title: '회고 작성',
+  description: '면접에 대한 회고를 퀵/일반 모드로 작성해보세요.',
+};
 
 const quickMemoirFeatures = [
   '간단한 면접 정보 기록',
