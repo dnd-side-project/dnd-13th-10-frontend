@@ -30,12 +30,20 @@ export interface QuestionRequest {
   questionType: QuestionType;
 }
 
+export interface UpdateQuestionRequest {
+  id?: number;
+  questionType: QuestionType | string;
+  content: string;
+  order: number;
+}
+
 // 퀵 회고 작성 요청
 export interface CreateQuickMemoirsRequest {
   type: MemoirType;
   interviewFormat: InterviewFormat;
   interviewMood: InterviewMood;
   satisfactionNote: SatisfactionNote;
+  interviewLevel: InterviewLevel;
   interviewMethod: InterviewMethod;
   freeNote: string;
   url: string;
@@ -44,7 +52,28 @@ export interface CreateQuickMemoirsRequest {
   interviewStep: InterviewStep;
   interviewDate: string;
   interviewTime: string;
+  isPublic: boolean;
   questions: QuestionRequest[];
+}
+
+// 퀵 회고 수정 요청
+export interface UpdateQuickMemoirsRequest {
+  id: number;
+  type: MemoirType | string;
+  interviewFormat: InterviewFormat | string;
+  interviewMood: InterviewMood | string;
+  satisfactionNote: SatisfactionNote | string;
+  interviewLevel: InterviewLevel | string;
+  interviewMethod: InterviewMethod | string;
+  freeNote: string;
+  url: string;
+  companyName: string;
+  position: Position | string;
+  interviewStep: InterviewStep | string;
+  interviewDate: string;
+  interviewTime: string;
+  isPublic: boolean;
+  questions: UpdateQuestionRequest[];
 }
 
 export interface Memoir {
@@ -73,7 +102,7 @@ export interface Question {
   id: number;
   questionType: QuestionType | string;
   content: string;
-  answer: string | null;
+  answer?: string | null;
   displayOrder: number;
 }
 
