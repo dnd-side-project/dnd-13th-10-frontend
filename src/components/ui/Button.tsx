@@ -27,7 +27,7 @@ const sizeStyles = {
   large: 'w-full',
 };
 
-const Button = ({
+function Button({
   children,
   type = 'button',
   variant = 'primary',
@@ -35,7 +35,7 @@ const Button = ({
   disabled = false,
   className,
   ...props
-}: Props) => {
+}: Props) {
   const combinedStyles = cn(
     baseStyles,
     variantStyles[variant],
@@ -56,6 +56,6 @@ const Button = ({
       {children}
     </button>
   );
-};
+}
 
 export { Button };

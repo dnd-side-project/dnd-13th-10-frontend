@@ -18,12 +18,12 @@ interface ToggleGroupProps {
   className?: string;
 }
 
-const ToggleGroup = ({
+function ToggleGroup({
   options,
   selectedValue,
   onSelectionChange,
   className,
-}: ToggleGroupProps) => {
+}: ToggleGroupProps) {
   return (
     <div role="radiogroup" className={cn('flex gap-2', className)}>
       {options.map(option => (
@@ -36,9 +36,9 @@ const ToggleGroup = ({
       ))}
     </div>
   );
-};
+}
 
-const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
+function ToggleItem({ text, isSelected, onClick }: ToggleItemProps) {
   return (
     <button
       role="radio"
@@ -55,7 +55,7 @@ const ToggleItem = ({ text, isSelected, onClick }: ToggleItemProps) => {
       {text}
     </button>
   );
-};
+}
 
 export type { ToggleOption };
 export { ToggleGroup };
