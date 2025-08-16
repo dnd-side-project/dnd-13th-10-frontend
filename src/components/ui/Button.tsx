@@ -1,18 +1,33 @@
+import Link from 'next/link';
 import type { ReactNode, ButtonHTMLAttributes } from 'react';
 
 import { cn } from '@/utils/cn';
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface BaseProps {
   children: ReactNode;
-  type?: 'button' | 'submit' | 'reset';
   variant?: 'primary' | 'secondary' | 'outline' | 'yellow';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   className?: string;
 }
 
+interface ButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
+    BaseProps {
+  href?: never;
+  type?: 'button' | 'submit' | 'reset';
+}
+
+interface LinkProps extends BaseProps {
+  href: string;
+  type?: never;
+  onClick?: never;
+}
+
+type Props = ButtonProps | LinkProps;
+
 const baseStyles =
-  'cursor-pointer rounded-lg p-2.5 h-12 shrink-0 typo-subhead-02';
+  'cursor-pointer rounded-lg p-2.5 h-12 shrink-0 typo-subhead-02 inline-flex items-center justify-center';
 
 const variantStyles = {
   primary: 'bg-primary-btn text-foundation-bg',
@@ -29,7 +44,6 @@ const sizeStyles = {
 
 function Button({
   children,
-  type = 'button',
   variant = 'primary',
   size = 'medium',
   disabled = false,
@@ -43,15 +57,25 @@ function Button({
     className,
   );
 
+  const disabledStyles =
+    disabled && 'bg-gray-btn text-foundation-disabled cursor-not-allowed';
+
+  if ('href' in props && props.href) {
+    return (
+      <Link href={props.href} className={cn(combinedStyles, disabledStyles)}>
+        {children}
+      </Link>
+    );
+  }
+
+  const { type = 'button', ...buttonProps } = props as ButtonProps;
+
   return (
     <button
-      className={cn(
-        combinedStyles,
-        disabled && 'bg-gray-btn text-foundation-disabled cursor-not-allowed',
-      )}
+      className={cn(combinedStyles, disabledStyles)}
       type={type}
       disabled={disabled}
-      {...props}
+      {...buttonProps}
     >
       {children}
     </button>

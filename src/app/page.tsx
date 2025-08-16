@@ -27,7 +27,6 @@ export default function Page() {
           <button onClick={() => signIn('naver')}>Sign In with Naver</button>
           <br />
           <button onClick={() => signIn('google')}>Sign In with Naver</button>
-
         </>
       )}
     </div>
