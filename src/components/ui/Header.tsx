@@ -49,17 +49,14 @@ function Header({
         )}
         onClick={onRightClick}
       >
-        {rightContent && (
-          <>
-            {typeof rightContent === 'string' ? (
-              <span className="typo-body-02 text-foundation-strong">
-                {rightContent}
-              </span>
-            ) : (
-              rightContent
-            )}
-          </>
-        )}
+        {rightContent &&
+          (typeof rightContent === 'string' ? (
+            <span className="typo-body-02 text-foundation-strong">
+              {rightContent}
+            </span>
+          ) : (
+            rightContent
+          ))}
       </div>
     </header>
   );
