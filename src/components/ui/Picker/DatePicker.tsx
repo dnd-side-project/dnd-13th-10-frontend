@@ -36,11 +36,19 @@ export function DatePicker({
   }, [value]);
 
   const [yMin, yMax] = useMemo(() => {
-    if (yearRange) return yearRange;
-    const lo = min ? min.getFullYear() : now.getFullYear() - 5;
-    const hi = max ? max.getFullYear() : now.getFullYear() + 5;
-    return [lo, hi] as [number, number];
+    if (yearRange) {
+      const [a, b] = yearRange;
+      return [Math.min(a, b), Math.max(a, b)] as [number, number];
+    }
+    const a = min ? min.getFullYear() : now.getFullYear() - 5;
+    const b = max ? max.getFullYear() : now.getFullYear() + 5;
+    return [Math.min(a, b), Math.max(a, b)] as [number, number];
   }, [yearRange, min, max, now]);
+
+  useEffect(() => {
+    if (y < yMin) setY(yMin);
+    else if (y > yMax) setY(yMax);
+  }, [y, yMin, yMax]);
 
   const years = useMemo(() => range(yMin, yMax), [yMin, yMax]);
   const months = useMemo(() => range(1, 12), []);
