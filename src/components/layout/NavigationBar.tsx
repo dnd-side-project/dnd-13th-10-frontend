@@ -43,14 +43,14 @@ export default function NavigationBar() {
           <Icon
             className={cn(
               'transition-colors duration-200',
-              isActive(href) ? 'text-blue-400' : 'text-foundation-disabled',
+              isActive(href) ? 'text-white' : 'text-foundation-disabled',
             )}
             strokeWidth={isActive(href) ? 2 : 1.5}
           />
           <span
             className={cn(
               'typo-caption transition-colors duration-200',
-              isActive(href) ? 'text-blue-400' : 'text-foundation-disabled',
+              isActive(href) ? 'text-white' : 'text-foundation-disabled',
             )}
           >
             {label}
