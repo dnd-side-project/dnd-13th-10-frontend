@@ -10,31 +10,23 @@ const CONTAINER_H = H_SEL + (VISIBLE - 1) * H_ROW;
 const STEP_H = H_ROW; // 드래그 1스텝 픽셀
 
 export type WheelColumnConfig<T = unknown> = {
-  items: T[];
+  items: readonly T[];
   selectedIndex: number;
   onChangeIndex: (idx: number) => void;
   format: (item: T) => string;
   ariaLabel?: string;
 };
 
-export type WheelPickerProps = {
-  columns: WheelColumnConfig[];
-};
-
-function Column<T>({
-  label,
-  items,
-  format,
-  index,
-  onChange,
-}: {
+interface ColumnProps<T> {
   label?: string;
-  items: T[];
+  items: readonly T[];
   format: (item: T) => string;
   index: number;
   onChange: (idx: number) => void;
   selectedHeight?: number;
-}) {
+}
+
+function Column<T>({ label, items, format, index, onChange }: ColumnProps<T>) {
   const [preview, setPreview] = useState(index);
   const centerOffset = CONTAINER_H / 2 - H_SEL / 2;
   const translateY = centerOffset - preview * H_ROW;
@@ -122,12 +114,24 @@ function Column<T>({
           style={{ transform: `translateY(${translateY}px)` }}
         >
           {items.map((it, i) => {
-            const dist = Math.abs(i - preview);
             const isCenter = i === preview;
             const h = isCenter ? H_SEL : H_ROW;
-            let opacityClass = 'opacity-100';
-            if (dist === 1) opacityClass = 'opacity-30';
-            else if (dist >= 2) opacityClass = 'opacity-10';
+
+            const EDGE = Math.floor((VISIBLE - 1) / 2);
+            const topIdx = preview - EDGE;
+            const bottomIdx = preview + EDGE;
+
+            const isEdge = i === topIdx || i === bottomIdx; // 최상단/최하단 → 10%
+            const isNearEdge = i === topIdx + 1 || i === bottomIdx - 1; // 그 다음 → 30%
+
+            const opacityClass = isCenter
+              ? 'opacity-100'
+              : isNearEdge
+                ? 'opacity-30'
+                : isEdge
+                  ? 'opacity-10'
+                  : 'opacity-10'; // (가시 영역 밖은 10%로 둬도 무방)
+
             return (
               <div
                 key={i}
@@ -150,7 +154,11 @@ function Column<T>({
   );
 }
 
-export function WheelPicker({ columns }: WheelPickerProps) {
+export type WheelPickerProps<T = unknown> = {
+  columns: ReadonlyArray<WheelColumnConfig<T>>;
+};
+
+export function WheelPicker<T = unknown>({ columns }: WheelPickerProps<T>) {
   return (
     <div className="relative" style={{ height: CONTAINER_H }}>
       {/* 중앙 하이라이트 */}

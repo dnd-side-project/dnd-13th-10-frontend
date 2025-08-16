@@ -3,6 +3,17 @@ import { clamp, daysInMonth, range } from './utils';
 import { WheelPicker } from './Picker';
 import { Button } from '../Button';
 
+interface DatePickerProps {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  value?: Date;
+  onConfirm: (d: Date) => void;
+  onCancel?: () => void;
+  min?: Date;
+  max?: Date;
+  yearRange?: [number, number];
+}
+
 export function DatePicker({
   open,
   onOpenChange,
@@ -12,16 +23,7 @@ export function DatePicker({
   min,
   max,
   yearRange,
-}: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-  value?: Date;
-  onConfirm: (d: Date) => void;
-  onCancel?: () => void;
-  min?: Date;
-  max?: Date;
-  yearRange?: [number, number];
-}) {
+}: DatePickerProps) {
   const now = useMemo(() => new Date(), []);
   const initial = value ?? now;
   const [y, setY] = useState(initial.getFullYear());
@@ -63,6 +65,27 @@ export function DatePicker({
   const mIdx = m - 1;
   const dIdx = clamp(d - 1, 0, days.length - 1);
 
+  const columns = [
+    {
+      items: years,
+      selectedIndex: yIdx,
+      onChangeIndex: (i: number) => setY(years[i]),
+      format: (yy: number) => `${yy}년`,
+    },
+    {
+      items: months,
+      selectedIndex: mIdx,
+      onChangeIndex: (i: number) => setM(i + 1),
+      format: (mm: number) => `${mm}월`,
+    },
+    {
+      items: days,
+      selectedIndex: dIdx,
+      onChangeIndex: (i: number) => setD(i + 1),
+      format: (dd: number) => `${dd}일`,
+    },
+  ];
+
   const confirm = () => {
     const picked = new Date(y, m - 1, d);
     const lo = min
@@ -92,30 +115,9 @@ export function DatePicker({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative w-full max-w-[560px] rounded-t-2xl rounded-b-none bg-neutral-900 p-6 shadow-2xl"
+        className="bg-foundation-bg relative w-full max-w-[560px] rounded-t-2xl rounded-b-none p-6 shadow-2xl"
       >
-        <WheelPicker
-          columns={[
-            {
-              items: years,
-              selectedIndex: yIdx,
-              onChangeIndex: i => setY(years[i]),
-              format: yy => `${yy}년`,
-            },
-            {
-              items: months,
-              selectedIndex: mIdx,
-              onChangeIndex: i => setM(i + 1),
-              format: mm => `${mm}월`,
-            },
-            {
-              items: days,
-              selectedIndex: dIdx,
-              onChangeIndex: i => setD(i + 1),
-              format: dd => `${dd}일`,
-            },
-          ]}
-        />
+        <WheelPicker columns={columns} />
         <div className="mt-6 grid grid-cols-2 gap-4">
           <Button
             type="button"

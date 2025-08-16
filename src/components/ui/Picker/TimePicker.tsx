@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { WheelPicker } from './Picker';
+import { WheelColumnConfig, WheelPicker } from './Picker';
 import { clamp, range } from './utils';
 import { Button } from '../Button';
 
 export const MERIDIEMS = ['오전', '오후'] as const;
 export type Meridiem = (typeof MERIDIEMS)[number];
+type TimeItem = Meridiem | number;
 
 export type TimeValue = {
   meridiem: Meridiem;
@@ -12,19 +13,21 @@ export type TimeValue = {
   minute: number;
 };
 
+interface TimePickerProps {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  value?: TimeValue; // { meridiem: "오전"|"오후", hour:1..12, minute:0..59 }
+  onConfirm: (v: TimeValue) => void;
+  onCancel?: () => void;
+}
+
 export function TimePicker({
   open,
   onOpenChange,
   value,
   onConfirm,
   onCancel,
-}: {
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-  value?: TimeValue; // { meridiem: "오전"|"오후", hour:1..12, minute:0..59 }
-  onConfirm: (v: TimeValue) => void;
-  onCancel?: () => void;
-}) {
+}: TimePickerProps) {
   const init = value ?? { meridiem: '오전', hour: 10, minute: 30 };
   const [mer, setMer] = useState<'오전' | '오후'>(init.meridiem);
   const [h, setH] = useState<number>(init.hour);
@@ -44,6 +47,27 @@ export function TimePicker({
   const merIdx = mers.indexOf(mer);
   const hIdx = clamp(hours.indexOf(h), 0, hours.length - 1);
   const mIdx = clamp(minutes.indexOf(mi), 0, minutes.length - 1);
+
+  const columns: ReadonlyArray<WheelColumnConfig<TimeItem>> = [
+    {
+      items: mers, // readonly ['오전','오후']
+      selectedIndex: merIdx,
+      onChangeIndex: (i: number) => setMer(mers[i]), // i에 :number
+      format: (v: TimeItem) => String(v), // 유니온 처리
+    },
+    {
+      items: hours,
+      selectedIndex: hIdx,
+      onChangeIndex: (i: number) => setH(hours[i]),
+      format: (v: TimeItem) => String(v), // `${v}` 동일
+    },
+    {
+      items: minutes,
+      selectedIndex: mIdx,
+      onChangeIndex: (i: number) => setMi(minutes[i]),
+      format: (v: TimeItem) => String(v),
+    },
+  ];
 
   const confirm = () => {
     onConfirm({ meridiem: mer, hour: h, minute: mi });
@@ -69,28 +93,7 @@ export function TimePicker({
         <div className="mb-4 text-center text-neutral-300">
           시간을 선택하세요
         </div>
-        <WheelPicker
-          columns={[
-            {
-              items: mers as ['오전', '오후'],
-              selectedIndex: merIdx,
-              onChangeIndex: i => setMer(mers[i] as Meridiem),
-              format: s => String(s),
-            },
-            {
-              items: hours,
-              selectedIndex: hIdx,
-              onChangeIndex: i => setH(hours[i]),
-              format: n => `${n}`,
-            },
-            {
-              items: minutes,
-              selectedIndex: mIdx,
-              onChangeIndex: i => setMi(minutes[i]),
-              format: n => `${n}`,
-            },
-          ]}
-        />
+        <WheelPicker columns={columns} />
         <div className="mt-6 grid grid-cols-2 gap-4">
           <Button
             type="button"
