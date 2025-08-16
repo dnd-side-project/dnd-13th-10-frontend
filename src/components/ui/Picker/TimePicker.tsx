@@ -90,9 +90,6 @@ export function TimePicker({
         aria-modal="true"
         className="relative w-full max-w-[560px] rounded-t-2xl rounded-b-none bg-neutral-900 p-6 shadow-2xl"
       >
-        <div className="mb-4 text-center text-neutral-300">
-          시간을 선택하세요
-        </div>
         <WheelPicker columns={columns} />
         <div className="mt-6 grid grid-cols-2 gap-4">
           <Button
