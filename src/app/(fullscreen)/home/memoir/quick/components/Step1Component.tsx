@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Input } from '@/components/ui/Input';
-import { SelectPicker } from '@/components/ui/SelectPicker';
+import { SelectPicker } from '@/components/ui/picker/SelectPicker';
 import {
   BottomDrawer,
   BottomDrawerContent,
