@@ -27,6 +27,7 @@ export default function QuickMemoirView() {
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep(prev => prev + 1);
     } else {
+      // TODO: 최종 회고 데이터 서버 전송 로직 구현
       console.log('최종 회고 데이터:', formData);
     }
   };

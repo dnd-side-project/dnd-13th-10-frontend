@@ -52,12 +52,13 @@ export default function Step1Component() {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <Label label="기업명" />
+            <Label label="기업명" htmlFor="companyName" />
             <span className="typo-subhead-02 text-primary-btn cursor-pointer">
               일정 불러오기
             </span>
           </div>
           <Input
+            id="companyName"
             name="companyName"
             placeholder="기업명 입력"
             value={data.companyName}
@@ -69,8 +70,9 @@ export default function Step1Component() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label label="직무" />
+          <Label label="직무" htmlFor="position" />
           <Input
+            id="position"
             name="position"
             placeholder="직무 입력"
             value={data.position}
@@ -80,8 +82,9 @@ export default function Step1Component() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label label="면접일시" />
+          <Label label="면접일시" htmlFor="interviewDate" />
           <Input
+            id="interviewDate"
             name="interviewDate"
             placeholder="면접일시 입력"
             value={data.interviewDate}

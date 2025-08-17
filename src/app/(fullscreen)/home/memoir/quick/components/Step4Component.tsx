@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 import { Input } from '@/components/ui/Input';
@@ -50,8 +52,9 @@ export default function Step4Component() {
     <>
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <Label label="자유기재" />
+          <Label label="자유기재" htmlFor="notes" />
           <Input
+            id="notes"
             placeholder="면접 후기를 자유롭게 적어주세요."
             showCharCount={true}
             maxLength={500}

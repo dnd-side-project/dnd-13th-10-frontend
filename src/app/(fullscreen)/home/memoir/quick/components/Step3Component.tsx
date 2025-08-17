@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 import PlusIcon from '@/assets/icon/plus_icon.svg';
