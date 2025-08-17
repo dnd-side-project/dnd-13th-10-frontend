@@ -27,6 +27,8 @@ const INTERVIEWER_OPTIONS: DrawerItem[] = [
 
 export default function Step1Component() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [tempInterviewerCount, setTempInterviewerCount] = useState('');
+
   const data = useMemoirFormStore(state => state.formData.step1);
   const updateStepData = useMemoirFormStore(state => state.updateStepData);
 
@@ -35,11 +37,16 @@ export default function Step1Component() {
     updateStepData('step1', { ...data, [name]: value });
   };
 
-  const handleInterviewerSelect = (option: DrawerItem) => {
-    updateStepData('step1', { ...data, interviewerCount: option.label });
+  const handleOpenDrawer = () => {
+    setTempInterviewerCount(data.interviewerCount);
+    setIsDrawerOpen(true);
   };
 
   const handleSave = () => {
+    updateStepData('step1', {
+      ...data,
+      interviewerCount: tempInterviewerCount,
+    });
     setIsDrawerOpen(false);
   };
 
@@ -100,7 +107,7 @@ export default function Step1Component() {
           <SelectPicker
             placeholder="면접관 수"
             value={data.interviewerCount}
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={handleOpenDrawer}
           />
         </div>
       </div>
@@ -118,9 +125,9 @@ export default function Step1Component() {
               key={option.id}
               item={{
                 ...option,
-                checked: data.interviewerCount === option.label,
+                checked: tempInterviewerCount === option.label,
               }}
-              onClick={() => handleInterviewerSelect(option)}
+              onClick={() => setTempInterviewerCount(option.label)}
             />
           ))}
         </BottomDrawerContent>

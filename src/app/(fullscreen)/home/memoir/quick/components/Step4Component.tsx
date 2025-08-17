@@ -32,6 +32,7 @@ const VISIBILITY_OPTIONS = [
 
 export default function Step4Component() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [tempResult, setTempResult] = useState('');
 
   const data = useMemoirFormStore(state => state.formData.step4);
   const updateStepData = useMemoirFormStore(state => state.updateStepData);
@@ -40,11 +41,13 @@ export default function Step4Component() {
     updateStepData('step4', { ...data, [field]: value });
   };
 
-  const handleResultSelect = (option: DrawerItem) => {
-    handleFieldChange('result', option.label);
+  const handleOpenDrawer = () => {
+    setTempResult(data.result);
+    setIsDrawerOpen(true);
   };
 
   const handleSave = () => {
+    updateStepData('step4', { ...data, result: tempResult });
     setIsDrawerOpen(false);
   };
 
@@ -68,7 +71,7 @@ export default function Step4Component() {
           <SelectPicker
             placeholder="결과 선택"
             value={data.result}
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={handleOpenDrawer}
           />
         </div>
 
@@ -96,9 +99,9 @@ export default function Step4Component() {
               key={option.id}
               item={{
                 ...option,
-                checked: data.result === option.label,
+                checked: tempResult === option.label,
               }}
-              onClick={() => handleResultSelect(option)}
+              onClick={() => setTempResult(option.label)}
             />
           ))}
         </BottomDrawerContent>

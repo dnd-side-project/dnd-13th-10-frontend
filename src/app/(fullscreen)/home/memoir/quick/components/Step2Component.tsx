@@ -35,13 +35,10 @@ const SATISFACTION_LEVELS = [
 
 export default function Step2Component() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [tempInterviewMood, setTempInterviewMood] = useState('');
 
   const data = useMemoirFormStore(state => state.formData.step2);
   const updateStepData = useMemoirFormStore(state => state.updateStepData);
-
-  const handleInterviewMood = (option: DrawerItem) => {
-    updateStepData('step2', { ...data, interviewMood: option.label });
-  };
 
   const handleSatisfactionChange = (value: string) => {
     if (value) {
@@ -49,7 +46,13 @@ export default function Step2Component() {
     }
   };
 
+  const handleOpenDrawer = () => {
+    setTempInterviewMood(data.interviewMood);
+    setIsDrawerOpen(true);
+  };
+
   const handleSave = () => {
+    updateStepData('step2', { ...data, interviewMood: tempInterviewMood });
     setIsDrawerOpen(false);
   };
 
@@ -61,7 +64,7 @@ export default function Step2Component() {
           <SelectPicker
             placeholder="면접 분위기"
             value={data.interviewMood}
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={handleOpenDrawer}
           />
         </div>
 
@@ -88,9 +91,9 @@ export default function Step2Component() {
               key={option.id}
               item={{
                 ...option,
-                checked: data.interviewMood === option.label,
+                checked: tempInterviewMood === option.label,
               }}
-              onClick={() => handleInterviewMood(option)}
+              onClick={() => setTempInterviewMood(option.label)}
             />
           ))}
         </BottomDrawerContent>
