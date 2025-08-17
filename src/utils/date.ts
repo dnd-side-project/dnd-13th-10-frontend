@@ -1,4 +1,4 @@
-import type { TimeValue } from '@/components/ui/picker2/TimePicker';
+import type { TimeValue } from '@/components/ui/picker/TimePicker';
 
 export const formatTime = (time: TimeValue | null): string => {
   if (!time) return '';

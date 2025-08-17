@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { TimeValue } from '@/components/ui/picker2/TimePicker';
+import type { TimeValue } from '@/components/ui/picker/TimePicker';
 
 export interface QuestionItem {
   id: string;
