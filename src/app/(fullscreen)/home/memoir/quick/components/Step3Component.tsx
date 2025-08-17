@@ -5,7 +5,7 @@ import { useState } from 'react';
 import PlusIcon from '@/assets/icon/plus_icon.svg';
 import ClosedIcon from '@/assets/icon/closed_icon.svg';
 import { Input } from '@/components/ui/Input';
-import { SelectPicker } from '@/components/ui/picker/SelectPicker';
+import { SelectPicker } from '@/components/ui/picker2/SelectPicker';
 import { Label } from '@/components/ui/Label';
 import {
   BottomDrawer,

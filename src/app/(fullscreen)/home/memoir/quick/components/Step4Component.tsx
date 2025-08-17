@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Input } from '@/components/ui/Input';
-import { SelectPicker } from '@/components/ui/picker/SelectPicker';
+import { SelectPicker } from '@/components/ui/picker2/SelectPicker';
 import { ToggleGroup } from '@/components/ui/ToggleGroup';
 import { Label } from '@/components/ui/Label';
 import {

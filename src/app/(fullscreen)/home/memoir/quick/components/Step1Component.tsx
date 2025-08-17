@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Input } from '@/components/ui/Input';
-import { SelectPicker } from '@/components/ui/picker/SelectPicker';
+import { SelectPicker } from '@/components/ui/picker2/SelectPicker';
 import {
   BottomDrawer,
   BottomDrawerContent,
@@ -15,8 +15,8 @@ import {
 } from '@/components/ui/Drawer';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
-import { TimePicker, type TimeValue } from '@/components/ui/picker/TimePicker';
-import { DatePicker } from '@/components/ui/picker/DatePicker';
+import { TimePicker, type TimeValue } from '@/components/ui/picker2/TimePicker';
+import { DatePicker } from '@/components/ui/picker2/DatePicker';
 import { formatDate, formatTime } from '@/utils/date';
 
 import { useMemoirFormStore } from '../store/memoirFormStore';
