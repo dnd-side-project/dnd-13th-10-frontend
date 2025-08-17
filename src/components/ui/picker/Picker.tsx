@@ -166,7 +166,7 @@ export type WheelPickerProps<T = unknown> = {
 
 export function WheelPicker<T = unknown>({ columns }: WheelPickerProps<T>) {
   return (
-    <div className="relative" style={{ height: CONTAINER_H }}>
+    <div className="relative px-6" style={{ height: CONTAINER_H }}>
       <div
         aria-hidden
         className="pointer-events-none absolute top-1/2 right-0 left-0 z-20 h-13 -translate-y-1/2 rounded-xl bg-white/20"
