@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { Header } from '@/components/ui/Header';
+import GeneralMemoirView from './components/GeneralMemoirView';
 
 export const metadata: Metadata = {
   title: '일반회고 작성',
@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function GeneralMemoirPage() {
-  return (
-    <>
-      <Header title="일반회고" />
-    </>
-  );
+  return <GeneralMemoirView />;
 }
