@@ -16,7 +16,7 @@ export default function GeneralMemoirView() {
   const isSaveButtonEnabled = isGeneralMemoirFormValid(formData);
 
   const handleSave = () => {
-    if (!isGeneralMemoirFormValid) return;
+    if (!isSaveButtonEnabled) return;
 
     console.log('✅ 최종 저장 데이터:', formData);
     // TO-DO: 이 곳에서 서버로 데이터를 전송하는 API를 호출
