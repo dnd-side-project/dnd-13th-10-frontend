@@ -29,4 +29,9 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  @apply !min-w-full;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

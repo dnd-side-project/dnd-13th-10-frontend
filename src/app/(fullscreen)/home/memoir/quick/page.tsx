@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { Header } from '@/components/ui/Header';
+import QuickMemoirView from './components/QuickMemoirView';
 
 export const metadata: Metadata = {
   title: '퀵회고 작성',
@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function QuickMemoirPage() {
-  return (
-    <>
-      <Header title="퀵회고" />
-    </>
-  );
+  return <QuickMemoirView />;
 }

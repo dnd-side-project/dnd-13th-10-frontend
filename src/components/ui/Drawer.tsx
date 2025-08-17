@@ -133,6 +133,7 @@ function BottomDrawerItem({ item, onClick }: BottomDrawerItemProps) {
   );
 }
 
+export type { DrawerItem };
 export {
   BottomDrawer,
   BottomDrawerContent,
