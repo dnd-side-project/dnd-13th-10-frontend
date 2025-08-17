@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import type { TimeValue } from '@/components/ui/picker/TimePicker';
+
 export interface QuestionItem {
   id: string;
   type: string;
@@ -9,7 +11,8 @@ export interface QuestionItem {
 interface Step1Data {
   companyName: string;
   position: string;
-  interviewDate: string;
+  interviewDate: Date | null;
+  interviewTime: TimeValue | null;
   interviewerCount: string;
 }
 
@@ -44,7 +47,8 @@ export const useMemoirFormStore = create<MemoirFormState>(set => ({
     step1: {
       companyName: '',
       position: '',
-      interviewDate: '',
+      interviewDate: null,
+      interviewTime: null,
       interviewerCount: '',
     },
     step2: {
