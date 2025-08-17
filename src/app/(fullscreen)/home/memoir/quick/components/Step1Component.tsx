@@ -133,7 +133,11 @@ export default function Step1Component() {
         </BottomDrawerContent>
 
         <BottomDrawerFooter>
-          <Button size="large" onClick={handleSave}>
+          <Button
+            size="large"
+            onClick={handleSave}
+            disabled={!tempInterviewerCount}
+          >
             저장
           </Button>
         </BottomDrawerFooter>

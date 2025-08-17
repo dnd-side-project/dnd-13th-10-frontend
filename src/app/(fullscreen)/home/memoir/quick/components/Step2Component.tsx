@@ -99,7 +99,11 @@ export default function Step2Component() {
         </BottomDrawerContent>
 
         <BottomDrawerFooter>
-          <Button size="large" onClick={handleSave}>
+          <Button
+            size="large"
+            onClick={handleSave}
+            disabled={!tempInterviewMood}
+          >
             저장
           </Button>
         </BottomDrawerFooter>

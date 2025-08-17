@@ -151,7 +151,11 @@ export default function Step3Component() {
           ))}
         </BottomDrawerContent>
         <BottomDrawerFooter>
-          <Button size="large" onClick={handleSave}>
+          <Button
+            size="large"
+            onClick={handleSave}
+            disabled={!tempSelectedType}
+          >
             저장
           </Button>
         </BottomDrawerFooter>

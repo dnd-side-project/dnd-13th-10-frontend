@@ -106,7 +106,7 @@ export default function Step4Component() {
           ))}
         </BottomDrawerContent>
         <BottomDrawerFooter>
-          <Button size="large" onClick={handleSave}>
+          <Button size="large" onClick={handleSave} disabled={!tempResult}>
             저장
           </Button>
         </BottomDrawerFooter>
