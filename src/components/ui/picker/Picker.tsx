@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { clamp } from './utils';
+import { cn } from '@/utils/cn';
 
 const VISIBLE = 5;
 const H_SEL = 52; // 선택 행 높이
@@ -138,11 +139,15 @@ function Column<T>({ label, items, format, index, onChange }: ColumnProps<T>) {
                 key={i}
                 role="option"
                 aria-selected={isCenter}
-                className={`flex items-center justify-center text-base ${opacityClass} ${
-                  isCenter
-                    ? 'text-foundation-strong typo-headline text-[20px] font-semibold'
-                    : 'text-foundation-primary typo-body-01 text-[18px]'
-                }`}
+                className={cn(
+                  'flex items-center justify-center',
+                  opacityClass,
+                  {
+                    'text-foundation-strong typo-headline': isCenter,
+                    'text-foundation-primary text-[18px] leading-[26px]':
+                      !isCenter,
+                  },
+                )}
                 style={{ height: h, lineHeight: `${h}px` }}
               >
                 {format(it)}
@@ -162,7 +167,6 @@ export type WheelPickerProps<T = unknown> = {
 export function WheelPicker<T = unknown>({ columns }: WheelPickerProps<T>) {
   return (
     <div className="relative" style={{ height: CONTAINER_H }}>
-      {/* 중앙 하이라이트 */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-1/2 right-0 left-0 z-20 h-13 -translate-y-1/2 rounded-xl bg-white/20"
