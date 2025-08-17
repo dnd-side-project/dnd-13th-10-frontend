@@ -3,9 +3,20 @@ import type { MemoirFormData } from '../store/memoirFormStore';
 export const isStepValid = (currentStep: number, formData: MemoirFormData) => {
   switch (currentStep) {
     case 1: {
-      const { companyName, position, interviewDate, interviewerCount } =
-        formData.step1;
-      return !!(companyName && position && interviewDate && interviewerCount);
+      const {
+        companyName,
+        position,
+        interviewDate,
+        interviewTime,
+        interviewerCount,
+      } = formData.step1;
+      return !!(
+        companyName &&
+        position &&
+        interviewDate &&
+        interviewTime &&
+        interviewerCount
+      );
     }
     case 2: {
       const { interviewMood, satisfaction } = formData.step2;

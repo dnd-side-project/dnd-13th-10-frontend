@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Input } from '@/components/ui/Input';
-import { SelectPicker } from '@/components/ui/SelectPicker';
+import { SelectPicker } from '@/components/ui/picker/SelectPicker';
 import {
   BottomDrawer,
   BottomDrawerContent,
@@ -15,6 +15,9 @@ import {
 } from '@/components/ui/Drawer';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
+import { TimePicker, type TimeValue } from '@/components/ui/picker/TimePicker';
+import { DatePicker } from '@/components/ui/picker/DatePicker';
+import { formatDate, formatTime } from '@/utils/date';
 
 import { useMemoirFormStore } from '../store/memoirFormStore';
 
@@ -27,6 +30,8 @@ const INTERVIEWER_OPTIONS: DrawerItem[] = [
 
 export default function Step1Component() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
   const [tempInterviewerCount, setTempInterviewerCount] = useState('');
 
   const data = useMemoirFormStore(state => state.formData.step1);
@@ -35,6 +40,16 @@ export default function Step1Component() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     updateStepData('step1', { ...data, [name]: value });
+  };
+
+  const handleDateConfirm = (date: Date) => {
+    updateStepData('step1', { ...data, interviewDate: date });
+    setIsDatePickerOpen(false);
+  };
+
+  const handleTimeConfirm = (time: TimeValue) => {
+    updateStepData('step1', { ...data, interviewTime: time });
+    setIsTimePickerOpen(false);
   };
 
   const handleOpenDrawer = () => {
@@ -90,16 +105,22 @@ export default function Step1Component() {
 
         <div className="flex flex-col gap-2">
           <Label label="면접일시" htmlFor="interviewDate" />
-          <Input
-            id="interviewDate"
-            name="interviewDate"
-            placeholder="면접일시 입력"
-            value={data.interviewDate}
-            onChange={handleInputChange}
-            onClear={
-              data.interviewDate ? () => clearInput('interviewDate') : undefined
-            }
-          />
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              readOnly
+              placeholder="날짜 선택"
+              value={formatDate(data.interviewDate)}
+              onClick={() => setIsDatePickerOpen(true)}
+              inputClassName="cursor-pointer text-center w-full"
+            />
+            <Input
+              readOnly
+              placeholder="시간 선택"
+              value={formatTime(data.interviewTime)}
+              onClick={() => setIsTimePickerOpen(true)}
+              inputClassName="cursor-pointer w-full text-center"
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -111,6 +132,38 @@ export default function Step1Component() {
           />
         </div>
       </div>
+
+      <BottomDrawer
+        isOpen={isDatePickerOpen}
+        onOpenChange={setIsDatePickerOpen}
+      >
+        <BottomDrawerHandle />
+        <BottomDrawerHeader
+          title="날짜 선택"
+          onClose={() => setIsDatePickerOpen(false)}
+        />
+        <DatePicker
+          value={data.interviewDate ?? new Date()}
+          onConfirm={handleDateConfirm}
+          onCancel={() => setIsDatePickerOpen(false)}
+        />
+      </BottomDrawer>
+
+      <BottomDrawer
+        isOpen={isTimePickerOpen}
+        onOpenChange={setIsTimePickerOpen}
+      >
+        <BottomDrawerHandle />
+        <BottomDrawerHeader
+          title="시간 선택"
+          onClose={() => setIsTimePickerOpen(false)}
+        />
+        <TimePicker
+          value={data.interviewTime ?? undefined}
+          onConfirm={handleTimeConfirm}
+          onCancel={() => setIsTimePickerOpen(false)}
+        />
+      </BottomDrawer>
 
       <BottomDrawer isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <BottomDrawerHandle />
