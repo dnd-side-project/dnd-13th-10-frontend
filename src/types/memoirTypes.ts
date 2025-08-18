@@ -11,7 +11,7 @@ import {
   SATISFACTION_NOTE,
 } from '@/constants/code';
 
-type ValueOf<T> = T[keyof T];
+export type ValueOf<T> = T[keyof T];
 
 export type MemoirType = ValueOf<typeof MEMOIR_TYPES>;
 export type InterviewFormat = ValueOf<typeof INTERVIEW_FORMAT>;

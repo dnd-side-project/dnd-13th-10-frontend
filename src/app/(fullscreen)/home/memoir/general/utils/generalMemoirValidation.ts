@@ -10,7 +10,7 @@ export const isGeneralMemoirFormValid = (
     !interviewInfo.interviewTime ||
     !interviewInfo.position ||
     !interviewInfo.interviewStep ||
-    !interviewInfo.interviewerCount ||
+    !interviewInfo.interviewFormat ||
     !interviewInfo.interviewMethod ||
     !interviewInfo.interviewMood
   ) {
@@ -20,17 +20,16 @@ export const isGeneralMemoirFormValid = (
   const { questions } = formData;
   if (
     questions.length === 0 ||
-    !questions.every(q => q.type && q.content && q.answer)
+    !questions.every(q => q.questionType && q.content && q.answer)
   ) {
     return false;
   }
 
   const { interviewReview } = formData;
-
   if (
     !interviewReview.interviewLevel ||
-    !interviewReview.interviewStatus ||
-    !interviewReview.visibility
+    !interviewReview.satisfactionNote ||
+    !interviewReview.interviewStatus
   ) {
     return false;
   }

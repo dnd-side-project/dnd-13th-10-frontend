@@ -1,10 +1,22 @@
 import { create } from 'zustand';
 
 import type { TimeValue } from '@/components/ui/picker/TimePicker';
+import type {
+  MemoirType,
+  InterviewFormat,
+  InterviewLevel,
+  InterviewMethod,
+  InterviewMood,
+  InterviewStatus,
+  InterviewStep,
+  Position,
+  QuestionType,
+  SatisfactionNote,
+} from '@/types/memoirTypes';
 
 export interface QuestionItem {
-  id: string;
-  type: string;
+  order: string;
+  questionType: QuestionType | '';
   content: string;
   answer: string;
 }
@@ -13,19 +25,19 @@ interface InterviewInfoData {
   companyName: string;
   interviewDate: Date | null;
   interviewTime: TimeValue | null;
-  position: string;
-  interviewStep: string;
-  interviewerCount: string;
-  interviewMethod: string;
-  interviewMood: string;
+  position: Position;
+  interviewStep: InterviewStep;
+  interviewFormat: InterviewFormat;
+  interviewMethod: InterviewMethod;
+  interviewMood: InterviewMood;
 }
 
 interface InterviewReviewData {
-  interviewLevel: string;
-  satisfactionNote: string;
+  interviewLevel: InterviewLevel;
+  satisfactionNote: SatisfactionNote;
   freeNote: string;
-  interviewStatus: string;
-  visibility: 'private' | 'public';
+  interviewStatus: InterviewStatus;
+  isPublic: boolean;
 }
 
 interface ReferenceData {
@@ -50,25 +62,31 @@ interface GeneralMemoirFormState {
 export const useGeneralMemoirFormStore = create<GeneralMemoirFormState>(
   set => ({
     formData: {
+      type: '' as MemoirType,
       interviewInfo: {
         companyName: '',
         interviewDate: null,
         interviewTime: null,
-        position: '',
-        interviewStep: '',
-        interviewerCount: '',
-        interviewMethod: '',
-        interviewMood: '',
+        position: '' as Position,
+        interviewStep: '' as InterviewStep,
+        interviewFormat: '' as InterviewFormat,
+        interviewMethod: '' as InterviewMethod,
+        interviewMood: '' as InterviewMood,
       },
       questions: [
-        { id: crypto.randomUUID(), type: '', content: '', answer: '' },
+        {
+          order: crypto.randomUUID(),
+          questionType: '',
+          content: '',
+          answer: '',
+        },
       ],
       interviewReview: {
-        interviewLevel: '',
-        satisfactionNote: '',
+        interviewLevel: '' as InterviewLevel,
+        satisfactionNote: '' as SatisfactionNote,
         freeNote: '',
-        interviewStatus: '',
-        visibility: 'private',
+        interviewStatus: '' as InterviewStatus,
+        isPublic: false,
       },
       references: {
         url: '',

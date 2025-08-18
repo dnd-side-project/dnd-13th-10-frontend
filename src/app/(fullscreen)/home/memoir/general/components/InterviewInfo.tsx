@@ -17,9 +17,21 @@ import {
   BottomDrawerHandle,
   BottomDrawerHeader,
   BottomDrawerItem,
-  type DrawerItem,
 } from '@/components/ui/Drawer';
 import { Button } from '@/components/ui/Button';
+import {
+  INTERVIEW_FORMAT,
+  INTERVIEW_METHOD,
+  INTERVIEW_MOOD,
+  INTERVIEW_STEP,
+} from '@/constants/code';
+import {
+  INTERVIEW_FORMAT_LABELS,
+  INTERVIEW_METHOD_LABELS,
+  INTERVIEW_MOOD_LABELS,
+  INTERVIEW_STEP_LABELS,
+} from '@/constants/labels';
+import { createOptionsArray, createToggleOptions } from '@/utils/options';
 
 import Title from './Title';
 
@@ -45,43 +57,27 @@ function FormField({
   );
 }
 
-const INTERVIEW_STEP_OPTIONS = [
-  { text: '1차 면접', id: 'first' },
-  { text: '2차 면접', id: 'second' },
-  { text: '최종 면접', id: 'final' },
-  { text: '전화 면접', id: 'phone' },
-];
+const INTERVIEW_STEP_OPTIONS = createToggleOptions(
+  INTERVIEW_STEP,
+  INTERVIEW_STEP_LABELS,
+);
+const INTERVIEWER_OPTIONS = createOptionsArray(
+  INTERVIEW_FORMAT,
+  INTERVIEW_FORMAT_LABELS,
+);
+const INTERVIEW_METHOD_OPTIONS = createOptionsArray(
+  INTERVIEW_METHOD,
+  INTERVIEW_METHOD_LABELS,
+);
+const INTERVIEW_MOOD_OPTIONS = createOptionsArray(
+  INTERVIEW_MOOD,
+  INTERVIEW_MOOD_LABELS,
+);
 
-const INTERVIEWER_OPTIONS: DrawerItem[] = [
-  { id: '1', label: '일대일 면접' },
-  { id: '2', label: '일대다 면접' },
-  { id: '3', label: '다대일 면접' },
-  { id: '4', label: '다대다 면접' },
-];
-
-const INTERVIEW_METHOD_OPTIONS: DrawerItem[] = [
-  { id: 'in-person', label: '대면' },
-  { id: 'remote', label: '비대면' },
-];
-
-const INTERVIEW_MOOD_OPTIONS: DrawerItem[] = [
-  { id: 'pressuring', label: '압박되는' },
-  { id: 'comfortable', label: '편안한' },
-  { id: 'quiet', label: '조용한' },
-  { id: 'sharp', label: '예리한' },
-  { id: 'friendly', label: '친근한' },
-];
-
-type DrawerType =
-  | 'interviewerCount'
-  | 'interviewMethod'
-  | 'interviewMood'
-  | 'date'
-  | 'time'
-  | null;
+type DrawerType = keyof typeof DRAWER_CONFIG | 'date' | 'time' | null;
 
 const DRAWER_CONFIG = {
-  interviewerCount: { title: '면접관 수', options: INTERVIEWER_OPTIONS },
+  interviewFormat: { title: '면접관 수', options: INTERVIEWER_OPTIONS },
   interviewMethod: { title: '면접 방식', options: INTERVIEW_METHOD_OPTIONS },
   interviewMood: { title: '면접 분위기', options: INTERVIEW_MOOD_OPTIONS },
 };
@@ -123,7 +119,7 @@ export default function InterviewInfo() {
     if (!activeDrawer || activeDrawer === 'date' || activeDrawer === 'time')
       return;
 
-    handleFieldChange(activeDrawer, tempSelection);
+    handleFieldChange(activeDrawer as keyof typeof data, tempSelection);
     setActiveDrawer(null);
   };
 
@@ -181,8 +177,8 @@ export default function InterviewInfo() {
           {config.options.map(option => (
             <BottomDrawerItem
               key={option.id}
-              item={{ ...option, checked: tempSelection === option.label }}
-              onClick={() => setTempSelection(option.label)}
+              item={{ ...option, checked: tempSelection === option.id }}
+              onClick={() => setTempSelection(option.id)}
             />
           ))}
         </BottomDrawerContent>
@@ -269,21 +265,21 @@ export default function InterviewInfo() {
           <div className="flex flex-col gap-2">
             <SelectPicker
               placeholder="면접관 수"
-              value={data.interviewerCount}
+              value={INTERVIEW_FORMAT_LABELS[data.interviewFormat] || ''}
               onClick={() =>
-                handleOpenDrawer('interviewerCount', data.interviewerCount)
+                handleOpenDrawer('interviewFormat', data.interviewFormat)
               }
             />
             <SelectPicker
               placeholder="면접 방식"
-              value={data.interviewMethod}
+              value={INTERVIEW_METHOD_LABELS[data.interviewMethod] || ''}
               onClick={() =>
                 handleOpenDrawer('interviewMethod', data.interviewMethod)
               }
             />
             <SelectPicker
               placeholder="면접 분위기"
-              value={data.interviewMood}
+              value={INTERVIEW_MOOD_LABELS[data.interviewMood] || ''}
               onClick={() =>
                 handleOpenDrawer('interviewMood', data.interviewMood)
               }

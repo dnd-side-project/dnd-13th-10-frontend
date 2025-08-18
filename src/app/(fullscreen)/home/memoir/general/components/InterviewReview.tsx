@@ -14,40 +14,46 @@ import {
   BottomDrawerHandle,
   BottomDrawerHeader,
   BottomDrawerItem,
-  type DrawerItem,
 } from '@/components/ui/Drawer';
+import {
+  INTERVIEW_STATUS,
+  SATISFACTION_NOTE,
+  INTERVIEW_LEVEL,
+} from '@/constants/code';
+import {
+  INTERVIEW_STATUS_LABELS,
+  SATISFACTION_NOTE_LABELS,
+  INTERVIEW_LEVEL_LABELS,
+} from '@/constants/labels';
+import { createOptionsArray, createToggleOptions } from '@/utils/options';
+import type { InterviewStatus } from '@/types/memoirTypes';
 
 import Title from './Title';
 import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
 
-const INTERVIEW_LEVEL = [
-  { text: '매우 쉬움', id: 'very_easy' },
-  { text: '쉬움', id: 'easy' },
-  { text: '보통', id: 'normal' },
-  { text: '어려움', id: 'hard' },
-  { text: '매우 어려움', id: 'very_hard' },
-];
-
-const SATISFACTION_NOTE = [
-  { text: '만족', id: 'satisfied' },
-  { text: '보통', id: 'neutral' },
-  { text: '불만족', id: 'dissatisfied' },
-];
-
-const INTERVIEW_STATUS: DrawerItem[] = [
-  { label: '합격', id: 'pass' },
-  { label: '불합격', id: 'fail' },
-  { label: '결과 대기중', id: 'pending' },
-];
+const INTERVIEW_STATUS_OPTIONS = createOptionsArray(
+  INTERVIEW_STATUS,
+  INTERVIEW_STATUS_LABELS,
+);
+const SATISFACTION_NOTE_OPTIONS = createToggleOptions(
+  SATISFACTION_NOTE,
+  SATISFACTION_NOTE_LABELS,
+);
+const INTERVIEW_LEVEL_OPTIONS = createToggleOptions(
+  INTERVIEW_LEVEL,
+  INTERVIEW_LEVEL_LABELS,
+);
 
 const VISIBILITY_OPTIONS = [
-  { text: '비공개', id: 'private' },
-  { text: '공개', id: 'public' },
+  { text: '비공개', id: 'false' },
+  { text: '공개', id: 'true' },
 ];
 
 export default function InterviewReview() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [tempInterviewStatus, setTempInterviewStatus] = useState('');
+  const [tempInterviewStatus, setTempInterviewStatus] = useState<
+    InterviewStatus | ''
+  >('');
 
   const data = useGeneralMemoirFormStore(
     state => state.formData.interviewReview,
@@ -70,8 +76,15 @@ export default function InterviewReview() {
     });
   };
 
-  const handleFieldChange = (field: keyof typeof data, value: string) => {
-    updateFormData('interviewReview', { ...data, [field]: value });
+  const handleToggleChange = (field: keyof typeof data, value: string) => {
+    if (field === 'isPublic') {
+      updateFormData('interviewReview', {
+        ...data,
+        isPublic: value === 'true',
+      });
+    } else if (value) {
+      updateFormData('interviewReview', { ...data, [field]: value });
+    }
   };
 
   const handleOpenDrawer = () => {
@@ -80,10 +93,12 @@ export default function InterviewReview() {
   };
 
   const handleSave = () => {
-    updateFormData('interviewReview', {
-      ...data,
-      interviewStatus: tempInterviewStatus,
-    });
+    if (tempInterviewStatus) {
+      updateFormData('interviewReview', {
+        ...data,
+        interviewStatus: tempInterviewStatus,
+      });
+    }
     setIsDrawerOpen(false);
   };
 
@@ -94,13 +109,10 @@ export default function InterviewReview() {
         <div className="flex flex-col gap-2">
           <Label label="난이도" />
           <ToggleGroup
-            options={INTERVIEW_LEVEL}
+            options={INTERVIEW_LEVEL_OPTIONS}
             selectedValue={data.interviewLevel}
             onSelectionChange={value =>
-              updateFormData('interviewReview', {
-                ...data,
-                interviewLevel: value,
-              })
+              handleToggleChange('interviewLevel', value)
             }
             className="flex-wrap"
           />
@@ -109,13 +121,10 @@ export default function InterviewReview() {
         <div className="flex flex-col gap-2">
           <Label label="만족도" />
           <ToggleGroup
-            options={SATISFACTION_NOTE}
+            options={SATISFACTION_NOTE_OPTIONS}
             selectedValue={data.satisfactionNote}
             onSelectionChange={value =>
-              updateFormData('interviewReview', {
-                ...data,
-                satisfactionNote: value,
-              })
+              handleToggleChange('satisfactionNote', value)
             }
             className="flex-wrap"
           />
@@ -139,7 +148,7 @@ export default function InterviewReview() {
           <Label label="면접 결과" />
           <SelectPicker
             placeholder="결과 분류"
-            value={data.interviewStatus}
+            value={INTERVIEW_STATUS_LABELS[data.interviewStatus] || ''}
             onClick={handleOpenDrawer}
           />
         </div>
@@ -148,10 +157,8 @@ export default function InterviewReview() {
           <Label label="회고 공개여부" />
           <ToggleGroup
             options={VISIBILITY_OPTIONS}
-            selectedValue={data.visibility}
-            onSelectionChange={value =>
-              value && handleFieldChange('visibility', value)
-            }
+            selectedValue={String(data.isPublic)}
+            onSelectionChange={value => handleToggleChange('isPublic', value)}
           />
         </div>
       </div>
@@ -163,14 +170,13 @@ export default function InterviewReview() {
           onClose={() => setIsDrawerOpen(false)}
         />
         <BottomDrawerContent>
-          {INTERVIEW_STATUS.map(option => (
+          {INTERVIEW_STATUS_OPTIONS.map(option => (
             <BottomDrawerItem
               key={option.id}
-              item={{
-                ...option,
-                checked: tempInterviewStatus === option.label,
-              }}
-              onClick={() => setTempInterviewStatus(option.label)}
+              item={{ ...option, checked: tempInterviewStatus === option.id }}
+              onClick={() =>
+                setTempInterviewStatus(option.id as InterviewStatus)
+              }
             />
           ))}
         </BottomDrawerContent>
