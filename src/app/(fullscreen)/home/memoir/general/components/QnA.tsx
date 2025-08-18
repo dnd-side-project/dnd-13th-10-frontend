@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import PlusIcon from '@/assets/icon/plus_icon.svg';
-import ClosedIcon from '@/assets/icon/closed_icon.svg';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
@@ -15,8 +14,11 @@ import {
   BottomDrawerHandle,
   BottomDrawerHeader,
   BottomDrawerItem,
-  type DrawerItem,
 } from '@/components/ui/Drawer';
+import { QUESTION_TYPE } from '@/constants/code';
+import { QUESTION_TYPE_LABELS } from '@/constants/labels';
+import { createOptionsArray } from '@/utils/options';
+import type { QuestionType } from '@/types/memoirTypes';
 
 import Title from './Title';
 import {
@@ -24,19 +26,18 @@ import {
   useGeneralMemoirFormStore,
 } from '../store/generalMemoirFormStore';
 
-const QUESTION_TYPE_OPTIONS: DrawerItem[] = [
-  { id: 'personality', label: '인성질문' },
-  { id: 'job', label: '직무질문' },
-  { id: 'experience', label: '경험질문' },
-  { id: 'company', label: '회사질문' },
-  { id: 'follow-up', label: '꼬리질문' },
-];
+const QUESTION_TYPE_OPTIONS = createOptionsArray(
+  QUESTION_TYPE,
+  QUESTION_TYPE_LABELS,
+);
 
 export default function QnA() {
   const [activeDrawerIndex, setActiveDrawerIndex] = useState<number | null>(
     null,
   );
-  const [tempSelectedType, setTempSelectedType] = useState<string>('');
+  const [tempSelectedType, setTempSelectedType] = useState<QuestionType | ''>(
+    '',
+  );
 
   const questions = useGeneralMemoirFormStore(
     state => state.formData.questions,
@@ -47,7 +48,7 @@ export default function QnA() {
 
   const handleQuestionChange = (
     index: number,
-    field: 'type' | 'content' | 'answer',
+    field: 'questionType' | 'content' | 'answer',
     value: string,
   ) => {
     const newQuestions = questions.map((q, i) =>
@@ -58,8 +59,8 @@ export default function QnA() {
 
   const handleAddQuestion = () => {
     const newQuestion: QuestionItem = {
-      id: crypto.randomUUID(),
-      type: '',
+      order: crypto.randomUUID(),
+      questionType: '',
       content: '',
       answer: '',
     };
@@ -67,19 +68,19 @@ export default function QnA() {
   };
 
   const handleOpenDrawer = (index: number) => {
-    setTempSelectedType(questions[index].type);
+    setTempSelectedType(questions[index].questionType);
     setActiveDrawerIndex(index);
   };
 
-  const handleRemoveQuestion = (id: string) => {
+  const handleRemoveQuestion = (order: string) => {
     if (questions.length <= 1) return;
-    const filteredQuestions = questions.filter(q => q.id !== id);
+    const filteredQuestions = questions.filter(q => q.order !== order);
     updateFormData('questions', filteredQuestions);
   };
 
   const handleSave = () => {
     if (activeDrawerIndex !== null) {
-      handleQuestionChange(activeDrawerIndex, 'type', tempSelectedType);
+      handleQuestionChange(activeDrawerIndex, 'questionType', tempSelectedType);
     }
     setActiveDrawerIndex(null);
   };
@@ -89,16 +90,16 @@ export default function QnA() {
       <Title title="질문과 답변" />
       <div className="space-y-8">
         {questions.map((question, index) => (
-          <div key={question.id} className="flex flex-col gap-2">
+          <div key={question.order} className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <Label label={`질문 ${index + 1}`} />
               {questions.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => handleRemoveQuestion(question.id)}
+                  onClick={() => handleRemoveQuestion(question.order)}
                   className="cursor-pointer"
                 >
-                  <ClosedIcon className="text-foundation-primary h-5 w-5" />
+                  <span className="text-primary-btn typo-subhead-02">삭제</span>
                 </button>
               )}
             </div>
@@ -106,7 +107,13 @@ export default function QnA() {
             <div className="flex flex-1 flex-col gap-2">
               <SelectPicker
                 placeholder="질문 선택"
-                value={question.type}
+                value={
+                  question.questionType
+                    ? QUESTION_TYPE_LABELS[
+                        question.questionType as QuestionType
+                      ]
+                    : ''
+                }
                 onClick={() => handleOpenDrawer(index)}
               />
               <Input
@@ -159,11 +166,9 @@ export default function QnA() {
               key={option.id}
               item={{
                 ...option,
-                checked: tempSelectedType === option.label,
+                checked: tempSelectedType === option.id,
               }}
-              onClick={() => {
-                setTempSelectedType(option.label);
-              }}
+              onClick={() => setTempSelectedType(option.id as QuestionType)}
             />
           ))}
         </BottomDrawerContent>
