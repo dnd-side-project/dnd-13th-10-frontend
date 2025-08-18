@@ -13,56 +13,72 @@ import {
   BottomDrawerHandle,
   BottomDrawerHeader,
   BottomDrawerItem,
-  type DrawerItem,
 } from '@/components/ui/Drawer';
+import { Button } from '@/components/ui/Button';
+import { INTERVIEW_STATUS } from '@/constants/code';
+import { INTERVIEW_STATUS_LABELS } from '@/constants/labels';
+import { createOptionsArray } from '@/utils/options';
+import type { InterviewStatus } from '@/types/memoirTypes';
 
 import { useMemoirFormStore } from '../store/memoirFormStore';
-import { Button } from '@/components/ui/Button';
 
-const RESULT_OPTIONS: DrawerItem[] = [
-  { id: 'pass', label: '합격' },
-  { id: 'fail', label: '불합격' },
-  { id: 'pending', label: '결과 대기중' },
-];
+const INTERVIEW_STATUS_OPTIONS = createOptionsArray(
+  INTERVIEW_STATUS,
+  INTERVIEW_STATUS_LABELS,
+);
 
 const VISIBILITY_OPTIONS = [
-  { text: '비공개', id: 'private' },
-  { text: '공개', id: 'public' },
+  { text: '비공개', id: 'false' },
+  { text: '공개', id: 'true' },
 ];
 
 export default function Step4Component() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [tempResult, setTempResult] = useState('');
+  const [tempInterviewStatus, setTempInterviewStatus] = useState<
+    InterviewStatus | ''
+  >('');
 
   const data = useMemoirFormStore(state => state.formData.step4);
   const updateStepData = useMemoirFormStore(state => state.updateStepData);
 
-  const handleFieldChange = (field: keyof typeof data, value: string) => {
-    updateStepData('step4', { ...data, [field]: value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateStepData('step4', { ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleVisibilityChange = (value: string) => {
+    if (value) {
+      updateStepData('step4', { ...data, isPublic: value === 'true' });
+    }
   };
 
   const handleOpenDrawer = () => {
-    setTempResult(data.result);
+    setTempInterviewStatus(data.interviewStatus);
     setIsDrawerOpen(true);
   };
 
   const handleSave = () => {
-    updateStepData('step4', { ...data, result: tempResult });
-    setIsDrawerOpen(false);
+    if (tempInterviewStatus) {
+      updateStepData('step4', {
+        ...data,
+        interviewStatus: tempInterviewStatus,
+      });
+      setIsDrawerOpen(false);
+    }
   };
 
   return (
     <>
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <Label label="자유기재" htmlFor="notes" />
+          <Label label="자유기재" htmlFor="freeNote" />
           <Input
-            id="notes"
+            id="freeNote"
+            name="freeNote"
             placeholder="면접 후기를 자유롭게 적어주세요."
             showCharCount={true}
             maxLength={500}
-            value={data.notes}
-            onChange={e => handleFieldChange('notes', e.target.value)}
+            value={data.freeNote}
+            onChange={handleInputChange}
           />
         </div>
 
@@ -70,7 +86,7 @@ export default function Step4Component() {
           <Label label="면접 결과" />
           <SelectPicker
             placeholder="결과 선택"
-            value={data.result}
+            value={INTERVIEW_STATUS_LABELS[data.interviewStatus] || ''}
             onClick={handleOpenDrawer}
           />
         </div>
@@ -79,10 +95,8 @@ export default function Step4Component() {
           <Label label="회고 공개여부" />
           <ToggleGroup
             options={VISIBILITY_OPTIONS}
-            selectedValue={data.visibility}
-            onSelectionChange={value =>
-              value && handleFieldChange('visibility', value)
-            }
+            selectedValue={String(data.isPublic)}
+            onSelectionChange={handleVisibilityChange}
           />
         </div>
       </div>
@@ -94,19 +108,25 @@ export default function Step4Component() {
           onClose={() => setIsDrawerOpen(false)}
         />
         <BottomDrawerContent>
-          {RESULT_OPTIONS.map(option => (
+          {INTERVIEW_STATUS_OPTIONS.map(option => (
             <BottomDrawerItem
               key={option.id}
               item={{
                 ...option,
-                checked: tempResult === option.label,
+                checked: tempInterviewStatus === option.id,
               }}
-              onClick={() => setTempResult(option.label)}
+              onClick={() =>
+                setTempInterviewStatus(option.id as InterviewStatus)
+              }
             />
           ))}
         </BottomDrawerContent>
         <BottomDrawerFooter>
-          <Button size="large" onClick={handleSave} disabled={!tempResult}>
+          <Button
+            size="large"
+            onClick={handleSave}
+            disabled={!tempInterviewStatus}
+          >
             저장
           </Button>
         </BottomDrawerFooter>

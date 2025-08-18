@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import PlusIcon from '@/assets/icon/plus_icon.svg';
-import ClosedIcon from '@/assets/icon/closed_icon.svg';
 import { Input } from '@/components/ui/Input';
 import { SelectPicker } from '@/components/ui/picker/SelectPicker';
 import { Label } from '@/components/ui/Label';
@@ -14,35 +13,37 @@ import {
   BottomDrawerHandle,
   BottomDrawerHeader,
   BottomDrawerItem,
-  type DrawerItem,
 } from '@/components/ui/Drawer';
+import { Button } from '@/components/ui/Button';
+import { QUESTION_TYPE } from '@/constants/code';
+import { QUESTION_TYPE_LABELS } from '@/constants/labels';
+import { createOptionsArray } from '@/utils/options';
+import type { QuestionType } from '@/types/memoirTypes';
 
 import {
   type QuestionItem,
   useMemoirFormStore,
 } from '../store/memoirFormStore';
-import { Button } from '@/components/ui/Button';
 
-const QUESTION_TYPE_OPTIONS: DrawerItem[] = [
-  { id: 'personality', label: '인성질문' },
-  { id: 'job', label: '직무질문' },
-  { id: 'experience', label: '경험질문' },
-  { id: 'company', label: '회사질문' },
-  { id: 'follow-up', label: '꼬리질문' },
-];
+const QUESTION_TYPE_OPTIONS = createOptionsArray(
+  QUESTION_TYPE,
+  QUESTION_TYPE_LABELS,
+);
 
 export default function Step3Component() {
   const [activeDrawerIndex, setActiveDrawerIndex] = useState<number | null>(
     null,
   );
-  const [tempSelectedType, setTempSelectedType] = useState<string>('');
+  const [tempSelectedType, setTempSelectedType] = useState<QuestionType | ''>(
+    '',
+  );
 
   const questions = useMemoirFormStore(state => state.formData.step3);
   const updateStepData = useMemoirFormStore(state => state.updateStepData);
 
   const handleQuestionChange = (
     index: number,
-    field: 'type' | 'content',
+    field: 'questionType' | 'content',
     value: string,
   ) => {
     const newQuestions = questions.map((q, i) =>
@@ -53,27 +54,27 @@ export default function Step3Component() {
 
   const handleAddQuestion = () => {
     const newQuestion: QuestionItem = {
-      id: crypto.randomUUID(),
-      type: '',
+      order: crypto.randomUUID(),
+      questionType: '',
       content: '',
     };
     updateStepData('step3', [...questions, newQuestion]);
   };
 
   const handleOpenDrawer = (index: number) => {
-    setTempSelectedType(questions[index].type);
+    setTempSelectedType(questions[index].questionType);
     setActiveDrawerIndex(index);
   };
 
-  const handleRemoveQuestion = (id: string) => {
+  const handleRemoveQuestion = (order: string) => {
     if (questions.length <= 1) return;
-    const filteredQuestions = questions.filter(q => q.id !== id);
+    const filteredQuestions = questions.filter(q => q.order !== order);
     updateStepData('step3', filteredQuestions);
   };
 
   const handleSave = () => {
     if (activeDrawerIndex !== null) {
-      handleQuestionChange(activeDrawerIndex, 'type', tempSelectedType);
+      handleQuestionChange(activeDrawerIndex, 'questionType', tempSelectedType);
     }
     setActiveDrawerIndex(null);
   };
@@ -81,13 +82,31 @@ export default function Step3Component() {
   return (
     <>
       <div className="flex flex-col gap-2">
-        <Label label="면접 질문" />
         {questions.map((question, index) => (
-          <div key={question.id} className="flex items-start gap-2">
+          <div key={question.order} className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <Label label={`질문 ${index + 1}`} />
+              {questions.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => handleRemoveQuestion(question.order)}
+                  className="mt-2.5"
+                >
+                  <span className="text-primary-btn typo-subhead-02">삭제</span>
+                </button>
+              )}
+            </div>
             <div className="flex flex-1 flex-col gap-2">
               <SelectPicker
                 placeholder="질문 선택"
-                value={question.type}
+                value={
+                  question.questionType &&
+                  question.questionType in QUESTION_TYPE_LABELS
+                    ? QUESTION_TYPE_LABELS[
+                        question.questionType as keyof typeof QUESTION_TYPE_LABELS
+                      ]
+                    : ''
+                }
                 onClick={() => handleOpenDrawer(index)}
               />
               <Input
@@ -98,15 +117,6 @@ export default function Step3Component() {
                 }
               />
             </div>
-            {questions.length > 1 && (
-              <button
-                type="button"
-                onClick={() => handleRemoveQuestion(question.id)}
-                className="mt-2.5"
-              >
-                <ClosedIcon className="text-foundation-primary h-5 w-5" />
-              </button>
-            )}
           </div>
         ))}
       </div>
@@ -142,11 +152,9 @@ export default function Step3Component() {
               key={option.id}
               item={{
                 ...option,
-                checked: tempSelectedType === option.label,
+                checked: tempSelectedType === option.id,
               }}
-              onClick={() => {
-                setTempSelectedType(option.label);
-              }}
+              onClick={() => setTempSelectedType(option.id as QuestionType)}
             />
           ))}
         </BottomDrawerContent>
