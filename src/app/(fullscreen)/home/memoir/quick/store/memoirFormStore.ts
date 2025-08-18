@@ -1,30 +1,39 @@
 import { create } from 'zustand';
 
 import type { TimeValue } from '@/components/ui/picker/TimePicker';
+import type {
+  MemoirType,
+  InterviewFormat,
+  InterviewMood,
+  InterviewStatus,
+  Position,
+  QuestionType,
+  SatisfactionNote,
+} from '@/types/memoirTypes';
 
 export interface QuestionItem {
-  id: string;
-  type: string;
+  order: string;
+  questionType: QuestionType | '';
   content: string;
 }
 
 interface Step1Data {
   companyName: string;
-  position: string;
+  position: Position;
   interviewDate: Date | null;
   interviewTime: TimeValue | null;
-  interviewerCount: string;
+  interviewFormat: InterviewFormat;
 }
 
 interface Step2Data {
-  interviewMood: string;
-  satisfaction: string;
+  interviewMood: InterviewMood;
+  satisfactionNote: SatisfactionNote;
 }
 
 interface Step4Data {
-  notes: string;
-  result: string;
-  visibility: 'private' | 'public';
+  freeNote: string;
+  interviewStatus: InterviewStatus;
+  isPublic: boolean;
 }
 
 export interface MemoirFormData {
@@ -44,22 +53,29 @@ interface MemoirFormState {
 
 export const useMemoirFormStore = create<MemoirFormState>(set => ({
   formData: {
+    type: '' as MemoirType | '',
     step1: {
       companyName: '',
-      position: '',
+      position: '' as Position,
       interviewDate: null,
       interviewTime: null,
-      interviewerCount: '',
+      interviewFormat: '' as InterviewFormat,
     },
     step2: {
-      interviewMood: '',
-      satisfaction: '',
+      interviewMood: '' as InterviewMood,
+      satisfactionNote: '' as SatisfactionNote,
     },
-    step3: [{ id: crypto.randomUUID(), type: '', content: '' }],
+    step3: [
+      {
+        order: crypto.randomUUID(),
+        questionType: '' as QuestionType,
+        content: '',
+      },
+    ],
     step4: {
-      notes: '',
-      result: '',
-      visibility: 'private',
+      freeNote: '',
+      interviewStatus: '' as InterviewStatus,
+      isPublic: false,
     },
   },
   updateStepData: (stepKey, data) =>

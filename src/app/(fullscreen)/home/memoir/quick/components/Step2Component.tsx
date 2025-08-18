@@ -12,37 +12,42 @@ import {
   BottomDrawerHandle,
   BottomDrawerHeader,
   BottomDrawerItem,
-  type DrawerItem,
 } from '@/components/ui/Drawer';
-import { useMemoirFormStore } from '../store/memoirFormStore';
 import { Button } from '@/components/ui/Button';
+import { INTERVIEW_MOOD, SATISFACTION_NOTE } from '@/constants/code';
+import {
+  INTERVIEW_MOOD_LABELS,
+  SATISFACTION_NOTE_LABELS,
+} from '@/constants/labels';
+import { createOptionsArray, createToggleOptions } from '@/utils/options';
+import type { InterviewMood, SatisfactionNote } from '@/types/memoirTypes';
 
-const INTERVIEW_MOOD_OPTIONS: DrawerItem[] = [
-  { id: 'pressuring', label: '압박되는' },
-  { id: 'comfortable', label: '편안한' },
-  { id: 'quiet', label: '조용한' },
-  { id: 'sharp', label: '예리한' },
-  { id: 'friendly', label: '친근한' },
-];
+import { useMemoirFormStore } from '../store/memoirFormStore';
 
-const SATISFACTION_LEVELS = [
-  { text: '매우 불만족', id: 'very_dissatisfied' },
-  { text: '불만족', id: 'dissatisfied' },
-  { text: '보통', id: 'neutral' },
-  { text: '만족', id: 'satisfied' },
-  { text: '매우 만족', id: 'very_satisfied' },
-];
+const INTERVIEW_MOOD_OPTIONS = createOptionsArray(
+  INTERVIEW_MOOD,
+  INTERVIEW_MOOD_LABELS,
+);
+const SATISFACTION_LEVELS_OPTIONS = createToggleOptions(
+  SATISFACTION_NOTE,
+  SATISFACTION_NOTE_LABELS,
+);
 
 export default function Step2Component() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [tempInterviewMood, setTempInterviewMood] = useState('');
+  const [tempInterviewMood, setTempInterviewMood] = useState<
+    InterviewMood | ''
+  >('');
 
   const data = useMemoirFormStore(state => state.formData.step2);
   const updateStepData = useMemoirFormStore(state => state.updateStepData);
 
   const handleSatisfactionChange = (value: string) => {
     if (value) {
-      updateStepData('step2', { ...data, satisfaction: value });
+      updateStepData('step2', {
+        ...data,
+        satisfactionNote: value as SatisfactionNote,
+      });
     }
   };
 
@@ -52,8 +57,13 @@ export default function Step2Component() {
   };
 
   const handleSave = () => {
-    updateStepData('step2', { ...data, interviewMood: tempInterviewMood });
-    setIsDrawerOpen(false);
+    if (tempInterviewMood) {
+      updateStepData('step2', {
+        ...data,
+        interviewMood: tempInterviewMood as InterviewMood,
+      });
+      setIsDrawerOpen(false);
+    }
   };
 
   return (
@@ -63,7 +73,7 @@ export default function Step2Component() {
           <Label label="면접 분위기" />
           <SelectPicker
             placeholder="면접 분위기"
-            value={data.interviewMood}
+            value={INTERVIEW_MOOD_LABELS[data.interviewMood] || ''}
             onClick={handleOpenDrawer}
           />
         </div>
@@ -71,9 +81,9 @@ export default function Step2Component() {
         <div className="flex flex-col gap-2">
           <Label label="면접 만족도" />
           <ToggleGroup
-            options={SATISFACTION_LEVELS}
+            options={SATISFACTION_LEVELS_OPTIONS}
             className="flex-wrap"
-            selectedValue={data.satisfaction}
+            selectedValue={data.satisfactionNote}
             onSelectionChange={handleSatisfactionChange}
           />
         </div>
@@ -91,9 +101,9 @@ export default function Step2Component() {
               key={option.id}
               item={{
                 ...option,
-                checked: tempInterviewMood === option.label,
+                checked: tempInterviewMood === option.id,
               }}
-              onClick={() => setTempInterviewMood(option.label)}
+              onClick={() => setTempInterviewMood(option.id as InterviewMood)}
             />
           ))}
         </BottomDrawerContent>
