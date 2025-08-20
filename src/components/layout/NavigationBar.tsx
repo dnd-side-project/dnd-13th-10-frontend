@@ -12,7 +12,11 @@ import UserIcon from '@/assets/navigation/user_icon.svg';
 
 const navItems = [
   { label: PATH.HOME.label, href: PATH.HOME.path, icon: HomeIcon },
-  { label: PATH.CALENDAR.label, href: PATH.CALENDAR.path, icon: CalendarIcon },
+  {
+    label: PATH.SCHEDULE.HOME.label,
+    href: PATH.SCHEDULE.HOME.path,
+    icon: CalendarIcon,
+  },
   {
     label: PATH.COMMUNITY.label,
     href: PATH.COMMUNITY.path,
