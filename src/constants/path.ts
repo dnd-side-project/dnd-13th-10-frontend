@@ -1,6 +1,5 @@
 export const PATH = {
   HOME: { path: '/home', label: '홈' },
-  CALENDAR: { path: '/calendar', label: '일정' },
   COMMUNITY: { path: '/community', label: '커뮤니티' },
   MY: { path: '/my-page', label: 'MY' },
   ALARM: { path: '/home/alarms', label: '알림' },
@@ -30,5 +29,10 @@ export const PATH = {
     LIKE: { path: '/my-page/likes', label: '내가 좋아요한 글' },
     COMMENTS: { path: '/my-page/comments', label: '내가 댓글 남긴 글' },
     SCRAP: { path: '/my-page/scrap', label: '내가 스크랩한 글' },
+  },
+
+  SCHEDULE: {
+    HOME: { path: '/schedule', label: '일정' },
+    NEW: { path: '/schedule/new', label: '일정 등록' },
   },
 } as const;

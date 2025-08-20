@@ -1,5 +1,9 @@
 import { Metadata } from 'next';
 
+import { Header } from '@/components/ui/Header';
+
+import ScheduleView from './components/ScheduleView';
+
 export const metadata: Metadata = {
   title: '일정 관리',
   description: '면접 일정을 확인하고, 새로운 일정을 추가해보세요.',
@@ -7,8 +11,9 @@ export const metadata: Metadata = {
 
 export default function CalendarPage() {
   return (
-    <>
-      <h1>Calendar Page</h1>
-    </>
+    <main className="flex h-screen flex-col">
+      <Header title="일정" showBackButton={false} />
+      <ScheduleView />
+    </main>
   );
 }
