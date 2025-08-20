@@ -22,4 +22,13 @@ export const PATH = {
     QUICK: { path: '/home/memoir/quick', label: '퀵회고' },
     GENERAL: { path: '/home/memoir/general', label: '일반회고' },
   },
+
+  MY_PAGE: {
+    PROFILE_MODIFY: { path: '/my-page/profile-modify', label: '프로필 수정' },
+    MEMOIRS: { path: '/my-page/memoirs', label: '나의 회고' },
+    TEMP_SAVED: { path: '/my-page/temp-saved', label: '임시 저장한 글' },
+    LIKE: { path: '/my-page/likes', label: '내가 좋아요한 글' },
+    COMMENTS: { path: '/my-page/comments', label: '내가 댓글 남긴 글' },
+    SCRAP: { path: '/my-page/scrap', label: '내가 스크랩한 글' },
+  },
 } as const;

@@ -78,11 +78,10 @@ export interface UpdateQuickMemoirsRequest {
 
 export interface Memoir {
   id: number;
-  type: MemoirType;
-  interviewStatus: InterviewStatus;
-  interviewMethod: InterviewMethod;
+  type: MemoirType | string;
+  interviewStatus: InterviewStatus | string;
   companyName: string;
-  position: Position;
+  position: Position | string;
   createdAt: string;
   firstQuestion: string;
 }
