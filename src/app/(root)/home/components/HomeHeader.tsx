@@ -11,8 +11,8 @@ export default function HomeHeader() {
       <div className="flex items-center justify-between">
         <Link href={PATH.HOME.path}>
           <div className="flex h-15 cursor-pointer items-center gap-2">
-            <Logo />
-            <SeedIcon />
+            <Logo width={17} height={26} />
+            <SeedIcon width={69} height={15} />
           </div>
         </Link>
         <Link href={PATH.ALARM.path}>
