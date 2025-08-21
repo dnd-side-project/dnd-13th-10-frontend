@@ -15,6 +15,25 @@ export const formatDate = (date: Date | null): string => {
   }).format(date);
 };
 
+/**
+ * ISO 문자열을 TimeValue로 변환합니다.
+ * @param isoString ISO 문자열
+ * @returns TimeValue 객체 또는 undefined
+ */
+export const convertISOToTimeValue = (
+  isoString?: string,
+): TimeValue | undefined => {
+  if (!isoString) return undefined;
+  const date = new Date(isoString);
+  let hour = date.getHours();
+  const minute = date.getMinutes();
+  const meridiem = hour >= 12 ? '오후' : '오전';
+  hour %= 12;
+  hour = hour || 12;
+
+  return { meridiem, hour, minute };
+};
+
 export const formatDateToYYMMDDHHMM = (date: Date | string): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
 

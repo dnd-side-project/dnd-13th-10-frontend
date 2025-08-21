@@ -30,11 +30,9 @@ export const SATISFACTION_NOTE = {
 
 // 난이도
 export const INTERVIEW_LEVEL = {
-  VERY_EASY: '10',
   EASY: '20',
   NORMAL: '30',
   HARD: '40',
-  VERY_HARD: '50',
 } as const;
 
 // 면접 방식
@@ -55,7 +53,6 @@ export const INTERVIEW_STEP = {
   FIRST_INTERVIEW: '10',
   SECOND_INTERVIEW: '20',
   FINAL_INTERVIEW: '30',
-  PHONE_INTERVIEW: '40',
 } as const;
 
 // 직무
@@ -84,34 +81,3 @@ export const QUESTION_TYPE = {
   COMPANY: '40',
   FOLLOW_UP: '50',
 } as const;
-// export const QUESTION_TYPE = {
-//   ANALYTICAL_THINKING: '10',
-//   FORESIGHT: '11',
-//   ORGANIZATION: '12',
-//   NEGOTIATION: '20',
-//   PRESENTATION: '21',
-//   TECHNICAL_EXPERTISE: '30',
-//   LEADERSHIP: '31',
-//   COACHING: '32',
-//   BUSINESS_ACUMEN: '40',
-//   DESIGN_SKILL: '41',
-//   BUDGETING: '42',
-//   PROJECT_MANAGEMENT: '43',
-//   WORK_ORGANIZATION: '44',
-//   PROBLEM_SOLVING: '50',
-//   DECISIVENESS: '51',
-//   RESULT_ORIENTATION: '52',
-//   DECISION_MAKING: '53',
-//   COMPUTER_LITERACY: '60',
-//   COMMUNICATION: '61',
-//   TEAMWORK: '62',
-//   ADAPTABILITY: '63',
-//   CREATIVITY: '64',
-//   CODING_SKILL: '70',
-//   SYSTEM_DESIGN: '71',
-//   ALGORITHM_PROBLEM_SOLVING: '72',
-//   DEBUGGING: '73',
-//   SOFTWARE_ARCHITECTURE: '74',
-//   VERSION_CONTROL: '75',
-//   SECURITY_AWARENESS: '76',
-// } as const;
