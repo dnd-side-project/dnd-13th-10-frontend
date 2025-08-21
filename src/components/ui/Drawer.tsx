@@ -92,7 +92,9 @@ function BottomDrawerContent({
   className?: string;
 }) {
   return (
-    <div className={cn('min-h-0 flex-1 overflow-y-auto', className)}>
+    <div
+      className={cn('no-scrollbar min-h-0 flex-1 overflow-y-auto', className)}
+    >
       {children}
     </div>
   );
