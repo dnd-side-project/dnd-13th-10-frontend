@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: '면접 일정을 확인하고, 새로운 일정을 추가해보세요.',
 };
 
-export default function CalendarPage() {
+export default function SchedulePage() {
   return (
     <main className="flex h-screen flex-col">
       <Header title="일정" showBackButton={false} />
