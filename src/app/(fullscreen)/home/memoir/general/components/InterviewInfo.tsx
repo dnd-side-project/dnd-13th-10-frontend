@@ -8,8 +8,7 @@ import { ToggleGroup } from '@/components/ui/ToggleGroup';
 import { SelectPicker } from '@/components/ui/picker/SelectPicker';
 import { TimePicker, TimeValue } from '@/components/ui/picker/TimePicker';
 import { DatePicker } from '@/components/ui/picker/DatePicker';
-import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
-import { formatDate, formatTime } from '@/utils/date';
+import { Button } from '@/components/ui/Button';
 import {
   BottomDrawer,
   BottomDrawerContent,
@@ -18,22 +17,25 @@ import {
   BottomDrawerHeader,
   BottomDrawerItem,
 } from '@/components/ui/Drawer';
-import { Button } from '@/components/ui/Button';
 import {
   INTERVIEW_FORMAT,
   INTERVIEW_METHOD,
   INTERVIEW_MOOD,
   INTERVIEW_STEP,
+  POSITION,
 } from '@/constants/code';
 import {
   INTERVIEW_FORMAT_LABELS,
   INTERVIEW_METHOD_LABELS,
   INTERVIEW_MOOD_LABELS,
   INTERVIEW_STEP_LABELS,
+  POSITION_LABELS,
 } from '@/constants/labels';
+import { formatDate, formatTime } from '@/utils/date';
 import { createOptionsArray, createToggleOptions } from '@/utils/options';
 
 import Title from './Title';
+import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
 
 function FormField({
   label,
@@ -73,10 +75,12 @@ const INTERVIEW_MOOD_OPTIONS = createOptionsArray(
   INTERVIEW_MOOD,
   INTERVIEW_MOOD_LABELS,
 );
+const POSITION_OPTIONS = createOptionsArray(POSITION, POSITION_LABELS);
 
 type DrawerType = keyof typeof DRAWER_CONFIG | 'date' | 'time' | null;
 
 const DRAWER_CONFIG = {
+  position: { title: '직무 선택', options: POSITION_OPTIONS },
   interviewFormat: { title: '면접관 수', options: INTERVIEWER_OPTIONS },
   interviewMethod: { title: '면접 방식', options: INTERVIEW_METHOD_OPTIONS },
   interviewMood: { title: '면접 분위기', options: INTERVIEW_MOOD_OPTIONS },
@@ -240,13 +244,10 @@ export default function InterviewInfo() {
         </FormField>
 
         <FormField label="직무" htmlFor="position">
-          <Input
-            id="position"
-            name="position"
-            placeholder="직무선택"
-            value={data.position}
-            onChange={handleInputChange}
-            onClear={data.position ? () => clearInput('position') : undefined}
+          <SelectPicker
+            placeholder="직무 선택"
+            value={POSITION_LABELS[data.position] || ''}
+            onClick={() => handleOpenDrawer('position', data.position)}
           />
         </FormField>
 
