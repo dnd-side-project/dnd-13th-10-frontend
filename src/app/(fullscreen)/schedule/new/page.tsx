@@ -1,9 +1,5 @@
-import { Header } from '@/components/ui/Header';
+import ScheduleView from './components/ScheduleView';
 
 export default function NewSchedulePage() {
-  return (
-    <>
-      <Header title="일정" />
-    </>
-  );
+  return <ScheduleView />;
 }
