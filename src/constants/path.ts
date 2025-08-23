@@ -20,6 +20,7 @@ export const PATH = {
     CREATE: { path: '/home/memoir/new', label: '회고 작성' },
     QUICK: { path: '/home/memoir/quick', label: '퀵회고' },
     GENERAL: { path: '/home/memoir/general', label: '일반회고' },
+    DETAIL: { path: '/home/memoir/[id]', label: '회고 상세' },
   },
 
   MY_PAGE: {
