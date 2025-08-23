@@ -33,6 +33,6 @@ export const PATH = {
 
   SCHEDULE: {
     HOME: { path: '/schedule', label: '일정' },
-    NEW: { path: '/schedule/new', label: '일정 등록' },
+    NEW: { path: '/schedule/new', label: '면접 일정 등록' },
   },
 } as const;
