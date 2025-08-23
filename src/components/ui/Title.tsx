@@ -5,7 +5,7 @@ interface Props {
   className?: string;
 }
 
-export default function Title({ title, className }: Props) {
+export function Title({ title, className }: Props) {
   return (
     <h2
       className={cn('text-foundation-strong typo-display-01 mb-8', className)}

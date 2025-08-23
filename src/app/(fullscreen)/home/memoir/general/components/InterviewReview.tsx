@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/Label';
 import { ToggleGroup } from '@/components/ui/ToggleGroup';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Title } from '@/components/ui/Title';
 import { SelectPicker } from '@/components/ui/picker/SelectPicker';
 import {
   BottomDrawer,
@@ -28,7 +29,6 @@ import {
 import { createOptionsArray, createToggleOptions } from '@/utils/options';
 import type { InterviewStatus } from '@/types/memoirTypes';
 
-import Title from './Title';
 import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
 
 const INTERVIEW_STATUS_OPTIONS = createOptionsArray(
