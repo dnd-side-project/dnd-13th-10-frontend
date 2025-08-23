@@ -41,12 +41,12 @@ function Input({
           )}
           {...props}
         />
-        {onClear && value && icons && (
+        {onClear && icons && (
           <button
             type="button"
             onClick={onClear}
             aria-label="Clear input"
-            className="shrink-0 cursor-pointer"
+            className={cn('shrink-0 cursor-pointer', !value && 'invisible')}
           >
             {icons}
           </button>
