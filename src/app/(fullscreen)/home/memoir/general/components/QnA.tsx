@@ -6,6 +6,7 @@ import PlusIcon from '@/assets/icon/plus_icon.svg';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
+import { Title } from '@/components/ui/Title';
 import { SelectPicker } from '@/components/ui/picker/SelectPicker';
 import {
   BottomDrawer,
@@ -20,7 +21,6 @@ import { QUESTION_TYPE_LABELS } from '@/constants/labels';
 import { createOptionsArray } from '@/utils/options';
 import type { QuestionType } from '@/types/memoirTypes';
 
-import Title from './Title';
 import {
   QuestionItem,
   useGeneralMemoirFormStore,

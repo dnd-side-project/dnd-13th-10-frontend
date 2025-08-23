@@ -2,8 +2,8 @@
 
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { Title } from '@/components/ui/Title';
 
-import Title from './Title';
 import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
 
 export default function ReferenceLink() {
