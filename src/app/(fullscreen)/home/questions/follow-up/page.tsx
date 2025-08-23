@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
-import { Header } from '@/components/ui/Header';
+import QuestionContainer from '../components/QuestionContainer';
+import { mockQuestionCategory } from '../mocks/mockQuestionCategory';
 
 export const metadata: Metadata = {
   title: '꼬리질문',
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 export default function FollowUpQuestionsPage() {
   return (
     <>
-      <Header title="꼬리질문" />
+      <QuestionContainer
+        initialQuestions={mockQuestionCategory}
+        title="꼬리질문"
+      />
     </>
   );
 }
