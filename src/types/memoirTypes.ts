@@ -105,27 +105,37 @@ export interface Question {
   displayOrder: number;
 }
 
+export interface Attachment {
+  id: number;
+  originalName?: string;
+  savedFileName?: string;
+  filePath: string;
+}
+
 export interface MemoirData {
   id: number;
   user: User;
-  attachments: string | null;
+  scheduleId?: number;
+  attachments?: Attachment[] | null;
   questions: Question[];
   type: MemoirType | string;
   interviewFormat: InterviewFormat | string;
   interviewMood: InterviewMood | string;
-  satisfactionNote: SatisfactionNote | string;
+  satisfactionNote?: SatisfactionNote | string;
   interviewLevel: InterviewLevel | string | null;
   interviewStatus: InterviewStatus | string;
-  interviewMethod: InterviewMethod | string;
+  interviewMethod?: InterviewMethod | string;
   freeNote: string;
-  url: string;
+  url?: string;
   companyName: string;
   position: Position | string;
-  interviewStep: InterviewStep | string;
+  interviewStep?: InterviewStep | string;
   interviewDateTime: string;
   likeCount: number | null;
   viewCount: number | null;
   createdAt: string;
+  isTmp: boolean;
+  isPublic: boolean;
 }
 
 // 회고 상세 조회
