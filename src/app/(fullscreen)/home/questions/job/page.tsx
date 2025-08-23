@@ -1,6 +1,10 @@
 import { Metadata } from 'next';
 
 import { Header } from '@/components/ui/Header';
+import SearchIcon from '@/assets/icon/search_icon.svg';
+
+import QuestionList from '../components/QuestionList';
+import { mockQuestionCategory } from '../mocks/mockQuestionCategory';
 
 export const metadata: Metadata = {
   title: '직무질문',
@@ -10,7 +14,10 @@ export const metadata: Metadata = {
 export default function JobQuestionsPage() {
   return (
     <>
-      <Header title="직무질문" />
+      <Header title="직무질문" rightContent={<SearchIcon />} />
+      <section className="px-5">
+        <QuestionList questions={mockQuestionCategory} />
+      </section>
     </>
   );
 }
