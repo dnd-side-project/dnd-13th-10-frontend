@@ -24,7 +24,9 @@ export default function QuestionCategory() {
           href={category.path}
           className="flex flex-col items-center gap-0.5"
         >
-          {category.icon}
+          <div className="bg-foundation-box rounded-full p-3">
+            {category.icon}
+          </div>
           <span className="typo-body-long-01 text-white">{category.label}</span>
         </Link>
       ))}
