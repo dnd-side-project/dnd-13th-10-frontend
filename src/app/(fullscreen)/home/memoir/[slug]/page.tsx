@@ -1,8 +1,15 @@
+import { Metadata } from 'next';
+
 import { getMemoirDetail } from '@/apis/memoir/memoirDetailApi';
 import { Header } from '@/components/ui/Header';
 
 import MemoirDetailContent from './components/MemoirDetailContent';
 import MemoirDetailAction from './components/MemoirDetailAction';
+
+export const metadata: Metadata = {
+  title: '면접 회고 상세',
+  description: '면접에 대한 상세한 회고를 확인해보세요.',
+};
 
 interface Params {
   params: {
