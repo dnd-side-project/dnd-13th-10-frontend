@@ -1,6 +1,6 @@
 import { InterviewStep, MemoirType, Position } from './memoirTypes';
 
-// 일정 단건
+// 일정 아이템
 export interface Schedule {
   id: number;
   companyName: string;
@@ -26,4 +26,21 @@ export interface ScheduleCreate {
   interviewDateTime: string;
   location: string;
   interviewStep: InterviewStep | string;
+}
+
+// 일정 단건 조회 데이터
+export interface ScheduleDetailData {
+  id: number;
+  companyName: string;
+  position: Position | string;
+  interviewDate: string;
+  interviewStep: InterviewStep | string;
+  location: string;
+}
+
+// 일정 단건 조회 응답 (상세)
+export interface ScheduleDetailResponse {
+  code: string;
+  message: string;
+  data: ScheduleDetailData;
 }
