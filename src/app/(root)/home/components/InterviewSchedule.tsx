@@ -28,7 +28,8 @@ export default function InterviewSchedule() {
         new Date(b.interviewDate).getTime(),
     );
 
-  const handleNext = () => {
+  const handleNext = (e: React.MouseEvent) => {
+    e.preventDefault();
     swiper?.slideNext();
   };
 
