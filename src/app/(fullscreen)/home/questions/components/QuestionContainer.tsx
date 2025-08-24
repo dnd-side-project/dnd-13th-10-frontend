@@ -9,6 +9,7 @@ import type { Question } from '@/types/memoirTypes';
 
 import QuestionList from './QuestionList';
 import RecentSearch from './RecentSearch';
+import { EmptyState } from '@/components/ui/Empty';
 
 interface Props {
   initialQuestions: Question[];
@@ -22,7 +23,7 @@ export default function QuestionContainer({ initialQuestions, title }: Props) {
 
   const filteredQuestions = useMemo(() => {
     if (!submittedTerm.trim()) {
-      return initialQuestions;
+      return [];
     }
     return initialQuestions.filter(
       question =>
@@ -54,7 +55,7 @@ export default function QuestionContainer({ initialQuestions, title }: Props) {
   };
 
   return (
-    <>
+    <div className="flex h-dvh flex-col">
       <Header
         onBackClick={isSearching ? handleCancelSearch : undefined}
         title={
@@ -76,10 +77,16 @@ export default function QuestionContainer({ initialQuestions, title }: Props) {
         onRightClick={isSearching ? handleSubmitSearch : handleStartSearch}
       />
 
-      <section className="px-5">
+      <section className="flex flex-1 flex-col px-5">
         {isSearching ? (
           submittedTerm ? (
-            <QuestionList questions={filteredQuestions} />
+            filteredQuestions.length > 0 ? (
+              <QuestionList questions={filteredQuestions} />
+            ) : (
+              <EmptyState
+                text={`'${submittedTerm}'에 대한 검색 결과가 없어요.`}
+              />
+            )
           ) : (
             <RecentSearch />
           )
@@ -87,6 +94,6 @@ export default function QuestionContainer({ initialQuestions, title }: Props) {
           <QuestionList questions={initialQuestions} />
         )}
       </section>
-    </>
+    </div>
   );
 }

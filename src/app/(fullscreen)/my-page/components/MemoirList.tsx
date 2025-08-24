@@ -12,7 +12,7 @@ interface Props {
 export default function MemoirList({ memoirs, hideBadge, emptyText }: Props) {
   return (
     <>
-      <div className="mt-8 flex flex-1 flex-col gap-3 px-5">
+      <div className="flex flex-1 flex-col gap-3 px-5">
         {memoirs.length > 0 ? (
           memoirs.map(memoir => (
             <MemoirItem key={memoir.id} memoir={memoir} hideBadge={hideBadge} />

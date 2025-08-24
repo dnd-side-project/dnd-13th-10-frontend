@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './fonts.css';
 @import './colors.css';
+@import 'swiper/css';
 
 :root {
   --background: #f5f5f5;

@@ -1,0 +1,123 @@
+import type { HotMemoir } from '@/types/memoirTypes';
+
+export const mockHotMemoirs: HotMemoir[] = [
+  {
+    id: 1,
+    type: 'GENERAL',
+    userName: '김민준',
+    companyName: '네이버',
+    position: '프론트엔드 개발자',
+    firstQuestion: 'React의 가상 DOM(Virtual DOM)에 대해 설명해주세요.',
+    createdAt: '2025-08-22T14:30:00Z',
+    weeklyViewCount: 985,
+    totalViewCount: 2140,
+  },
+  {
+    id: 2,
+    type: 'QUICK',
+    userName: '이서연',
+    companyName: '카카오',
+    position: '프로덕트 매니저 (PM)',
+    firstQuestion:
+      '카카오톡의 새로운 기능 아이디어가 있다면, 우선순위를 어떻게 정하시겠어요?',
+    createdAt: '2025-08-20T11:05:00Z',
+    weeklyViewCount: 850,
+    totalViewCount: 3500,
+  },
+  {
+    id: 3,
+    type: 'QUICK',
+    userName: '박도윤',
+    companyName: '당근',
+    position: '백엔드 개발자',
+    firstQuestion:
+      'RESTful API 설계 시 가장 중요하게 생각하는 원칙은 무엇인가요?',
+    createdAt: '2025-08-23T09:00:00Z',
+    weeklyViewCount: 1230,
+    totalViewCount: 1500,
+  },
+  {
+    id: 4,
+    type: 'GENERAL',
+    userName: '최지우',
+    companyName: '배달의민족',
+    position: 'UX/UI 디자이너',
+    firstQuestion:
+      '기존에 사용하던 앱의 UX를 개선해본 경험이 있다면 구체적으로 말씀해주세요.',
+    createdAt: '2025-08-18T18:20:00Z',
+    weeklyViewCount: 720,
+    totalViewCount: 4800,
+  },
+  {
+    id: 5,
+    type: 'GENERAL',
+    userName: '정하윤',
+    companyName: '토스',
+    position: '데이터 분석가',
+    firstQuestion:
+      'A/B 테스트를 설계하고 결과를 분석하여 프로덕트에 기여한 경험을 공유해주세요.',
+    createdAt: '2025-08-21T15:00:00Z',
+    weeklyViewCount: 680,
+    totalViewCount: 1950,
+  },
+  {
+    id: 6,
+    type: 'QUICK',
+    userName: '강지호',
+    companyName: '쿠팡',
+    position: '백엔드 개발자',
+    firstQuestion:
+      '대용량 트래픽 환경에서 데이터베이스 부하를 줄이기 위한 전략 3가지를 제시해주세요.',
+    createdAt: '2025-08-24T10:15:00Z',
+    weeklyViewCount: 1550,
+    totalViewCount: 1550,
+  },
+  {
+    id: 7,
+    type: 'GENERAL',
+    userName: '윤아인',
+    companyName: '(주)실천',
+    position: '프로덕트 디자이너',
+    firstQuestion:
+      '성공적인 디자인 시스템을 구축하기 위해 가장 중요하다고 생각하는 요소는 무엇인가요?',
+    createdAt: '2025-08-15T20:45:00Z',
+    weeklyViewCount: 540,
+    totalViewCount: 6200,
+  },
+  {
+    id: 8,
+    type: 'QUICK',
+    userName: '임서준',
+    companyName: '오늘의집',
+    position: 'iOS 개발자',
+    firstQuestion:
+      'Swift에서 ARC(Automatic Reference Counting)가 동작하는 방식에 대해 설명해주세요.',
+    createdAt: '2025-08-22T13:10:00Z',
+    weeklyViewCount: 490,
+    totalViewCount: 980,
+  },
+  {
+    id: 9,
+    type: 'GENERAL',
+    userName: '한유나',
+    companyName: '마켓컬리',
+    position: '그로스 마케터',
+    firstQuestion:
+      '신규 고객 유치를 위한 가장 효과적인 마케팅 채널은 무엇이라고 생각하며, 그 이유는 무엇인가요?',
+    createdAt: '2025-08-19T16:55:00Z',
+    weeklyViewCount: 455,
+    totalViewCount: 2300,
+  },
+  {
+    id: 10,
+    type: 'QUICK',
+    userName: '송은우',
+    companyName: '하이퍼커넥트',
+    position: '머신러닝 엔지니어',
+    firstQuestion:
+      '오버피팅(Overfitting)이 발생하는 원인과 이를 해결하기 위한 방법에 대해 아는 대로 설명해주세요.',
+    createdAt: '2025-08-23T19:00:00Z',
+    weeklyViewCount: 990,
+    totalViewCount: 1870,
+  },
+];

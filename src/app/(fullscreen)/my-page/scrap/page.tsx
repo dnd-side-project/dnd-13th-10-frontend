@@ -7,7 +7,9 @@ export default function MyScrapPage() {
   return (
     <main className="flex h-screen flex-col">
       <Header title="내가 스크랩한 글" />
-      <MemoirList memoirs={mockMemoirs} emptyText="스크랩한 글이 없어요." />
+      <div className="mt-8">
+        <MemoirList memoirs={mockMemoirs} emptyText="스크랩한 글이 없어요." />
+      </div>
     </main>
   );
 }

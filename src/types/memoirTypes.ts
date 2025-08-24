@@ -144,3 +144,23 @@ export interface MemoirDetailResponse {
   message: string;
   data: MemoirData;
 }
+
+// 핫 회고
+export interface HotMemoir {
+  id: number;
+  type: MemoirType | string;
+  userName: string;
+  companyName: string;
+  position: Position | string;
+  firstQuestion: string;
+  imageUrl?: string;
+  createdAt: string;
+  weeklyViewCount: number;
+  totalViewCount: number;
+}
+
+export interface HotMemoirsResponse {
+  code: string;
+  message: string;
+  data: HotMemoir[];
+}
