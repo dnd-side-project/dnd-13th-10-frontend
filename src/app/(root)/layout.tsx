@@ -8,7 +8,7 @@ export default function RootGroupLayout({
   return (
     <>
       <main className="pb-nav-total overflow-y-auto">{children}</main>
-      <div className="max-w-maxWidth fixed bottom-0 left-1/2 w-full -translate-x-1/2">
+      <div className="max-w-maxWidth fixed bottom-0 left-1/2 z-10 w-full -translate-x-1/2">
         <NavigationBar />
       </div>
     </>
