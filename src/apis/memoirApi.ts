@@ -90,7 +90,7 @@ export const getMyLikedMemoirs = async ({
 }: {
   cursor?: string | null;
   size?: number;
-}): Promise<ApiResponse<PaginatedMemoirData[]>> => {
+}): Promise<ApiResponse<PaginatedMemoirData>> => {
   const response = await http.get('/api/memoirs/liked', {
     params: {
       cursor,
@@ -115,7 +115,7 @@ export const getMyCommentedMemoirs = async ({
 }: {
   cursor?: string | null;
   size?: number;
-}): Promise<ApiResponse<PaginatedMemoirData[]>> => {
+}): Promise<ApiResponse<PaginatedMemoirData>> => {
   const response = await http.get('/api/memoirs/commented', {
     params: {
       cursor,
@@ -133,7 +133,7 @@ export const getMyBookmarkedMemoirs = async ({
 }: {
   cursor?: string | null;
   size?: number;
-}): Promise<ApiResponse<PaginatedMemoirData[]>> => {
+}): Promise<ApiResponse<PaginatedMemoirData>> => {
   const response = await http.get('/api/memoirs/bookMarked', {
     params: {
       cursor,
