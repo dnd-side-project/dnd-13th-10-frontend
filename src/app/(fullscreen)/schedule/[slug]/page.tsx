@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { getScheduleDetail } from '@/apis/schedule/scheduleDetailApi';
+import { getScheduleDetail } from '@/apis/scheduleApi';
 
 import ScheduleDetailView from './components/ScheduleDetailView';
 

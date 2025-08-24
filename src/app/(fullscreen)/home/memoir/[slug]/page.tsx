@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { getMemoirDetail } from '@/apis/memoir/memoirDetailApi';
+import { getMemoirDetail } from '@/apis/memoirApi';
 import { Header } from '@/components/ui/Header';
 
 import MemoirDetailContent from './components/MemoirDetailContent';
