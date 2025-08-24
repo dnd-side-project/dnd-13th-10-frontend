@@ -6,6 +6,7 @@ import InterviewSchedule from './components/InterviewSchedule';
 import MemoirStats from './components/MemoirStats';
 import HotMemoirList from './components/HotMemoirList';
 import MyMemoirList from './components/MyMemoirList';
+import TodayQuestion from './components/TodayQuestion';
 
 export const metadata: Metadata = {
   title: 'SEED를 통해',
@@ -17,7 +18,8 @@ export default function HomePage() {
   return (
     <div className="px-5">
       <HomeHeader />
-      <div className="flex flex-col gap-8">
+      <div className="mt-[18px] flex flex-col gap-8">
+        <TodayQuestion />
         <QuestionCategory />
         <InterviewSchedule />
         <MemoirStats />

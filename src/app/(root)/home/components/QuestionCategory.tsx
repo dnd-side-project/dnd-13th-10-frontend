@@ -17,7 +17,7 @@ const categoryItems = [
 
 export default function QuestionCategory() {
   return (
-    <div className="mt-[18px] flex w-full items-center justify-between">
+    <div className="flex w-full items-center justify-between">
       {categoryItems.map(category => (
         <Link
           key={category.label}
