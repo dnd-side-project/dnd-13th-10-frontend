@@ -15,7 +15,7 @@ export default function ScheduleView() {
     if (!isFormValid) {
       return;
     }
-    console.log('등록한 일정 데이터:', formData);
+    // console.log('등록한 일정 데이터:', formData);
     // TO-DO: 여기에 API 호출 등 실제 저장 로직을 구현
   };
 
