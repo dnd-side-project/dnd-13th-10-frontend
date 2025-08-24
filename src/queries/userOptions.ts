@@ -1,0 +1,32 @@
+import {
+  mutationOptions,
+  QueryClient,
+  queryOptions,
+} from '@tanstack/react-query';
+
+import * as userApi from '@/apis/userApi';
+
+import { userKeys } from './queryKeys';
+
+export const userQueries = {
+  history: () =>
+    queryOptions({
+      queryKey: userKeys.history(),
+      queryFn: userApi.getUserSearchHistory,
+    }),
+};
+
+export const userMutations = {
+  deleteHistory: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationFn: (id: number) => userApi.deleteUserSearchHistory(id),
+      onSuccess: () =>
+        queryClient.invalidateQueries({ queryKey: userKeys.history() }),
+    }),
+  deleteAllHistory: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationFn: userApi.deleteAllUserSearchHistory,
+      onSuccess: () =>
+        queryClient.invalidateQueries({ queryKey: userKeys.history() }),
+    }),
+};
