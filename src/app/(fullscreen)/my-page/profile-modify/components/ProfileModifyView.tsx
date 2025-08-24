@@ -38,7 +38,7 @@ export default function ProfileModifyView({ initialNickname }: Props) {
   };
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
       <Header
         title="프로필 편집"
         rightContent="완료"

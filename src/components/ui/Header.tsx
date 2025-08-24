@@ -31,7 +31,7 @@ function Header({
   return (
     <header
       className={cn(
-        'border-foundation-divider flex items-center border px-4',
+        'border-foundation-divider flex items-center border-b px-4',
         typeof title === 'string' ? 'py-6' : 'py-3',
       )}
     >

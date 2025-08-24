@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function SchedulePage() {
   return (
-    <main className="flex h-screen flex-col">
+    <main className="flex min-h-screen flex-col">
       <Header title="일정" showBackButton={false} />
       <ScheduleView />
     </main>

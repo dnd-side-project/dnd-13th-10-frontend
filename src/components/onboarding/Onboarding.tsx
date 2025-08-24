@@ -14,7 +14,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
       <section className="flex flex-1 flex-col justify-center px-[30px]">
         <Logo width={25} height={39} />
         <h1 className="typo-display-02 text-foundation-strong mt-6">
@@ -26,7 +26,7 @@ export default function Onboarding() {
         </span>
       </section>
 
-      <footer className="px-5 pb-8">
+      <footer className="mb-8 px-5">
         <Button
           variant="yellow"
           className="flex items-center gap-1 rounded-full"
