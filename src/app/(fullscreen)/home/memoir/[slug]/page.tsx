@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 };
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function MemoirDetailPage({ params }: Params) {
-  const { id } = params;
+  const { id } = await params;
   const response = await getMemoirDetail(id);
   const memoirData = response.data;
 
