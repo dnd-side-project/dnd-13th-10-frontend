@@ -79,8 +79,35 @@ export const calculateRemainDate = (interviewDate: string) => {
   interviewD.setHours(0, 0, 0, 0);
 
   const diffTime = interviewD.getTime() - today.getTime();
+
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;
+};
+
+/**
+ * 주어진 날짜가 오늘로부터 며칠 전인지 계산합니다.
+ * @param dateString - ISO 형식의 날짜 문자열
+ * @returns "오늘" 또는 "N일 전" 형태의 문자열
+ */
+export const calculateDaysAgo = (dateString: string) => {
+  const today = new Date();
+  const createdDate = new Date(dateString);
+
+  // 시간을 제외하고 날짜 기준으로만 계산
+  today.setHours(0, 0, 0, 0);
+  createdDate.setHours(0, 0, 0, 0);
+
+  const diffTime = today.getTime() - createdDate.getTime();
+
+  // 만약 생성된 날짜가 오늘보다 미래라면 0을 반환 (오류 방지)
+  if (diffTime < 0) return '오늘';
+
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    return '오늘';
+  }
+  return `${diffDays}일 전`;
 };
 
 /**

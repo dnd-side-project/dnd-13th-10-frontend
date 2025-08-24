@@ -4,7 +4,7 @@ import HomeHeader from './components/HomeHeader';
 import QuestionCategory from './components/QuestionCategory';
 import InterviewSchedule from './components/InterviewSchedule';
 import MemoirStats from './components/MemoirStats';
-import HotMemoir from './components/HotMemoir';
+import HotMemoirList from './components/HotMemoirList';
 import MyMemoirList from './components/MyMemoirList';
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function HomePage() {
         <InterviewSchedule />
         <MemoirStats />
         <MyMemoirList />
-        <HotMemoir />
+        <HotMemoirList />
       </div>
     </div>
   );
