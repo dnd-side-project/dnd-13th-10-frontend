@@ -1,9 +1,11 @@
+import { Metadata } from 'next';
+
 import HomeHeader from './components/HomeHeader';
 import QuestionCategory from './components/QuestionCategory';
 import InterviewSchedule from './components/InterviewSchedule';
 import MemoirStats from './components/MemoirStats';
 import HotMemoir from './components/HotMemoir';
-import { Metadata } from 'next';
+import MyMemoirList from './components/MyMemoirList';
 
 export const metadata: Metadata = {
   title: 'SEED를 통해',
@@ -19,6 +21,7 @@ export default function HomePage() {
         <QuestionCategory />
         <InterviewSchedule />
         <MemoirStats />
+        <MyMemoirList />
         <HotMemoir />
       </div>
     </div>
