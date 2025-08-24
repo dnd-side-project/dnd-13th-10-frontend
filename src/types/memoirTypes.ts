@@ -25,55 +25,37 @@ export type QuestionType = ValueOf<typeof QUESTION_TYPE>;
 export type SatisfactionNote = ValueOf<typeof SATISFACTION_NOTE>;
 
 export interface QuestionRequest {
-  question: string;
-  order: number;
-  questionType: QuestionType;
-}
-
-export interface UpdateQuestionRequest {
   id?: number;
   questionType: QuestionType | string;
+  title: string;
   content: string;
   order: number;
 }
 
-// 퀵 회고 작성 요청
-export interface CreateQuickMemoirsRequest {
-  type: MemoirType;
-  interviewFormat: InterviewFormat;
-  interviewMood: InterviewMood;
-  satisfactionNote: SatisfactionNote;
-  interviewLevel: InterviewLevel;
-  interviewMethod: InterviewMethod;
-  freeNote: string;
-  url: string;
-  companyName: string;
-  position: Position;
-  interviewStep: InterviewStep;
-  interviewDate: string;
-  interviewTime: string;
-  isPublic: boolean;
-  questions: QuestionRequest[];
-}
-
-// 퀵 회고 수정 요청
-export interface UpdateQuickMemoirsRequest {
+// 회고 수정/작성 요청
+export interface MemoirsRequest {
   id: number;
+  userId: number;
+  scheduleId?: number;
   type: MemoirType | string;
   interviewFormat: InterviewFormat | string;
   interviewMood: InterviewMood | string;
   satisfactionNote: SatisfactionNote | string;
   interviewLevel: InterviewLevel | string;
+  interviewStatus: InterviewStatus | string;
   interviewMethod: InterviewMethod | string;
-  freeNote: string;
-  url: string;
+  freeNote?: string;
+  url?: string;
   companyName: string;
   position: Position | string;
   interviewStep: InterviewStep | string;
   interviewDate: string;
   interviewTime: string;
+  public: boolean;
+  tmp: boolean;
+  isTmp: boolean;
   isPublic: boolean;
-  questions: UpdateQuestionRequest[];
+  questions: QuestionRequest[];
 }
 
 export interface Memoir {
@@ -84,6 +66,20 @@ export interface Memoir {
   position: Position | string;
   createdAt: string;
   firstQuestion: string;
+  isTmp?: boolean;
+  isPublic?: boolean;
+}
+
+export type ApiMemoirItem = Omit<
+  Memoir,
+  'interviewStatus' | 'firstQuestion' | 'isTmp' | 'isPublic'
+>;
+
+export interface PaginatedMemoirData {
+  pageSize: number;
+  nextCursor: string | null;
+  hasNext: boolean;
+  result: ApiMemoirItem[];
 }
 
 // 회고 리스트 조회
@@ -125,7 +121,7 @@ export interface MemoirData {
   interviewLevel: InterviewLevel | string | null;
   interviewStatus: InterviewStatus | string;
   interviewMethod?: InterviewMethod | string;
-  freeNote: string;
+  freeNote?: string;
   url?: string;
   companyName: string;
   position: Position | string;
@@ -163,4 +159,30 @@ export interface HotMemoirsResponse {
   code: string;
   message: string;
   data: HotMemoir[];
+}
+
+// 회고 임시저장 응답
+export interface TmpMemoirSaveResponse {
+  memoirId: number;
+}
+
+// 좋아요 토글
+export interface LikeToggleResponse {
+  isLiked: boolean;
+  toggledAt: string;
+}
+
+// 댓글
+export interface Comment {
+  id: number;
+  content: string;
+  author: string;
+  profileImageUrl: string;
+  createdAt: string;
+}
+
+// 북마크 토글
+export interface BookmarkToggleResponse {
+  bookMarked: boolean;
+  toggledAt: string;
 }
