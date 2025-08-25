@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { Header } from '@/components/ui/Header';
 
 import HotMemoirList from '../home/components/HotMemoirList';
+import FeedList from './components/FeedList';
+import FeedListSkeleton from './components/FeedListSkeleton';
 
 export const metadata: Metadata = {
   title: '커뮤니티',
@@ -11,11 +14,14 @@ export const metadata: Metadata = {
 
 export default function CommunityPage() {
   return (
-    <main className="flex h-screen flex-col">
+    <main>
       <Header title="커뮤니티" showBackButton={false} />
-      <div className="pt-6 pb-4">
-        <HotMemoirList />
+      <div className="pt-6 pb-8">
+        <HotMemoirList isFullWidth={false} />
       </div>
+      <Suspense fallback={<FeedListSkeleton />}>
+        <FeedList />
+      </Suspense>
     </main>
   );
 }

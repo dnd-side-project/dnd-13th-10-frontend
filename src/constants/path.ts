@@ -1,6 +1,5 @@
 export const PATH = {
   HOME: { path: '/home', label: '홈' },
-  COMMUNITY: { path: '/community', label: '커뮤니티' },
   MY: { path: '/my-page', label: 'MY' },
   ALARM: { path: '/home/alarms', label: '알림' },
 
@@ -14,6 +13,11 @@ export const PATH = {
 
   INTERVIEW: {
     SCHEDULE: { path: '/home/interview/schedule', label: '면접 일정 등록' },
+  },
+
+  COMMUNITY: {
+    MAIN: { path: '/community', label: '커뮤니티' },
+    JOB_FILTER: { path: '/community/job-filter', label: '직무필터' },
   },
 
   MEMOIR: {

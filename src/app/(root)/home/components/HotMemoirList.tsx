@@ -8,18 +8,23 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Logo from '@/assets/logo/logo_icon.svg';
 import { Badge } from '@/components/ui/Badge';
 import { calculateDaysAgo } from '@/utils/date';
+import { cn } from '@/utils/cn';
 import { PATH } from '@/constants/path';
 import type { HotMemoir } from '@/types/memoirTypes';
 
 import { mockHotMemoirs } from '../mocks/mockHotMemoirs';
 
-export default function HotMemoirList() {
+interface Props {
+  isFullWidth?: boolean;
+}
+
+export default function HotMemoirList({ isFullWidth = true }: Props) {
   const topMemoirs = [...mockHotMemoirs].sort(
     (a, b) => b.weeklyViewCount - a.weeklyViewCount,
   );
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className={cn('flex flex-col gap-4', isFullWidth && '-mx-5')}>
       <div className="flex items-center justify-between px-5">
         <div className="flex items-center gap-2">
           <h3 className="typo-subhead-03 text-foundation-primary">

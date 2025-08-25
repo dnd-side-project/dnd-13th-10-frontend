@@ -16,6 +16,7 @@ interface Props<T extends string> {
   onValueChange: (value: T) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  dropdownClassName?: string;
 }
 
 const useOnClickOutside = (
@@ -45,6 +46,7 @@ export function SortDropdown<T extends string>({
   onValueChange,
   isOpen,
   setIsOpen,
+  dropdownClassName,
 }: Props<T>) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -74,6 +76,7 @@ export function SortDropdown<T extends string>({
         className={cn(
           'bg-foundation-box absolute top-full left-0 z-10 mt-3 w-max rounded-xl px-4 py-3',
           'transition-all duration-200 ease-in-out',
+          dropdownClassName,
           isOpen
             ? 'visible scale-100 opacity-100'
             : 'invisible scale-95 opacity-0',

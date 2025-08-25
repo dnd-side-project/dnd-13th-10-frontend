@@ -117,3 +117,34 @@ export const calculateDaysAgo = (dateString: string) => {
 export const formatDateToYYMMDD = (dateString: string) => {
   return dateString.substring(2).replace(/-/g, '.');
 };
+
+/**
+ * 주어진 날짜가 현재로부터 얼마나 지났는지에 따라 "방금 전", "N분 전", "N시간 전", "N일 전" 등으로 변환합니다.
+ * @param dateString - ISO 형식의 날짜 문자열
+ * @returns "방금 전", "N분 전", "N시간 전", "N일 전" 형태의 문자열
+ */
+export const formatTimeAgo = (dateString: string): string => {
+  const now = new Date();
+  const pastDate = new Date(dateString);
+  const diffInMs = now.getTime() - pastDate.getTime();
+
+  if (diffInMs < 0) {
+    return '방금 전';
+  }
+
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInSeconds < 60) {
+    return '방금 전';
+  }
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`;
+  }
+  if (diffInHours < 24) {
+    return `${diffInHours}시간 전`;
+  }
+  return `${diffInDays}일 전`;
+};

@@ -7,6 +7,7 @@ import { cn } from '@/utils/cn';
 
 interface Props {
   title: ReactNode;
+  leftContent?: ReactNode;
   rightContent?: ReactNode | string;
   onBackClick?: () => void;
   onRightClick?: () => void;
@@ -15,6 +16,7 @@ interface Props {
 
 function Header({
   title,
+  leftContent,
   rightContent,
   onBackClick,
   onRightClick,
@@ -36,12 +38,12 @@ function Header({
       )}
     >
       {showBackButton && (
-        <div className="w-8 shrink-0">
-          <LeftArrowIcon
-            className="shrink-0 cursor-pointer"
-            aria-label="뒤로 가기"
-            onClick={handleBackClick}
-          />
+        <div
+          className="w-8 shrink-0 cursor-pointer"
+          aria-label="뒤로 가기 또는 이전 동작"
+          onClick={handleBackClick}
+        >
+          {leftContent ? leftContent : <LeftArrowIcon className="shrink-0" />}
         </div>
       )}
 
