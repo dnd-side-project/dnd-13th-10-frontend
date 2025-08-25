@@ -1,18 +1,18 @@
-import NextAuth from 'next-auth';
-import Kakao from 'next-auth/providers/kakao';
+import { type NextAuthOptions } from 'next-auth';
+import KakaoProvider from 'next-auth/providers/kakao';
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
-    Kakao({
-      clientId: process.env.AUTH_KAKAO_ID!,
-      clientSecret: process.env.AUTH_KAKAO_SECRET!,
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
     }),
   ],
   session: { strategy: 'jwt' },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userId = user.id ?? token.sub;
+        token.userId = user.id ?? token.sub ?? '';
       }
       return token;
     },
@@ -24,4 +24,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
-});
+};

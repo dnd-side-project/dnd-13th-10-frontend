@@ -1,27 +1,26 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { auth } from '@/auth';
-import type { Session } from 'next-auth';
+import { getToken } from 'next-auth/jwt';
 
-type MiddlewareRequest = NextRequest & { auth: Session | null };
+const PROTECTED = ['/home', '/my-page', '/schedule', '/community'];
 
-export default auth((req: MiddlewareRequest) => {
-  const isAuthed = !!req.auth;
+export async function middleware(req: NextRequest) {
+  const { pathname, search } = req.nextUrl;
 
-  const protectedPaths = ['/home', '/my-page', '/schedule', '/community'];
-  const { pathname } = req.nextUrl;
-
-  const needsAuth = protectedPaths.some(
+  const needsAuth = PROTECTED.some(
     p => pathname === p || pathname.startsWith(p + '/'),
   );
 
-  if (needsAuth && !isAuthed) {
-    const signInUrl = new URL('/auth/signin', req.nextUrl);
-    signInUrl.searchParams.set('callbackUrl', req.nextUrl.href);
-    return NextResponse.redirect(signInUrl);
+  if (!needsAuth) return NextResponse.next();
+
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  if (!token) {
+    const url = new URL('/', req.url);
+    url.searchParams.set('callbackUrl', pathname + search);
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
