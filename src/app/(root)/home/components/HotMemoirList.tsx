@@ -20,7 +20,7 @@ export default function HotMemoirList() {
 
   return (
     <section className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-5">
         <div className="flex items-center gap-2">
           <h3 className="typo-subhead-03 text-foundation-primary">
             이번주 HOT 회고
@@ -34,7 +34,12 @@ export default function HotMemoirList() {
         </Link>
       </div>
       <div>
-        <Swiper slidesPerView={'auto'} spaceBetween={12}>
+        <Swiper
+          slidesPerView={'auto'}
+          spaceBetween={12}
+          slidesOffsetBefore={20}
+          slidesOffsetAfter={20}
+        >
           {topMemoirs.map(memoir => (
             <SwiperSlide key={memoir.id} style={{ width: '80%' }}>
               <HotMemoirItem memoir={memoir} />

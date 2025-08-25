@@ -13,7 +13,7 @@ export default function CommunityPage() {
   return (
     <main className="flex h-screen flex-col">
       <Header title="커뮤니티" showBackButton={false} />
-      <div className="px-5 pt-6 pb-4">
+      <div className="pt-6 pb-4">
         <HotMemoirList />
       </div>
     </main>

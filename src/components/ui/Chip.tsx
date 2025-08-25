@@ -8,7 +8,8 @@ interface Props {
   onClick: () => void;
 }
 
-const baseStyles = 'rounded-full cursor-pointer px-4 py-1 typo-subhead-02';
+const baseStyles =
+  'rounded-full cursor-pointer px-4 py-1 whitespace-nowrap typo-subhead-02';
 
 const variantStyle = {
   default: 'bg-foundation-box border border-foundation-secondary',
