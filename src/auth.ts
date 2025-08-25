@@ -4,8 +4,8 @@ import KakaoProvider from 'next-auth/providers/kakao';
 export const authOptions: NextAuthOptions = {
   providers: [
     KakaoProvider({
-      clientId: process.env.KAKAO_CLIENT_ID!,
-      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+      clientId: process.env.AUTH_KAKAO_ID!,
+      clientSecret: process.env.AUTH_KAKAO_SECRET!,
     }),
   ],
   session: { strategy: 'jwt' },
