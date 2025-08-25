@@ -4,6 +4,8 @@ import { Header } from '@/components/ui/Header';
 
 import HotMemoirList from '../home/components/HotMemoirList';
 import FeedList from './components/FeedList';
+import { Suspense } from 'react';
+import FeedListSkeleton from './components/FeedListSkeleton';
 
 export const metadata: Metadata = {
   title: '커뮤니티',
@@ -17,9 +19,9 @@ export default function CommunityPage() {
       <div className="pt-6 pb-8">
         <HotMemoirList isFullWidth={false} />
       </div>
-      <div>
+      <Suspense fallback={<FeedListSkeleton />}>
         <FeedList />
-      </div>
+      </Suspense>
     </main>
   );
 }
