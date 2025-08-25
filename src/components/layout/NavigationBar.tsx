@@ -18,8 +18,8 @@ const navItems = [
     icon: CalendarIcon,
   },
   {
-    label: PATH.COMMUNITY.label,
-    href: PATH.COMMUNITY.path,
+    label: PATH.COMMUNITY.MAIN.label,
+    href: PATH.COMMUNITY.MAIN.path,
     icon: CommunityIcon,
   },
   { label: PATH.MY.label, href: PATH.MY.path, icon: UserIcon },
