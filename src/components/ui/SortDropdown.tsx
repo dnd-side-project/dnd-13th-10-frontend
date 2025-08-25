@@ -61,7 +61,7 @@ export function SortDropdown<T extends string>({
   return (
     <div className="relative z-20" ref={dropdownRef}>
       <div
-        className="flex cursor-pointer items-center gap-1"
+        className="flex cursor-pointer items-center gap-1 whitespace-nowrap"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-foundation-primary typo-subhead-02">
