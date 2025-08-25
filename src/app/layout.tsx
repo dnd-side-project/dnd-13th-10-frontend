@@ -1,12 +1,9 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
 import '@/styles/globals.css';
 
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import QueryClientProvider from './QueryClientProvider';
-import NextAuthProvider from './NextAuthProvider';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -39,14 +36,12 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} font-pretendard antialiased`}>
-        <NextAuthProvider>
-          <QueryClientProvider>
-            <div className="bg-foundation-bg max-w-maxWidth mx-auto min-h-screen text-white">
-              {children}
-            </div>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </NextAuthProvider>
+        <QueryClientProvider>
+          <div className="bg-foundation-bg max-w-maxWidth mx-auto min-h-screen text-white">
+            {children}
+          </div>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
       </body>
     </html>
   );
