@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { Header } from '@/components/ui/Header';
 
 import HotMemoirList from '../home/components/HotMemoirList';
 import FeedList from './components/FeedList';
-import { Suspense } from 'react';
 import FeedListSkeleton from './components/FeedListSkeleton';
 
 export const metadata: Metadata = {
