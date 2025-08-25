@@ -1,14 +1,15 @@
-// /middleware.ts
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { auth } from '@/auth';
+import type { Session } from 'next-auth';
 
-export default auth(req => {
+type MiddlewareRequest = NextRequest & { auth: Session | null };
+
+export default auth((req: MiddlewareRequest) => {
   const isAuthed = !!req.auth;
 
-  // 보호할 경로들
   const protectedPaths = ['/home', '/my-page', '/schedule', '/community'];
-
   const { pathname } = req.nextUrl;
+
   const needsAuth = protectedPaths.some(
     p => pathname === p || pathname.startsWith(p + '/'),
   );
@@ -24,7 +25,9 @@ export default auth(req => {
 
 export const config = {
   matcher: [
-    // 모든 경로 중 아래를 제외하고 검사:
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(svg|png|jpg|jpeg|gif|webp|ico)).*)',
+    '/home/:path*',
+    '/my-page/:path*',
+    '/schedule/:path*',
+    '/community/:path*',
   ],
 };
