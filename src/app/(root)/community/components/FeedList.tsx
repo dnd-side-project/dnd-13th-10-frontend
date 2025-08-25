@@ -2,11 +2,14 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
+import RotateIcon from '@/assets/icon/rotate_icon.svg';
 import FilterIcon from '@/assets/icon/filter_icon.svg';
 import { mockMemoirs } from '@/app/(fullscreen)/my-page/mocks/memoir';
 import { SortDropdown } from '@/components/ui/SortDropdown';
 import { Badge } from '@/components/ui/Badge';
+import { Chip } from '@/components/ui/Chip';
 import { cn } from '@/utils/cn';
 import { formatTimeAgo } from '@/utils/date';
 import {
@@ -14,6 +17,7 @@ import {
   getMemoirTypeLabel,
   getPositionLabel,
 } from '@/utils/labelUtils';
+import { PATH } from '@/constants/path';
 import { INTERVIEW_STATUS, MEMOIR_TYPES } from '@/constants/code';
 import type {
   InterviewStatus,
@@ -21,7 +25,6 @@ import type {
   MemoirType,
   Position,
 } from '@/types/memoirTypes';
-import { PATH } from '@/constants/path';
 
 type SortType = 'latest' | 'popularity';
 
@@ -34,20 +37,34 @@ export default function FeedList() {
   const [selectedSort, setSelectedSort] = useState<SortType>('latest');
   const [isSortPopoverOpen, setIsSortPopoverOpen] = useState(false);
 
-  const sortedMemoirs = useMemo(() => {
-    const sorted = [...mockMemoirs];
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const positionFilter = searchParams.get('position');
+
+  const filteredAndSortedMemoirs = useMemo(() => {
+    let filtered = mockMemoirs;
+    if (positionFilter) {
+      filtered = mockMemoirs.filter(
+        memoir => memoir.position === positionFilter,
+      );
+    }
+
+    const sorted = [...filtered];
     switch (selectedSort) {
       case 'latest':
         return sorted.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
-      //   case 'popularity':
-      //     return sorted.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+      // 다른 옵션일 경우 추가 가능
       default:
         return sorted;
     }
-  }, [selectedSort]);
+  }, [selectedSort, positionFilter]);
+
+  const handleResetFilter = () => {
+    router.push(PATH.COMMUNITY.MAIN.path);
+  };
 
   const handleOverlayClick = () => {
     setIsSortPopoverOpen(false);
@@ -65,7 +82,7 @@ export default function FeedList() {
         <div className="flex items-center gap-1">
           <h3 className="typo-body-02 text-white">피드</h3>
           <span className="text-foundation-disabled typo-subhead-02">
-            {sortedMemoirs.length}
+            {filteredAndSortedMemoirs.length}
           </span>
         </div>
         <SortDropdown
@@ -77,9 +94,27 @@ export default function FeedList() {
           dropdownClassName="-translate-x-4"
         />
       </header>
-      <div className="px-5 py-4">
+      <div
+        className={cn(
+          'flex items-center px-5 py-4',
+          positionFilter ? 'justify-between' : 'justify-end',
+        )}
+      >
+        {positionFilter && (
+          <div
+            className="flex cursor-pointer items-center gap-2"
+            onClick={handleResetFilter}
+          >
+            <RotateIcon />
+            <Chip
+              text={getPositionLabel(positionFilter as Position)}
+              isSelected={true}
+              onClick={handleResetFilter}
+            />
+          </div>
+        )}
         <Link href={PATH.COMMUNITY.JOB_FILTER.path}>
-          <div className="flex items-center justify-end gap-1">
+          <div className="flex items-center gap-1">
             <FilterIcon />
             <span className="typo-subhead-02 text-foundation-primary">
               {PATH.COMMUNITY.JOB_FILTER.label}
@@ -87,7 +122,7 @@ export default function FeedList() {
           </div>
         </Link>
       </div>
-      {sortedMemoirs.map((memoir, index) => (
+      {filteredAndSortedMemoirs.map((memoir, index) => (
         <FeedItem key={memoir.id} memoir={memoir} isFirst={index === 0} />
       ))}
     </div>
