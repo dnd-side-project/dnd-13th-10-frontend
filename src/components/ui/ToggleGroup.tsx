@@ -9,6 +9,7 @@ interface ToggleItemProps {
   text: string;
   isSelected?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
 interface ToggleGroupProps {
@@ -16,6 +17,7 @@ interface ToggleGroupProps {
   selectedValue: string;
   onSelectionChange: (value: string) => void;
   className?: string;
+  itemClassName?: string;
 }
 
 function ToggleGroup({
@@ -23,6 +25,7 @@ function ToggleGroup({
   selectedValue,
   onSelectionChange,
   className,
+  itemClassName,
 }: ToggleGroupProps) {
   return (
     <div role="radiogroup" className={cn('flex gap-2', className)}>
@@ -32,13 +35,14 @@ function ToggleGroup({
           text={option.text}
           isSelected={selectedValue === option.id}
           onClick={() => onSelectionChange(option.id)}
+          className={itemClassName}
         />
       ))}
     </div>
   );
 }
 
-function ToggleItem({ text, isSelected, onClick }: ToggleItemProps) {
+function ToggleItem({ text, isSelected, onClick, className }: ToggleItemProps) {
   return (
     <button
       role="radio"
@@ -50,6 +54,7 @@ function ToggleItem({ text, isSelected, onClick }: ToggleItemProps) {
         isSelected
           ? 'text-foundation-strong border-foundation-primary border font-bold'
           : 'text-foundation-disabled',
+        className,
       )}
     >
       {text}
