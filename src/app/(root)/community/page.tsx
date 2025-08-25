@@ -14,7 +14,7 @@ export default function CommunityPage() {
     <main className="flex h-screen flex-col">
       <Header title="커뮤니티" showBackButton={false} />
       <div className="pt-6 pb-4">
-        <HotMemoirList />
+        <HotMemoirList isFullWidth={false} />
       </div>
     </main>
   );
