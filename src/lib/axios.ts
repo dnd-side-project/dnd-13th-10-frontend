@@ -9,8 +9,8 @@ export type ApiResponse<T> = {
 export const http = axios.create({
   baseURL:
     process.env.NODE_ENV === 'production'
-      ? 'http://localhost:3000'
-      : 'https://www.seedseed.site',
+      ? 'https://www.seedseed.site'
+      : 'http://localhost:8080',
 });
 
 http.interceptors.response.use(
