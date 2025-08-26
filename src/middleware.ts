@@ -1,21 +1,42 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 const PROTECTED = ['/home', '/my-page', '/schedule', '/community'];
+const TOKEN_QUERY_KEY = 'token';
+const COOKIE_NAME = process.env.JWT_COOKIE_NAME || 'devseed_token';
+
+function isProtected(pathname: string) {
+  return PROTECTED.some(p => pathname === p || pathname.startsWith(p + '/'));
+}
 
 export async function middleware(req: NextRequest) {
-  const { pathname, search } = req.nextUrl;
+  const { pathname, searchParams } = req.nextUrl;
+  const tokenFromQuery = searchParams.get(TOKEN_QUERY_KEY);
+  const hasCookie = !!req.cookies.get(COOKIE_NAME)?.value;
 
-  const needsAuth = PROTECTED.some(
-    p => pathname === p || pathname.startsWith(p + '/'),
-  );
+  if (tokenFromQuery) {
+    const dest = req.nextUrl.clone();
+    const callback = searchParams.get('callbackUrl') || '/home';
 
-  if (!needsAuth) return NextResponse.next();
+    dest.pathname = callback;
+    dest.search = '';
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  if (!token) {
-    const url = new URL('/', req.url);
-    url.searchParams.set('callbackUrl', pathname + search);
+    const res = NextResponse.redirect(dest);
+
+    res.cookies.set(COOKIE_NAME, tokenFromQuery, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 60 * 60 * 2,
+    });
+
+    return res;
+  }
+
+  if (isProtected(pathname) && !hasCookie) {
+    const url = req.nextUrl.clone();
+    url.pathname = '/';
+    url.searchParams.set('callbackUrl', pathname + (req.nextUrl.search || ''));
     return NextResponse.redirect(url);
   }
 
@@ -24,6 +45,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/',
     '/home/:path*',
     '/my-page/:path*',
     '/schedule/:path*',

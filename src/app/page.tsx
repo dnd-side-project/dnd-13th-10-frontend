@@ -1,17 +1,19 @@
-'use client';
-
 import OnboardingView from '@/components/onboarding/OnboardingView';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function Page() {
-  const router = useRouter();
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated') router.replace('/home');
-  }, [status, router]);
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: { callbackUrl?: string };
+}) {
+  const cookieStore = await cookies();
+  const hasToken = !!cookieStore.get(
+    process.env.JWT_COOKIE_NAME || 'devseed_token',
+  )?.value;
+  if (hasToken) {
+    redirect(searchParams?.callbackUrl || '/home');
+  }
 
   return <OnboardingView />;
 }

@@ -1,17 +1,24 @@
-'use client';
-
-import { signIn } from 'next-auth/react';
-
 import Logo from '@/assets/logo/logo_icon.svg';
 import KakaoLogo from '@/assets/icon/kakao_icon.svg';
 
 import { Button } from '../ui/Button';
-import { PATH } from '@/constants/path';
+import { toBase64Url } from '@/utils/toBase64Url';
 
-export default function Onboarding() {
-  const handleKakaoLogin = () => {
-    signIn('kakao', { callbackUrl: PATH.HOME.path });
-  };
+export default function Onboarding({
+  searchParams,
+}: {
+  searchParams?: { callbackUrl?: string };
+}) {
+  const devseed = process.env.NEXT_PUBLIC_DEVSEED_BASE_URL!;
+  const app = process.env.NEXT_PUBLIC_APP_BASE_URL!;
+
+  const cb = searchParams?.callbackUrl || '/home';
+  const redirectUri = `${app}/`;
+  const state = toBase64Url(cb);
+
+  const loginUrl = new URL('/oauth2/authorization/kakao', devseed);
+  loginUrl.searchParams.set('redirect_uri', redirectUri);
+  loginUrl.searchParams.set('state', state);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -31,7 +38,7 @@ export default function Onboarding() {
           variant="yellow"
           className="flex items-center gap-1 rounded-full"
           size="large"
-          onClick={handleKakaoLogin}
+          href={loginUrl.toString()}
         >
           <KakaoLogo />
           카카오로 시작하기
