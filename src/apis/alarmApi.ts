@@ -3,7 +3,7 @@ import type { Alarm, CreateAlarmRequest } from '@/types/alarmTypes';
 
 // 알람 API
 export const getAlarmList = async (): Promise<ApiResponse<Alarm[]>> => {
-  const response = await http.get('/api/notification');
+  const response = await http.get('/notification');
 
   return response.data;
 };
@@ -12,7 +12,7 @@ export const getAlarmList = async (): Promise<ApiResponse<Alarm[]>> => {
 export const createAlarm = async (
   alarm: CreateAlarmRequest,
 ): Promise<ApiResponse<Alarm>> => {
-  const response = await http.post('/api/notification', alarm);
+  const response = await http.post('/notification', alarm);
 
   return response.data;
 };

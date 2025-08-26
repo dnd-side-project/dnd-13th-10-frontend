@@ -5,7 +5,7 @@ import { UserSearchHistory } from '@/types/userTypes';
 export const getUserSearchHistory = async (): Promise<
   ApiResponse<UserSearchHistory[]>
 > => {
-  const response = await http.get('/api/user/hist');
+  const response = await http.get('/user/hist');
 
   return response.data;
 };
@@ -14,7 +14,7 @@ export const getUserSearchHistory = async (): Promise<
 export const deleteUserSearchHistory = async (
   id: number,
 ): Promise<ApiResponse<void>> => {
-  const response = await http.delete(`/api/user/hist/${id}`);
+  const response = await http.delete(`/user/hist/${id}`);
 
   return response.data;
 };
@@ -23,7 +23,7 @@ export const deleteUserSearchHistory = async (
 export const deleteAllUserSearchHistory = async (): Promise<
   ApiResponse<void>
 > => {
-  const response = await http.delete('/api/user/hist/all');
+  const response = await http.delete('/user/hist/all');
 
   return response.data;
 };

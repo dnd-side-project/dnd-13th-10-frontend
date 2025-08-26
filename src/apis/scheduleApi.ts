@@ -22,7 +22,7 @@ export const getScheduleDetails = async ({
 }: {
   scheduleId: string;
 }): Promise<ApiResponse<ScheduleDetailData>> => {
-  const response = await http.get(`/api/schedules/${scheduleId}`);
+  const response = await http.get(`/schedules/${scheduleId}`);
 
   return response.data;
 };
@@ -42,7 +42,7 @@ export const updateSchedule = async ({
     interviewTime: interviewDate,
   };
 
-  const response = await http.put(`/api/schedules/${scheduleId}`, requestData);
+  const response = await http.put(`/schedules/${scheduleId}`, requestData);
 
   return response.data;
 };
@@ -53,14 +53,14 @@ export const deleteSchedule = async ({
 }: {
   scheduleId: string;
 }): Promise<ApiResponse<void>> => {
-  const response = await http.delete(`/api/schedules/${scheduleId}`);
+  const response = await http.delete(`/schedules/${scheduleId}`);
 
   return response.data;
 };
 
 // 모든 면접 일정 조회 API
 export const getAllSchedules = async (): Promise<ApiResponse<Schedule[]>> => {
-  const response = await http.get('/api/schedules');
+  const response = await http.get('/schedules');
 
   return response.data;
 };
@@ -69,7 +69,7 @@ export const getAllSchedules = async (): Promise<ApiResponse<Schedule[]>> => {
 export const createSchedule = async (
   data: ScheduleCreate,
 ): Promise<ApiResponse<ScheduleCreate>> => {
-  const response = await http.post('/api/schedules', data);
+  const response = await http.post('/schedules', data);
 
   return response.data;
 };
