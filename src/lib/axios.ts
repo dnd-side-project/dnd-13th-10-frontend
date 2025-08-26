@@ -9,7 +9,7 @@ export type ApiResponse<T> = {
 export const http = axios.create({
   baseURL:
     process.env.NODE_ENV === 'production'
-      ? 'https://www.seedseed.site'
+      ? 'https://seedseed.site'
       : 'http://localhost:8080',
 });
 
