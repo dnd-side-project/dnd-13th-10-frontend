@@ -7,7 +7,7 @@ export type ApiResponse<T> = {
 };
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 });
 
 http.interceptors.response.use(
