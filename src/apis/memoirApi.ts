@@ -22,7 +22,7 @@ export async function getMemoirDetail(
 
 // 회고 리스트 조회 API (퀵/일반 모두 조회)
 export const getAllMemoirs = async (): Promise<ApiResponse<Memoir[]>> => {
-  const response = await http.get('/api/memoirs');
+  const response = await http.get('/memoirs');
 
   return response.data;
 };
@@ -31,7 +31,7 @@ export const getAllMemoirs = async (): Promise<ApiResponse<Memoir[]>> => {
 export const updateMemoir = async (
   data: Partial<MemoirsRequest>,
 ): Promise<ApiResponse<MemoirsRequest>> => {
-  const response = await http.put('/api/memoirs', data);
+  const response = await http.put('/memoirs', data);
 
   return response.data;
 };
@@ -40,7 +40,7 @@ export const updateMemoir = async (
 export const createMemoir = async (
   data: MemoirsRequest,
 ): Promise<ApiResponse<MemoirsRequest>> => {
-  const response = await http.post('/api/memoirs', data);
+  const response = await http.post('/memoirs', data);
 
   return response.data;
 };
@@ -49,7 +49,7 @@ export const createMemoir = async (
 export const getMemoirDetails = async (
   memoirId: number,
 ): Promise<ApiResponse<MemoirData>> => {
-  const response = await http.get(`/api/memoirs/${memoirId}`);
+  const response = await http.get(`/memoirs/${memoirId}`);
 
   return response.data;
 };
@@ -58,7 +58,7 @@ export const getMemoirDetails = async (
 export const deleteMemoir = async (
   memoirId: number,
 ): Promise<ApiResponse<void>> => {
-  const response = await http.delete(`/api/memoirs/${memoirId}`);
+  const response = await http.delete(`/memoirs/${memoirId}`);
 
   return response.data;
 };
@@ -67,7 +67,7 @@ export const deleteMemoir = async (
 export const getMyMemoirs = async (
   searchType: string,
 ): Promise<ApiResponse<Memoir[]>> => {
-  const response = await http.get('/api/memoirs/mine', {
+  const response = await http.get('/memoirs/mine', {
     params: {
       searchType: searchType,
     },
@@ -78,7 +78,7 @@ export const getMyMemoirs = async (
 
 // 내가 임시저장한 회고 리스트 조회 API
 export const getMyTmpMemoirs = async (): Promise<ApiResponse<Memoir[]>> => {
-  const response = await http.get('/api/memoirs/mine/tmp');
+  const response = await http.get('/memoirs/mine/tmp');
 
   return response.data;
 };
@@ -91,7 +91,7 @@ export const getMyLikedMemoirs = async ({
   cursor?: string | null;
   size?: number;
 }): Promise<ApiResponse<PaginatedMemoirData>> => {
-  const response = await http.get('/api/memoirs/liked', {
+  const response = await http.get('/memoirs/liked', {
     params: {
       cursor,
       size,
@@ -103,7 +103,7 @@ export const getMyLikedMemoirs = async ({
 
 // 핫 회고 조회 API
 export const getHotMemoirs = async (): Promise<ApiResponse<HotMemoir[]>> => {
-  const response = await http.get('/api/memoirs/hot');
+  const response = await http.get('/memoirs/hot');
 
   return response.data;
 };
@@ -116,7 +116,7 @@ export const getMyCommentedMemoirs = async ({
   cursor?: string | null;
   size?: number;
 }): Promise<ApiResponse<PaginatedMemoirData>> => {
-  const response = await http.get('/api/memoirs/commented', {
+  const response = await http.get('/memoirs/commented', {
     params: {
       cursor,
       size,
@@ -134,7 +134,7 @@ export const getMyBookmarkedMemoirs = async ({
   cursor?: string | null;
   size?: number;
 }): Promise<ApiResponse<PaginatedMemoirData>> => {
-  const response = await http.get('/api/memoirs/bookMarked', {
+  const response = await http.get('/memoirs/bookMarked', {
     params: {
       cursor,
       size,
@@ -148,7 +148,7 @@ export const getMyBookmarkedMemoirs = async ({
 export const toggleLikeMemoir = async (
   memoirId: number,
 ): Promise<ApiResponse<LikeToggleResponse>> => {
-  const response = await http.post(`/api/memoirs/${memoirId}/likes`);
+  const response = await http.post(`/memoirs/${memoirId}/likes`);
 
   return response.data;
 };
@@ -157,7 +157,7 @@ export const toggleLikeMemoir = async (
 export const getMemoirComments = async (
   memoirId: number,
 ): Promise<ApiResponse<Comment[]>> => {
-  const response = await http.get(`/api/memoirs/${memoirId}/comments`);
+  const response = await http.get(`/memoirs/${memoirId}/comments`);
 
   return response.data;
 };
@@ -172,7 +172,7 @@ export const createMemoirComment = async ({
   content: string;
   parentCommentId?: number;
 }): Promise<ApiResponse<Comment>> => {
-  const response = await http.post(`/api/memoirs/${memoirId}/comments`, {
+  const response = await http.post(`/memoirs/${memoirId}/comments`, {
     content,
     parentCommentId,
   });
@@ -184,7 +184,7 @@ export const createMemoirComment = async ({
 export const toggleBookmarkMemoir = async (
   memoirId: number,
 ): Promise<ApiResponse<BookmarkToggleResponse>> => {
-  const response = await http.post(`/api/memoirs/${memoirId}/bookMarks`);
+  const response = await http.post(`/memoirs/${memoirId}/bookMarks`);
 
   return response.data;
 };

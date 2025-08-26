@@ -14,7 +14,7 @@ export const getQuestionCategories = async ({
   condition?: string;
   searchReq: SearchReq;
 }): Promise<ApiResponse<string[]>> => {
-  const response = await http.get('/api/question', {
+  const response = await http.get('/question', {
     params: { type, memoirType, condition, searchReq },
   });
 
@@ -27,7 +27,7 @@ export const getCompanyInfo = async ({
 }: {
   keyword: string;
 }): Promise<ApiResponse<Company>> => {
-  const response = await http.get('/api/company/search', {
+  const response = await http.get('/company/search', {
     params: { keyword },
   });
 
