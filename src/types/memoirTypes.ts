@@ -148,6 +148,7 @@ export interface HotMemoir {
   userName: string;
   companyName: string;
   position: Position | string;
+  interviewStatus?: InterviewStatus | string;
   firstQuestion: string;
   imageUrl?: string;
   createdAt: string;
