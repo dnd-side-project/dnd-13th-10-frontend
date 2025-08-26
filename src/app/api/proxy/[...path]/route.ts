@@ -5,8 +5,8 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const BASE = process.env.NEXT_PUBLIC_DEVSEED_BASE_URL!;
-const AUTH_HEADER = process.env.AUTH_HEADER ?? 'Authorization';
-const AUTH_PREFIX = process.env.AUTH_PREFIX ?? 'Bearer ';
+const AUTH_HEADER = 'Authorization';
+const AUTH_PREFIX = 'Bearer ';
 
 export async function GET(req: NextRequest) {
   return handle(req);
