@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const cookieStore = await cookies();
   const hasToken = !!cookieStore.get(
