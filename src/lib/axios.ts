@@ -7,7 +7,10 @@ export type ApiResponse<T> = {
 };
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://www.seedseed.site'
+      : 'http://localhost:8080',
 });
 
 http.interceptors.response.use(

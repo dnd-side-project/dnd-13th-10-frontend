@@ -24,10 +24,10 @@
   },
   "include": [
     "svg.d.ts",
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "types"
   ],
   "exclude": ["node_modules"]
 }
