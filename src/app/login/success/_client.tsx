@@ -29,8 +29,7 @@ export default function LoginSuccessClient() {
         }
         router.replace('/home');
       } catch (e) {
-        console.log(e);
-        alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+        alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.' + e);
         router.replace('/');
       }
     })();
