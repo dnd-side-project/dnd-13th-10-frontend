@@ -7,20 +7,13 @@ export type ApiResponse<T> = {
 };
 
 export const http = axios.create({
-  baseURL: '/api/proxy',
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/proxy`,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
 http.interceptors.response.use(
-  response => response.data,
-  error => {
-    return Promise.reject(error);
-  },
-);
-
-http.interceptors.response.use(
-  res => res,
+  response => response,
   async error => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
