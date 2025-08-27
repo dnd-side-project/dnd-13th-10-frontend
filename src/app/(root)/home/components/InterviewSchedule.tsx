@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper/types';
 
@@ -11,22 +12,33 @@ import RightArrowIcon2 from '@/assets/icon/right_arrow_icon2.svg';
 import { PATH } from '@/constants/path';
 import { formatScheduleDate, calculateRemainDate } from '@/utils/date';
 import { cn } from '@/utils/cn';
-import type { ScheduleDetailData } from '@/types/scheduleTypes';
-
-import { mockScheduleList } from '../mocks/mockScheduleList';
+import { scheduleQueries } from '@/queries/scheduleOptions';
+import type { Schedule } from '@/types/scheduleTypes';
 
 export default function InterviewSchedule() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiper, setSwiper] = useState<SwiperClass | null>(null);
   const today = new Date();
 
-  const upcomingSchedules = mockScheduleList
-    .filter(schedule => new Date(schedule.interviewDate) >= today)
+  const {
+    data: scheduleData,
+    isPending,
+    isError,
+  } = useQuery(scheduleQueries.all());
+
+  const allSchedules = scheduleData?.data.result || [];
+
+  const upcomingSchedules = allSchedules
+    .filter(schedule => new Date(schedule.interviewDateTime) >= today)
     .sort(
       (a, b) =>
-        new Date(a.interviewDate).getTime() -
-        new Date(b.interviewDate).getTime(),
+        new Date(a.interviewDateTime).getTime() -
+        new Date(b.interviewDateTime).getTime(),
     );
+
+  if (isError) {
+    return <div>일정을 불러오는 데 실패했습니다.</div>;
+  }
 
   const handleNext = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -35,7 +47,9 @@ export default function InterviewSchedule() {
 
   return (
     <div className="flex flex-col gap-2">
-      {upcomingSchedules.length > 0 && (
+      {isPending ? (
+        <ScheduleCardSkeleton />
+      ) : upcomingSchedules.length > 0 ? (
         <div>
           <Swiper
             onSwiper={setSwiper}
@@ -62,6 +76,12 @@ export default function InterviewSchedule() {
             ))}
           </Swiper>
         </div>
+      ) : (
+        <section className="bg-foundation-box rounded-xl px-5 py-4 text-center">
+          <p className="typo-body-long-01 text-foundation-secondary">
+            다가오는 면접 일정이 없어요.
+          </p>
+        </section>
       )}
 
       <Link href={PATH.SCHEDULE.NEW.path}>
@@ -82,13 +102,13 @@ function ScheduleCard({
   totalCount,
   onNextClick,
 }: {
-  schedule: ScheduleDetailData;
+  schedule: Schedule;
   currentIndex: number;
   totalCount: number;
   onNextClick: (e: React.MouseEvent) => void;
 }) {
-  const remainDate = calculateRemainDate(schedule.interviewDate);
-  const { date, time } = formatScheduleDate(schedule.interviewDate);
+  const remainDate = calculateRemainDate(schedule.interviewDateTime);
+  const { date, time } = formatScheduleDate(schedule.interviewDateTime);
   const dDayText = remainDate === 0 ? 'D-Day' : `D-${remainDate}`;
 
   return (
@@ -133,6 +153,24 @@ function ScheduleCard({
         >
           {dDayText}
         </p>
+      </div>
+    </section>
+  );
+}
+
+function ScheduleCardSkeleton() {
+  return (
+    <section className="bg-foundation-box rounded-xl p-5">
+      <div className="animate-pulse">
+        <div className="mb-[5px] flex items-center justify-between">
+          <div className="bg-foundation-bg h-5 w-20 rounded-md" />
+          <div className="bg-foundation-bg h-6 w-24 rounded-full" />
+        </div>
+        <div className="bg-foundation-bg mt-2 h-6 w-3/5 rounded-md" />
+        <div className="mt-4 flex items-end justify-between">
+          <div className="bg-foundation-bg h-5 w-2/3 rounded-md" />
+          <div className="bg-foundation-bg h-8 w-1/4 rounded-md" />
+        </div>
       </div>
     </section>
   );

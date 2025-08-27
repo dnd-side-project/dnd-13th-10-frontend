@@ -1,6 +1,12 @@
 import { Metadata } from 'next';
 
-import { getScheduleDetail } from '@/apis/scheduleApi';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+
+import { scheduleQueries } from '@/queries/scheduleOptions';
 
 import ScheduleDetailView from './components/ScheduleDetailView';
 
@@ -9,16 +15,20 @@ export const metadata: Metadata = {
   description: '면접에 대한 상세한 일정을 확인해보세요.',
 };
 
-interface Params {
+interface Props {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 }
 
-export default async function ScheduleDetailPage({ params }: Params) {
-  const { id } = await params;
-  const response = await getScheduleDetail(id);
-  const scheduleData = response.data;
+export default async function ScheduleDetailPage({ params }: Props) {
+  const id = Number((await params).slug);
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(scheduleQueries.detail(id));
 
-  return <ScheduleDetailView data={scheduleData} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ScheduleDetailView scheduleId={id} />
+    </HydrationBoundary>
+  );
 }

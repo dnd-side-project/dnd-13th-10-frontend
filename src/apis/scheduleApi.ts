@@ -1,20 +1,9 @@
-import { mockScheduleDetailResponse } from '@/app/(fullscreen)/schedule/[slug]/mocks/mockScheduleDetailResponse';
 import { ApiResponse, http } from '@/lib/axios';
 import type {
   ScheduleCreate,
   ScheduleData,
   ScheduleDetailData,
-  ScheduleDetailResponse,
 } from '@/types/scheduleTypes';
-
-export async function getScheduleDetail(
-  _id: string,
-): Promise<ScheduleDetailResponse> {
-  // const response = await axios.get(`/schedules/${id}`);
-  // return response.data
-
-  return mockScheduleDetailResponse;
-}
 
 // 면접 일정 단건 조회 API
 export const getScheduleDetails = async ({

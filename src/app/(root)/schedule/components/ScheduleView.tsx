@@ -3,13 +3,15 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 
+import { useQuery } from '@tanstack/react-query';
+
 import { Chip } from '@/components/ui/Chip';
 import { PATH } from '@/constants/path';
 import { SortDropdown } from '@/components/ui/SortDropdown';
+import { scheduleQueries } from '@/queries/scheduleOptions';
 import PlusIcon from '@/assets/icon/plus_icon3.svg';
 
 import ScheduleList from './ScheduleList';
-import { mockSchedules } from '../mocks/mockSchedule';
 
 type ScheduleFilter = 'all' | 'upcoming' | 'past';
 type SortType = 'registration' | 'imminent';
@@ -30,7 +32,16 @@ export default function ScheduleView() {
   const [selectedSort, setSelectedSort] = useState<SortType>('imminent');
   const [isSortPopoverOpen, setIsSortPopoverOpen] = useState(false);
 
-  const allSchedules = mockSchedules;
+  const {
+    data: scheduleData,
+    isLoading,
+    isError,
+  } = useQuery(scheduleQueries.all());
+
+  const allSchedules = useMemo(
+    () => scheduleData?.data.result || [],
+    [scheduleData],
+  );
 
   const filteredSchedules = useMemo(() => {
     const now = new Date();
@@ -39,12 +50,12 @@ export default function ScheduleView() {
     switch (selectedFilter) {
       case 'upcoming':
         schedules = allSchedules.filter(
-          schedule => new Date(schedule.interviewDate) >= now,
+          schedule => new Date(schedule.interviewDateTime) >= now,
         );
         break;
       case 'past':
         schedules = allSchedules.filter(
-          schedule => new Date(schedule.interviewDate) < now,
+          schedule => new Date(schedule.interviewDateTime) < now,
         );
         break;
       case 'all':
@@ -53,7 +64,7 @@ export default function ScheduleView() {
         break;
     }
 
-    return schedules.sort((a, b) => {
+    const sortedSchedules = schedules.sort((a, b) => {
       if (selectedSort === 'imminent') {
         const isAUpcoming = a.remainDate !== undefined;
         const isBUpcoming = b.remainDate !== undefined;
@@ -63,14 +74,31 @@ export default function ScheduleView() {
           return a.remainDate! - b.remainDate!;
         }
         return (
-          new Date(b.interviewDate).getTime() -
-          new Date(a.interviewDate).getTime()
+          new Date(b.interviewDateTime).getTime() -
+          new Date(a.interviewDateTime).getTime()
         );
       }
-
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
+
+    return sortedSchedules.map(schedule => {
+      if (new Date(schedule.interviewDateTime) < now) {
+        return { ...schedule, remainDate: undefined };
+      }
+      return schedule;
+    });
   }, [selectedFilter, selectedSort, allSchedules]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        로딩 중...
+      </div>
+    );
+  }
+  if (isError) {
+    return <div>에러가 발생했습니다.</div>;
+  }
 
   const handleOverlayClick = () => {
     setIsSortPopoverOpen(false);
