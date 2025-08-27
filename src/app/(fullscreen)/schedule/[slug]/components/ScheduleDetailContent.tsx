@@ -16,7 +16,7 @@ export default function ScheduleDetailContent({ data }: Props) {
             <InfoRow label="직무" content={data.position} />
             <InfoRow
               label="면접일"
-              content={formatDateToYYMMDDHHMM(data.interviewDate)}
+              content={formatDateToYYMMDDHHMM(data.interviewDateTime)}
             />
             <InfoRow label="면접장소" content={data.location} />
             <InfoRow label="면접유형" content={data.interviewStep} />

@@ -1,22 +1,75 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { Header } from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
+import { scheduleMutations } from '@/queries/scheduleOptions';
+import { PATH } from '@/constants/path';
+import type { ScheduleDetailData } from '@/types/scheduleTypes';
 
 import ScheduleForm from './ScheduleForm';
 import { useScheduleFormStore } from '../store/scheduleFormStore';
 import { isScheduleFormValid } from '../utils/scheduleValidation';
 
-export default function ScheduleView() {
-  const formData = useScheduleFormStore(state => state.formData);
+interface Props {
+  mode: 'create' | 'edit';
+  scheduleId?: number;
+  initialData?: ScheduleDetailData;
+}
+
+export default function ScheduleView({ mode, scheduleId, initialData }: Props) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { formData, initializeFormData, resetFormData } =
+    useScheduleFormStore();
   const isFormValid = isScheduleFormValid(formData);
 
-  const handleSave = () => {
-    if (!isFormValid) {
-      return;
+  useEffect(() => {
+    if (mode === 'edit' && initialData) {
+      initializeFormData(initialData);
     }
-    // console.log('등록한 일정 데이터:', formData);
-    // TO-DO: 여기에 API 호출 등 실제 저장 로직을 구현
+
+    return () => {
+      resetFormData();
+    };
+  }, [mode, initialData, initializeFormData, resetFormData]);
+
+  const { mutate: createSchedule, isPending: isCreatePending } = useMutation(
+    scheduleMutations.create(queryClient),
+  );
+  const { mutate: updateSchedule, isPending: isUpdatePending } = useMutation(
+    scheduleMutations.update(queryClient),
+  );
+
+  const isPending = isCreatePending || isUpdatePending;
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    if (mode === 'create') {
+      createSchedule(formData, {
+        onSuccess: () => {
+          alert('일정이 등록되었습니다.');
+          router.push(PATH.SCHEDULE.HOME.path);
+        },
+        onError: () => alert('등록에 실패했습니다.'),
+      });
+    } else if (mode === 'edit' && scheduleId) {
+      updateSchedule(
+        { scheduleId, data: formData },
+        {
+          onSuccess: () => {
+            alert('일정이 수정되었습니다.');
+            router.push(PATH.SCHEDULE.HOME.path);
+          },
+          onError: () => alert('수정에 실패했습니다.'),
+        },
+      );
+    }
   };
 
   return (
@@ -29,7 +82,7 @@ export default function ScheduleView() {
 
       <footer className="px-5 pt-4 pb-6">
         <Button size="large" onClick={handleSave} disabled={!isFormValid}>
-          저장
+          {isPending ? '저장 중...' : '저장'}
         </Button>
       </footer>
     </div>

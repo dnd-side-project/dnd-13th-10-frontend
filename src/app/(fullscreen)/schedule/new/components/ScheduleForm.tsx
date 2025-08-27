@@ -208,14 +208,14 @@ export default function ScheduleForm() {
           <Input
             readOnly
             placeholder="날짜 선택"
-            value={formatDate(dateValue)}
+            value={formatDate(dateValue) || ''}
             onClick={() => setActiveDrawer('date')}
             inputClassName="cursor-pointer text-center w-full"
           />
           <Input
             readOnly
             placeholder="시간 선택"
-            value={formatTime(timeValue ?? null)}
+            value={formatTime(timeValue ?? null) || ''}
             onClick={() => setActiveDrawer('time')}
             inputClassName="cursor-pointer text-center w-full"
           />

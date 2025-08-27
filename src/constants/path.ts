@@ -41,5 +41,6 @@ export const PATH = {
     HOME: { path: '/schedule', label: '일정' },
     NEW: { path: '/schedule/new', label: '면접 일정 등록' },
     DETAIL: { path: '/schedule/[id]', label: '일정 상세' },
+    EDIT: { path: '/schedule/[id]/edit', label: '일정 수정' },
   },
 } as const;

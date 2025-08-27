@@ -33,7 +33,7 @@ function Input({
       <div className="bg-foundation-box focus-within:border-foundation-primary flex items-center gap-2 rounded-xl border border-transparent px-4 py-3 transition-colors duration-200">
         <input
           ref={ref}
-          value={value}
+          value={value ?? ''}
           maxLength={maxLength}
           className={cn(
             'placeholder:text-foundation-disabled typo-body-02 flex-1 bg-transparent text-white outline-none',

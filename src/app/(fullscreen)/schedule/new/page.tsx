@@ -1,5 +1,5 @@
 import ScheduleView from './components/ScheduleView';
 
 export default function NewSchedulePage() {
-  return <ScheduleView />;
+  return <ScheduleView mode="create" />;
 }
