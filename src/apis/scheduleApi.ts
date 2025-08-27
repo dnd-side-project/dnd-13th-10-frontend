@@ -1,8 +1,8 @@
 import { mockScheduleDetailResponse } from '@/app/(fullscreen)/schedule/[slug]/mocks/mockScheduleDetailResponse';
 import { ApiResponse, http } from '@/lib/axios';
 import type {
-  Schedule,
   ScheduleCreate,
+  ScheduleData,
   ScheduleDetailData,
   ScheduleDetailResponse,
 } from '@/types/scheduleTypes';
@@ -19,10 +19,16 @@ export async function getScheduleDetail(
 // 면접 일정 단건 조회 API
 export const getScheduleDetails = async ({
   scheduleId,
+  cookie,
 }: {
-  scheduleId: string;
+  scheduleId: number;
+  cookie?: string;
 }): Promise<ApiResponse<ScheduleDetailData>> => {
-  const response = await http.get(`/schedules/${scheduleId}`);
+  const response = await http.get(`/schedules/${scheduleId}`, {
+    headers: {
+      Cookie: cookie,
+    },
+  });
 
   return response.data;
 };
@@ -32,14 +38,14 @@ export const updateSchedule = async ({
   scheduleId,
   data,
 }: {
-  scheduleId: string;
+  scheduleId: number;
   data: Partial<ScheduleDetailData>;
 }): Promise<ApiResponse<ScheduleDetailData>> => {
-  const { interviewDate, ...restData } = data;
+  const { interviewDateTime, ...restData } = data;
 
   const requestData = {
     ...restData,
-    interviewTime: interviewDate,
+    interviewDateTime,
   };
 
   const response = await http.put(`/schedules/${scheduleId}`, requestData);
@@ -51,7 +57,7 @@ export const updateSchedule = async ({
 export const deleteSchedule = async ({
   scheduleId,
 }: {
-  scheduleId: string;
+  scheduleId: number;
 }): Promise<ApiResponse<void>> => {
   const response = await http.delete(`/schedules/${scheduleId}`);
 
@@ -59,7 +65,7 @@ export const deleteSchedule = async ({
 };
 
 // 모든 면접 일정 조회 API
-export const getAllSchedules = async (): Promise<ApiResponse<Schedule[]>> => {
+export const getAllSchedules = async (): Promise<ApiResponse<ScheduleData>> => {
   const response = await http.get('/schedules');
 
   return response.data;

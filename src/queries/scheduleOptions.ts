@@ -14,9 +14,9 @@ export const scheduleQueries = {
       queryKey: scheduleKeys.lists(),
       queryFn: scheduleApi.getAllSchedules,
     }),
-  detail: (scheduleId: string) =>
+  detail: (scheduleId: number) =>
     queryOptions({
-      queryKey: scheduleKeys.detail(scheduleId),
+      queryKey: scheduleKeys.detail(String(scheduleId)),
       queryFn: () => scheduleApi.getScheduleDetails({ scheduleId }),
     }),
 };
@@ -34,7 +34,7 @@ export const scheduleMutations = {
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries({ queryKey: scheduleKeys.lists() });
         queryClient.invalidateQueries({
-          queryKey: scheduleKeys.detail(variables.scheduleId),
+          queryKey: scheduleKeys.detail(String(variables.scheduleId)),
         });
       },
     }),

@@ -23,13 +23,13 @@ export default function ScheduleItem({ schedule }: Props) {
     id,
     companyName,
     position,
-    interviewDate,
+    interviewDateTime,
     interviewStep,
     remainDate,
     memoirTypes,
   } = schedule;
 
-  const formattedDate = formatDateToYYMMDDHHMM(interviewDate);
+  const formattedDate = formatDateToYYMMDDHHMM(interviewDateTime);
 
   const handleNavigateToDetail = () => {
     router.push(PATH.SCHEDULE.DETAIL.path.replace('[id]', String(id)));
