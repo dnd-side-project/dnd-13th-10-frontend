@@ -5,18 +5,18 @@ export interface Schedule {
   id: number;
   companyName: string;
   position: Position | string;
-  interviewDate: string;
+  interviewDateTime: string;
   interviewStep: InterviewStep | string;
   remainDate?: number;
   memoirTypes?: MemoirType[] | string[];
   createdAt: string;
 }
 
-// 일정 목록
 export interface ScheduleData {
-  code: string;
-  message: string;
-  data: Schedule[];
+  pageSize: number;
+  nextCursor: string | null;
+  hasNext: boolean;
+  result: Schedule[];
 }
 
 // 일정 생성
@@ -33,7 +33,7 @@ export interface ScheduleDetailData {
   id: number;
   companyName: string;
   position: Position | string;
-  interviewDate: string;
+  interviewDateTime: string;
   interviewStep: InterviewStep | string;
   location: string;
 }
