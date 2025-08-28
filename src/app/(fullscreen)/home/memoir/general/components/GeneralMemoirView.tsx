@@ -1,25 +1,74 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { Header } from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
+import { memoirMutations } from '@/queries/memoirOptions';
+import { MemoirsRequest } from '@/types/memoirTypes';
+import { MEMOIR_TYPES } from '@/constants/code';
+import { PATH } from '@/constants/path';
+import { formatDateToYYYYMMDD, formatTime24 } from '@/utils/date';
 
 import InterviewInfo from './InterviewInfo';
 import QnA from './QnA';
 import InterviewReview from './InterviewReview';
 import ReferenceLink from './ReferenceLink';
-
 import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
 import { isGeneralMemoirFormValid } from '../utils/generalMemoirValidation';
 
 export default function GeneralMemoirView() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const formData = useGeneralMemoirFormStore(state => state.formData);
+  const resetForm = useGeneralMemoirFormStore(state => state.resetForm);
   const isSaveButtonEnabled = isGeneralMemoirFormValid(formData);
+
+  const { mutate: createMemoir } = useMutation(
+    memoirMutations.create(queryClient),
+  );
 
   const handleSave = () => {
     if (!isSaveButtonEnabled) return;
 
-    // console.log('✅ 최종 저장 데이터:', formData);
-    // TO-DO: 이 곳에서 서버로 데이터를 전송하는 API를 호출
+    const payload: MemoirsRequest = {
+      type: MEMOIR_TYPES.GENERAL,
+      ...formData.interviewInfo,
+      ...formData.interviewReview,
+      interviewDate: formatDateToYYYYMMDD(formData.interviewInfo.interviewDate),
+      interviewTime: formatTime24(formData.interviewInfo.interviewTime),
+      url: formData.references.url,
+      questions: formData.questions.map((q, index) => ({
+        questionType: q.questionType,
+        title: q.title,
+        answer: q.answer,
+        order: index + 1,
+      })),
+      isTmp: false,
+    };
+
+    createMemoir(payload, {
+      onSuccess: response => {
+        const newMemoirId = response.data;
+        if (newMemoirId) {
+          alert('회고가 성공적으로 저장되었습니다!');
+          resetForm();
+          const detailPath = PATH.MEMOIR.DETAIL.path.replace(
+            '[id]',
+            String(newMemoirId),
+          );
+          router.push(detailPath);
+        } else {
+          alert('회고가 저장되었지만, 홈으로 이동합니다.');
+          router.push(PATH.HOME.path);
+        }
+      },
+      onError: () => {
+        alert('회고 저장에 실패했습니다. 다시 시도해주세요.');
+      },
+    });
   };
 
   return (

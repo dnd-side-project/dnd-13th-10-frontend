@@ -2,7 +2,6 @@ import { create } from 'zustand';
 
 import type { TimeValue } from '@/components/ui/picker/TimePicker';
 import type {
-  MemoirType,
   InterviewFormat,
   InterviewLevel,
   InterviewMethod,
@@ -10,16 +9,40 @@ import type {
   InterviewStatus,
   InterviewStep,
   Position,
-  QuestionType,
   SatisfactionNote,
+  Questions,
 } from '@/types/memoirTypes';
 
-export interface QuestionItem {
-  order: string;
-  questionType: QuestionType | '';
-  content: string;
-  answer: string;
-}
+const initialFormData: GeneralMemoirFormData = {
+  interviewInfo: {
+    companyName: '',
+    interviewDate: null,
+    interviewTime: null,
+    position: '' as Position,
+    interviewStep: '' as InterviewStep,
+    interviewFormat: '' as InterviewFormat,
+    interviewMethod: '' as InterviewMethod,
+    interviewMood: '' as InterviewMood,
+  },
+  questions: [
+    {
+      order: 1,
+      questionType: '',
+      title: '',
+      answer: '',
+    },
+  ],
+  interviewReview: {
+    interviewLevel: '' as InterviewLevel,
+    satisfactionNote: '' as SatisfactionNote,
+    freeNote: '',
+    interviewStatus: '' as InterviewStatus,
+    isPublic: false,
+  },
+  references: {
+    url: '',
+  },
+};
 
 interface InterviewInfoData {
   companyName: string;
@@ -46,7 +69,7 @@ interface ReferenceData {
 
 export interface GeneralMemoirFormData {
   interviewInfo: InterviewInfoData;
-  questions: QuestionItem[];
+  questions: Questions[];
   interviewReview: InterviewReviewData;
   references: ReferenceData;
 }
@@ -57,41 +80,12 @@ interface GeneralMemoirFormState {
     key: K,
     value: GeneralMemoirFormData[K],
   ) => void;
+  resetForm: () => void;
 }
 
 export const useGeneralMemoirFormStore = create<GeneralMemoirFormState>(
   set => ({
-    formData: {
-      type: '' as MemoirType,
-      interviewInfo: {
-        companyName: '',
-        interviewDate: null,
-        interviewTime: null,
-        position: '' as Position,
-        interviewStep: '' as InterviewStep,
-        interviewFormat: '' as InterviewFormat,
-        interviewMethod: '' as InterviewMethod,
-        interviewMood: '' as InterviewMood,
-      },
-      questions: [
-        {
-          order: crypto.randomUUID(),
-          questionType: '',
-          content: '',
-          answer: '',
-        },
-      ],
-      interviewReview: {
-        interviewLevel: '' as InterviewLevel,
-        satisfactionNote: '' as SatisfactionNote,
-        freeNote: '',
-        interviewStatus: '' as InterviewStatus,
-        isPublic: false,
-      },
-      references: {
-        url: '',
-      },
-    },
+    formData: initialFormData,
     updateFormData: (key, value) =>
       set(state => ({
         formData: {
@@ -99,5 +93,6 @@ export const useGeneralMemoirFormStore = create<GeneralMemoirFormState>(
           [key]: value,
         },
       })),
+    resetForm: () => set({ formData: initialFormData }),
   }),
 );
