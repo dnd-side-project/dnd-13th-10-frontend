@@ -1,5 +1,8 @@
+import Link from 'next/link';
+
 import { Badge } from '@/components/ui/Badge';
 import { formatDateToYYMMDD } from '@/utils/date';
+import { PATH } from '@/constants/path';
 import type { Memoir } from '@/types/memoirTypes';
 
 interface Props {
@@ -11,8 +14,10 @@ export default function MemoirItem({ memoir, hideBadge = false }: Props) {
   const badgeTextColor =
     memoir.type === '퀵 회고' ? 'text-secondary-btn' : 'text-primary-btn';
 
+  const detailPath = PATH.MEMOIR.DETAIL.path.replace('[id]', String(memoir.id));
+
   return (
-    <>
+    <Link href={detailPath}>
       <article className="bg-foundation-box cursor-pointer rounded-lg p-3">
         <div className="flex items-center gap-3">
           {!hideBadge && (
@@ -35,6 +40,6 @@ export default function MemoirItem({ memoir, hideBadge = false }: Props) {
           작성일 : {formatDateToYYMMDD(memoir.createdAt)}
         </p>
       </article>
-    </>
+    </Link>
   );
 }

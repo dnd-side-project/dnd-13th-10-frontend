@@ -48,8 +48,13 @@ export const createMemoir = async (
 // 회고 상세 조회 API
 export const getMemoirDetails = async (
   memoirId: number,
+  cookie?: string,
 ): Promise<ApiResponse<MemoirData>> => {
-  const response = await http.get(`/memoirs/${memoirId}`);
+  const response = await http.get(`/memoirs/${memoirId}`, {
+    headers: {
+      Cookie: cookie || '',
+    },
+  });
 
   return response.data;
 };

@@ -136,7 +136,7 @@ export interface MemoirData {
   companyName: string;
   position: Position | string;
   interviewStep?: InterviewStep | string;
-  interviewDateTime: string;
+  interviewDatetime: string;
   likeCount: number | null;
   viewCount: number | null;
   createdAt: string;
