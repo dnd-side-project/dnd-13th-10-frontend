@@ -23,3 +23,9 @@ http.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export const internal = axios.create({
+  baseURL: '/api',
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' },
+});

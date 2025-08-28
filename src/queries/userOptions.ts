@@ -1,3 +1,5 @@
+'use client';
+
 import {
   mutationOptions,
   QueryClient,
@@ -28,5 +30,22 @@ export const userMutations = {
       mutationFn: userApi.deleteAllUserSearchHistory,
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: userKeys.history() }),
+    }),
+  logout: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationKey: userKeys.logout(),
+      mutationFn: userApi.logout,
+      onSuccess: () => {
+        queryClient.clear();
+      },
+    }),
+
+  withdraw: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationKey: userKeys.withdraw(),
+      mutationFn: userApi.deleteAccount,
+      onSuccess: () => {
+        queryClient.clear();
+      },
     }),
 };
