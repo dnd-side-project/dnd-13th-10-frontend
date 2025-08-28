@@ -26,6 +26,7 @@ export const PATH = {
     GENERAL: { path: '/home/memoir/general', label: '일반회고' },
     DETAIL: { path: '/home/memoir/[id]', label: '회고 상세' },
     HOT: { path: '/home/memoir/hot', label: '이번주 HOT 회고' },
+    EDIT: { path: '/home/memoir/[id]/edit', label: '회고 수정' },
   },
 
   MY_PAGE: {
