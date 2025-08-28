@@ -96,9 +96,16 @@ export interface User {
 export interface Question {
   id: number;
   questionType: QuestionType | string;
-  content: string;
+  title: string;
   answer?: string | null;
   displayOrder: number;
+}
+
+export interface CategoryQuestionResponse {
+  pageSize: number;
+  nextCursor: string;
+  hasNext: boolean;
+  result: Question[];
 }
 
 export interface Attachment {

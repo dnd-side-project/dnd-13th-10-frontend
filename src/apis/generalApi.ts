@@ -1,21 +1,20 @@
 import { ApiResponse, http } from '@/lib/axios';
 import type { Company, SearchReq } from '@/types/generalTypes';
-import type { MemoirType, QuestionType } from '@/types/memoirTypes';
+import type { CategoryQuestionResponse } from '@/types/memoirTypes';
 
 // 면접 질문 카테고리 API
 export const getQuestionCategories = async ({
-  type,
-  memoirType,
-  condition,
   searchReq,
+  cookie,
 }: {
-  type: QuestionType | string;
-  memoirType: MemoirType | string;
-  condition?: string;
   searchReq: SearchReq;
-}): Promise<ApiResponse<string[]>> => {
+  cookie?: string;
+}): Promise<ApiResponse<CategoryQuestionResponse>> => {
   const response = await http.get('/question', {
-    params: { type, memoirType, condition, searchReq },
+    params: searchReq,
+    headers: {
+      Cookie: cookie,
+    },
   });
 
   return response.data;
