@@ -2,6 +2,7 @@ import { ApiResponse, http, internal } from '@/lib/axios';
 import {
   GetMyMemoirsParams,
   MyMemoir,
+  Profile,
   UpdateProfilePayload,
   UserSearchHistory,
 } from '@/types/userTypes';
@@ -70,6 +71,13 @@ export const updateProfile = async ({
     headers: { 'Content-Type': undefined },
   });
   return res.data;
+};
+
+// 회원 프로필 조회
+export const getProfile = async (): Promise<ApiResponse<Profile>> => {
+  const response = await http.get('/users/profile');
+
+  return response.data;
 };
 
 // 나의 회고 가져오기

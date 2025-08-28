@@ -16,6 +16,11 @@ export const userQueries = {
       queryKey: userKeys.history(),
       queryFn: userApi.getUserSearchHistory,
     }),
+  getProfile: () =>
+    queryOptions({
+      queryKey: userKeys.profile(),
+      queryFn: userApi.getProfile,
+    }),
 };
 
 export const userMutations = {

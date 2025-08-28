@@ -4,6 +4,11 @@ export interface UserSearchHistory {
   content: string;
 }
 
+export interface Profile {
+  username: string;
+  profileImageUrl: string;
+}
+
 export interface UpdateProfilePayload {
   username?: string;
   profileImage?: File | null;
