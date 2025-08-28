@@ -6,6 +6,18 @@ export const formatTime = (time: TimeValue | null): string => {
   return `${time.meridiem} ${time.hour}:${minute}`;
 };
 
+/**
+ * 24시간 형식으로 시간을 포맷합니다.
+ * @param time
+ * @returns  24시간 형식의 시간 문자열
+ */
+export const formatTime24 = (time: TimeValue | null): string => {
+  if (!time) return '';
+  const hour = String(time.hour).padStart(2, '0');
+  const minute = String(time.minute).padStart(2, '0');
+  return `${hour}:${minute}`;
+};
+
 export const formatDate = (date: Date | null): string => {
   if (!date) return '';
   return new Intl.DateTimeFormat('ko-KR', {
@@ -13,6 +25,19 @@ export const formatDate = (date: Date | null): string => {
     month: 'long',
     day: 'numeric',
   }).format(date);
+};
+
+/**
+ * Date 객체를 'yyyy-MM-dd' 형식의 문자열로 변환합니다.
+ * @param date 변환할 Date 객체
+ * @returns 'yyyy-MM-dd' 형식의 문자열
+ */
+export const formatDateToYYYYMMDD = (date: Date | null): string => {
+  if (!date) return '';
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 /**
