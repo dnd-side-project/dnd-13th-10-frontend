@@ -21,7 +21,7 @@ export const mockMemoirDetailResponse: MemoirDetailResponse = {
       {
         id: 1,
         questionType: 'JOB',
-        content: 'React의 가상 DOM(Virtual DOM)에 대해 설명해주세요.',
+        title: 'React의 가상 DOM(Virtual DOM)에 대해 설명해주세요.',
         answer:
           '가상 DOM은 실제 DOM의 복사본 같은 개념으로, UI 변경이 있을 때마다 실제 DOM을 직접 조작하는 대신 메모리에 있는 가상 DOM을 먼저 업데이트합니다. 이후 이전 가상 DOM과 비교하여 변경된 부분만 찾아내 실제 DOM에 한 번만 적용하는 방식으로 성능을 최적화합니다. 이를 재조정(Reconciliation)이라고 합니다.',
         displayOrder: 1,
@@ -29,7 +29,7 @@ export const mockMemoirDetailResponse: MemoirDetailResponse = {
       {
         id: 2,
         questionType: 'EXPERIENCE',
-        content:
+        title:
           '팀 프로젝트 중 가장 어려웠던 갈등 상황과 해결 경험을 말씀해주세요.',
         answer:
           '디자이너와 특정 UI/UX 구현 방식에 대해 의견 차이가 있었습니다. 저는 기술적인 제약을, 디자이너는 사용자 경험을 우선시했습니다. 문제 해결을 위해 정기적으로 싱크업 미팅을 제안했고, 프로토타입을 함께 만들어보며 기술적 한계와 디자인 목표 사이의 최적의 타협점을 찾아 성공적으로 프로젝트를 마무리한 경험이 있습니다.',
@@ -38,7 +38,7 @@ export const mockMemoirDetailResponse: MemoirDetailResponse = {
       {
         id: 3,
         questionType: 'PERSONALITY',
-        content: '우리 회사에 지원한 동기가 무엇인가요?',
+        title: '우리 회사에 지원한 동기가 무엇인가요?',
         answer: null,
         displayOrder: 3,
       },
