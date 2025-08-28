@@ -32,8 +32,7 @@ async function handle(req: NextRequest) {
     );
   }
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get('devseed_token')?.value;
+  const token = (await cookies()).get('devseed_token')?.value;
   if (!token) {
     return NextResponse.json(
       { message: 'Unauthorized (no token)' },
@@ -41,25 +40,29 @@ async function handle(req: NextRequest) {
     );
   }
 
-  const pathname = req.nextUrl.pathname;
-  const seg = pathname.replace(/^\/api\/proxy\/?/, '');
+  const seg = req.nextUrl.pathname.replace(/^\/api\/proxy\/?/, '');
+  const target = new URL(`${BASE.replace(/\/+$/, '')}/${seg}`);
+  target.search = req.nextUrl.search; // ✅ 쿼리 통째로 복사
 
-  const url = new URL(`${BASE.replace(/\/+$/, '')}/${seg}`);
-  req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
+  const inHeaders = new Headers(req.headers);
+  [
+    'host',
+    'content-length',
+    'connection',
+    'transfer-encoding',
+    'cookie',
+  ].forEach(h => inHeaders.delete(h));
 
-  const ct = req.headers.get('content-type') ?? undefined;
+  inHeaders.set(AUTH_HEADER, `${AUTH_PREFIX}${token}`);
+
   const body =
     req.method === 'GET' || req.method === 'HEAD'
       ? undefined
       : await req.arrayBuffer();
 
-  const upstream = await fetch(url, {
+  const upstream = await fetch(target, {
     method: req.method,
-    headers: {
-      ...(ct ? { 'Content-Type': ct } : {}),
-      [AUTH_HEADER]: `${AUTH_PREFIX}${token}`,
-      Accept: 'application/json, */*;q=0.1',
-    },
+    headers: inHeaders,
     body,
     redirect: 'manual',
     cache: 'no-store',
@@ -75,13 +78,6 @@ async function handle(req: NextRequest) {
     );
   }
 
-  const text = await upstream.text();
-  const h = new Headers(upstream.headers);
-  h.delete('set-cookie');
-  h.delete('transfer-encoding');
-  h.delete('connection');
-  h.delete('content-encoding');
-
   if (status === 401) {
     const res = NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     res.headers.append(
@@ -90,11 +86,17 @@ async function handle(req: NextRequest) {
     );
     return res;
   }
+
   if (status >= 400) {
-    return NextResponse.json(safeJson(text), { status });
+    const errText = await upstream.text();
+    return NextResponse.json(safeJson(errText), { status });
   }
 
-  return new NextResponse(text, { status, headers: h });
+  const outHeaders = new Headers(upstream.headers);
+  ['set-cookie', 'transfer-encoding', 'connection', 'content-encoding'].forEach(
+    h => outHeaders.delete(h),
+  );
+  return new NextResponse(upstream.body, { status, headers: outHeaders });
 }
 
 function safeJson(t: string) {

@@ -31,6 +31,14 @@ export const userMutations = {
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: userKeys.history() }),
     }),
+  updateProfile: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationKey: userKeys.profile(),
+      mutationFn: userApi.updateProfile,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: userKeys.profile() });
+      },
+    }),
   logout: (queryClient: QueryClient) =>
     mutationOptions({
       mutationKey: userKeys.logout(),
@@ -39,7 +47,6 @@ export const userMutations = {
         queryClient.clear();
       },
     }),
-
   withdraw: (queryClient: QueryClient) =>
     mutationOptions({
       mutationKey: userKeys.withdraw(),

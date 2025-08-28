@@ -41,3 +41,32 @@ export const deleteAccount = async (): Promise<ApiResponse<void>> => {
 
   return response.data;
 };
+
+// 프로필 수정 API
+export type UpdateProfilePayload = {
+  username?: string;
+  profileImage?: File | null;
+};
+
+export const updateProfile = async ({
+  username,
+  profileImage,
+}: UpdateProfilePayload) => {
+  const form = new FormData();
+
+  if (username) {
+    form.append(
+      'request',
+      new Blob([JSON.stringify({ username })], { type: 'application/json' }),
+    );
+  }
+
+  if (profileImage) {
+    form.append('profileImage', profileImage);
+  }
+
+  const res = await http.patch('/users/update-profile', form, {
+    headers: { 'Content-Type': undefined },
+  });
+  return res.data;
+};

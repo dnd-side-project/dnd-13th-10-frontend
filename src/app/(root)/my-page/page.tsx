@@ -24,9 +24,9 @@ const MY_PAGE_METADATA = [
 
 export default function MyPage() {
   const router = useRouter();
-  const qc = useQueryClient();
-  const logout = useMutation(userMutations.logout(qc));
-  const withdraw = useMutation(userMutations.withdraw(qc));
+  const queryClient = useQueryClient();
+  const logout = useMutation(userMutations.logout(queryClient));
+  const withdraw = useMutation(userMutations.withdraw(queryClient));
 
   const ETC = [
     {
