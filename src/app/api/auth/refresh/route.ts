@@ -41,7 +41,7 @@ export async function POST(_req: NextRequest) {
       { status: 500 },
     );
 
-  const accessMax = Number(process.env.ACCESS_MAX_AGE ?? 3600);
+  const accessMax = Number(3600);
   const res = NextResponse.json({}, { status: 204 });
   res.cookies.set('devseed_token', access, {
     httpOnly: true,

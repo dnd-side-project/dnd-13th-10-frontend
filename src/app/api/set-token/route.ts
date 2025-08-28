@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     refreshMaxAgeSec = Number(60 * 60 * 24 * 14),
   } = await req.json();
 
-  if (!token)
+  if (!token || typeof token !== 'string')
     return NextResponse.json(
       { ok: false, error: 'MISSING_ACCESS_TOKEN' },
       { status: 400 },

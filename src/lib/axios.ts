@@ -51,16 +51,11 @@ if (typeof window !== 'undefined') {
             config._retry = true;
             return http.request(config);
           } catch {
-            if (typeof window !== 'undefined') {
-              window.location.href = '/';
-            }
+            window.location.href = '/';
             return Promise.reject(error);
           }
         }
-
-        if (typeof window !== 'undefined') {
-          window.location.href = '/';
-        }
+        window.location.href = '/';
       }
 
       return Promise.reject(error);
