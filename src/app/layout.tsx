@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import QueryClientProvider from './QueryClientProvider';
+import AuthRefreshManager from '@/components/AuthRefreshManager';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} font-pretendard antialiased`}>
         <QueryClientProvider>
           <div className="bg-foundation-bg max-w-maxWidth mx-auto min-h-screen text-white">
+            <AuthRefreshManager leadSeconds={60} />
             {children}
           </div>
           <ReactQueryDevtools />
