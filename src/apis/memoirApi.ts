@@ -1,4 +1,3 @@
-import { mockMemoirDetailResponse } from '@/app/(fullscreen)/home/memoir/[slug]/mocks/mockMemoirDetailResponse';
 import { ApiResponse, http } from '@/lib/axios';
 import type {
   BookmarkToggleResponse,
@@ -6,19 +5,9 @@ import type {
   LikeToggleResponse,
   Memoir,
   MemoirData,
-  MemoirDetailResponse,
   MemoirsRequest,
   PaginatedMemoirData,
 } from '@/types/memoirTypes';
-
-export async function getMemoirDetail(
-  _id: string,
-): Promise<MemoirDetailResponse> {
-  // const response = await axios.get(`/memoirs/${id}`);
-  // return response.data
-
-  return mockMemoirDetailResponse;
-}
 
 // 회고 리스트 조회 API (퀵/일반 모두 조회)
 export const getAllMemoirs = async (): Promise<ApiResponse<Memoir[]>> => {
