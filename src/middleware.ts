@@ -1,13 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-const PROTECTED = [
-  '/home',
-  '/my-page',
-  '/schedule',
-  '/community',
-  '/api/set-token',
-  '/api/auth/refresh',
-];
+const PROTECTED = ['/home', '/my-page', '/schedule', '/community'];
 const TOKEN_QUERY_KEY = 'token';
 const COOKIE_NAME = process.env.JWT_COOKIE_NAME || 'devseed_token';
 
