@@ -1,10 +1,10 @@
 import { Badge } from '@/components/ui/Badge';
 import { MEMOIR_TYPES } from '@/constants/code';
 import { MEMOIR_TYPE_LABELS, POSITION_LABELS } from '@/constants/labels';
-import type { Memoir } from '@/types/memoirTypes';
+import type { ApiMemoirItem } from '@/types/memoirTypes';
 
 interface Props {
-  memoir: Memoir;
+  memoir: ApiMemoirItem;
   hideBadge?: boolean;
 }
 
