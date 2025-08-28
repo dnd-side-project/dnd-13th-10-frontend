@@ -18,7 +18,7 @@ export async function PATCH(_req: NextRequest) {
       },
     );
   } catch (e) {
-    console.error('Backend delete-account failed', e);
+    alert('탈퇴 중 오류가 발생했습니다. 다시 시도해주세요.' + e);
   }
 
   const res = new NextResponse(null, { status: 204 });

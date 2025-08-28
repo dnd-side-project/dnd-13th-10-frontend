@@ -15,7 +15,7 @@ export async function POST(_req: NextRequest) {
       cache: 'no-store',
     });
   } catch (e) {
-    console.error('Backend logout failed', e);
+    alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.' + e);
   }
 
   const res = new NextResponse(null, { status: 204 });
