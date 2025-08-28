@@ -9,6 +9,8 @@ import RightArrow from '@/assets/icon/right_arrow_icon.svg';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userMutations } from '@/queries/userOptions';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/store/userStore';
+import Image from 'next/image';
 
 type MenuItemLink = { href: string; label: string };
 type MenuItemAction = { label: string; onClick: () => void };
@@ -27,6 +29,7 @@ export default function MyPage() {
   const queryClient = useQueryClient();
   const logout = useMutation(userMutations.logout(queryClient));
   const withdraw = useMutation(userMutations.withdraw(queryClient));
+  const { username, profileImageUrl } = useUserStore();
 
   const ETC = [
     {
@@ -53,8 +56,20 @@ export default function MyPage() {
           <section className="bg-foundation-box rounded-xl p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="bg-foundation-secondary h-12 w-12 rounded-full" />
-                <span className="typo-subhead-03 text-white">SEED</span>
+                <div className="relative h-12 w-12 overflow-hidden rounded-full bg-gray-200">
+                  {profileImageUrl ? (
+                    <Image
+                      src={profileImageUrl}
+                      alt="프로필 사진"
+                      fill
+                      sizes="48px"
+                      className="object-cover object-center"
+                    />
+                  ) : (
+                    <div className="h-full w-full" />
+                  )}
+                </div>
+                <span className="typo-subhead-03 text-white">{username}</span>
               </div>
               <Link href={PATH.MY_PAGE.PROFILE_MODIFY.path}>
                 <Badge shape="round">{PATH.MY_PAGE.PROFILE_MODIFY.label}</Badge>
