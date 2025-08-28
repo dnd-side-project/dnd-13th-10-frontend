@@ -1,10 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Header } from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/utils/cn';
+import { formatDateToYYYYMMDD, formatTime24 } from '@/utils/date';
+import { memoirMutations } from '@/queries/memoirOptions';
+import { MemoirsRequest } from '@/types/memoirTypes';
+import { MEMOIR_TYPES } from '@/constants/code';
+import { PATH } from '@/constants/path';
 
 import QuickMemoirStep from './QuickMemoirStep';
 import { useMemoirFormStore } from '../store/memoirFormStore';
@@ -14,8 +22,14 @@ const TOTAL_STEPS = 4;
 
 export default function QuickMemoirView() {
   const [currentStep, setCurrentStep] = useState(1);
-
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const formData = useMemoirFormStore(state => state.formData);
+  const resetForm = useMemoirFormStore(state => state.resetForm);
+
+  const { mutate: createMemoir } = useMutation(
+    memoirMutations.create(queryClient),
+  );
 
   const isLastStep = currentStep === TOTAL_STEPS;
   const isFirstStep = currentStep === 1;
@@ -23,12 +37,60 @@ export default function QuickMemoirView() {
 
   const isNextButtonEnabled = isStepValid(currentStep, formData);
 
+  const handleSubmit = () => {
+    const payload: MemoirsRequest = {
+      type: MEMOIR_TYPES.QUICK,
+      companyName: formData.step1.companyName,
+      position: formData.step1.position,
+      interviewDate: formData.step1.interviewDate
+        ? formatDateToYYYYMMDD(formData.step1.interviewDate)
+        : '',
+      interviewTime: formatTime24(formData.step1.interviewTime),
+      interviewFormat: formData.step1.interviewFormat,
+      interviewMood: formData.step2.interviewMood,
+      satisfactionNote: formData.step2.satisfactionNote,
+      interviewStatus: formData.step4.interviewStatus,
+      freeNote: formData.step4.freeNote,
+      questions: formData.step3.map((q, index) => ({
+        questionType: q.questionType,
+        title: q.title,
+        order: index + 1,
+      })),
+      isTmp: false,
+      isPublic: formData.step4.isPublic,
+    };
+
+    createMemoir(payload, {
+      onSuccess: response => {
+        const newMemoirId = response.data;
+
+        if (newMemoirId) {
+          alert('회고가 성공적으로 저장되었습니다!');
+
+          resetForm();
+
+          const detailPath = PATH.MEMOIR.DETAIL.path.replace(
+            '[id]',
+            String(newMemoirId),
+          );
+
+          router.push(detailPath);
+        } else {
+          alert('회고가 저장되었지만, 홈으로 이동합니다.');
+          router.push(PATH.HOME.path);
+        }
+      },
+      onError: _error => {
+        alert('회고 저장에 실패했습니다. 다시 시도해주세요.');
+      },
+    });
+  };
+
   const handleNext = () => {
-    if (currentStep < TOTAL_STEPS) {
-      setCurrentStep(prev => prev + 1);
+    if (isLastStep) {
+      handleSubmit();
     } else {
-      // TODO: 최종 회고 데이터 서버 전송 로직 구현
-      // console.log('최종 회고 데이터:', formData);
+      setCurrentStep(prev => prev + 1);
     }
   };
 

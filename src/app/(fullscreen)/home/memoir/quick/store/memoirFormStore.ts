@@ -2,20 +2,39 @@ import { create } from 'zustand';
 
 import type { TimeValue } from '@/components/ui/picker/TimePicker';
 import type {
-  MemoirType,
   InterviewFormat,
   InterviewMood,
   InterviewStatus,
   Position,
-  QuestionType,
   SatisfactionNote,
+  Questions,
 } from '@/types/memoirTypes';
 
-export interface QuestionItem {
-  order: string;
-  questionType: QuestionType | '';
-  content: string;
-}
+const initialFormData: MemoirFormData = {
+  step1: {
+    companyName: '',
+    position: '' as Position,
+    interviewDate: null,
+    interviewTime: null,
+    interviewFormat: '' as InterviewFormat,
+  },
+  step2: {
+    interviewMood: '' as InterviewMood,
+    satisfactionNote: '' as SatisfactionNote,
+  },
+  step3: [
+    {
+      order: 1,
+      questionType: '',
+      title: '',
+    },
+  ],
+  step4: {
+    freeNote: '',
+    interviewStatus: '' as InterviewStatus,
+    isPublic: false,
+  },
+};
 
 interface Step1Data {
   companyName: string;
@@ -39,7 +58,7 @@ interface Step4Data {
 export interface MemoirFormData {
   step1: Step1Data;
   step2: Step2Data;
-  step3: QuestionItem[];
+  step3: Questions[];
   step4: Step4Data;
 }
 
@@ -49,35 +68,11 @@ interface MemoirFormState {
     stepKey: K,
     data: MemoirFormData[K],
   ) => void;
+  resetForm: () => void;
 }
 
 export const useMemoirFormStore = create<MemoirFormState>(set => ({
-  formData: {
-    type: '' as MemoirType | '',
-    step1: {
-      companyName: '',
-      position: '' as Position,
-      interviewDate: null,
-      interviewTime: null,
-      interviewFormat: '' as InterviewFormat,
-    },
-    step2: {
-      interviewMood: '' as InterviewMood,
-      satisfactionNote: '' as SatisfactionNote,
-    },
-    step3: [
-      {
-        order: crypto.randomUUID(),
-        questionType: '' as QuestionType,
-        content: '',
-      },
-    ],
-    step4: {
-      freeNote: '',
-      interviewStatus: '' as InterviewStatus,
-      isPublic: false,
-    },
-  },
+  formData: initialFormData,
   updateStepData: (stepKey, data) =>
     set(state => ({
       formData: {
@@ -85,4 +80,5 @@ export const useMemoirFormStore = create<MemoirFormState>(set => ({
         [stepKey]: data,
       },
     })),
+  resetForm: () => set({ formData: initialFormData }),
 }));

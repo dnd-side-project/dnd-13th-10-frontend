@@ -102,9 +102,9 @@ export const memoirMutations = {
         memoirApi.updateMemoir(updatedData),
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries({ queryKey: memoirKeys.lists() });
-        if (variables.id) {
+        if (variables.type) {
           queryClient.invalidateQueries({
-            queryKey: memoirKeys.detail(variables.id),
+            queryKey: memoirKeys.detail(Number(variables.type)),
           });
         }
       },
