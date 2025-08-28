@@ -194,3 +194,14 @@ export interface BookmarkToggleResponse {
   bookMarked: boolean;
   toggledAt: string;
 }
+
+// 임시 저장 회고
+export interface TmpMemoir {
+  id: number;
+  type: string;
+  companyName: string;
+  position: string;
+  createdAt: string;
+  isTmp: boolean;
+  isPublic: boolean;
+}

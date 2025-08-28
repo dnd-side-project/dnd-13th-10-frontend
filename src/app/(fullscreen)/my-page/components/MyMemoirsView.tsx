@@ -31,7 +31,6 @@ export default function MyMemoirsView() {
 
   return (
     <div className="flex flex-1 flex-col">
-      {/* 필터 칩 영역 */}
       {memoirs.length > 0 && (
         <div className="flex items-center gap-2 px-5 py-6">
           {filterChips.map(chip => (
