@@ -32,30 +32,33 @@ export interface QuestionRequest {
   order: number;
 }
 
-// 회고 수정/작성 요청
+export interface Questions {
+  questionType: QuestionType | string;
+  title: string;
+  order: number;
+  answer?: string | null;
+}
+
+// 회고 생성/수정 요청
 export interface MemoirsRequest {
-  id: number;
-  userId: number;
   scheduleId?: number;
   type: MemoirType | string;
+  companyName: string;
+  interviewDate: string;
+  interviewTime: string;
   interviewFormat: InterviewFormat | string;
   interviewMood: InterviewMood | string;
   satisfactionNote: SatisfactionNote | string;
-  interviewLevel: InterviewLevel | string;
   interviewStatus: InterviewStatus | string;
-  interviewMethod: InterviewMethod | string;
-  freeNote?: string;
-  url?: string;
-  companyName: string;
-  position: Position | string;
-  interviewStep: InterviewStep | string;
-  interviewDate: string;
-  interviewTime: string;
-  public: boolean;
-  tmp: boolean;
+  freeNote?: string | null;
+  questions: Questions[];
   isTmp: boolean;
   isPublic: boolean;
-  questions: QuestionRequest[];
+  position: Position | string;
+  interviewLevel?: InterviewLevel | string;
+  interviewMethod?: InterviewMethod | string;
+  interviewStep?: InterviewStep | string;
+  url?: string;
 }
 
 export interface Memoir {
