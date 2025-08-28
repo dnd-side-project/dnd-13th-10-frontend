@@ -150,7 +150,7 @@ function QuestionItem({ question }: { question: Question }) {
       <div className="flex items-start gap-3">
         <span className="text-secondary-btn typo-subhead-03">Q.</span>
         <p className="text-foundation-primary typo-subhead-03">
-          {question.content}
+          {question.title}
         </p>
       </div>
 

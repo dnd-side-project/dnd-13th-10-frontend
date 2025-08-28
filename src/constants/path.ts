@@ -8,7 +8,7 @@ export const PATH = {
     JOB: { path: '/home/questions/job', label: '직무질문' },
     EXPERIENCE: { path: '/home/questions/experience', label: '경험질문' },
     COMPANY: { path: '/home/questions/company', label: '회사질문' },
-    FOLLOW_UP: { path: '/home/questions/follow-up', label: '꼬리질문' },
+    FOLLOW_UP: { path: '/home/questions/follow_up', label: '꼬리질문' },
   },
 
   INTERVIEW: {
