@@ -1,5 +1,10 @@
 import { ApiResponse, http, internal } from '@/lib/axios';
-import { UserSearchHistory } from '@/types/userTypes';
+import {
+  GetMyMemoirsParams,
+  MyMemoir,
+  UpdateProfilePayload,
+  UserSearchHistory,
+} from '@/types/userTypes';
 
 // 사용자 검색 기록 조회 API
 export const getUserSearchHistory = async (): Promise<
@@ -43,10 +48,6 @@ export const deleteAccount = async (): Promise<ApiResponse<void>> => {
 };
 
 // 프로필 수정 API
-export type UpdateProfilePayload = {
-  username?: string;
-  profileImage?: File | null;
-};
 
 export const updateProfile = async ({
   username,
@@ -69,4 +70,12 @@ export const updateProfile = async ({
     headers: { 'Content-Type': undefined },
   });
   return res.data;
+};
+
+// 나의 회고 가져오기
+export const getMyMemoirs = async (params: GetMyMemoirsParams) => {
+  const response = await http.post<ApiResponse<MyMemoir[]>>('/memoirs/mine', {
+    request: { searchType: params.searchType },
+  });
+  return response.data;
 };
