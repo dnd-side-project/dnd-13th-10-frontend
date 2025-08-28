@@ -60,7 +60,15 @@ export const convertISOToTimeValue = (
 };
 
 export const formatDateToYYMMDDHHMM = (date: Date | string): string => {
+  if (!date) {
+    return '';
+  }
+
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  if (isNaN(dateObj.getTime())) {
+    return '';
+  }
 
   const pad = (num: number) => String(num).padStart(2, '0');
 
@@ -136,11 +144,24 @@ export const calculateDaysAgo = (dateString: string) => {
 };
 
 /**
- * 날짜 문자열(YYYY-MM-DD)을 YY.MM.DD 형식으로 변환하는 함수
- * @param dateString - 변환할 날짜 문자열
+ * Date 객체 또는 ISO 형식의 날짜 문자열을 'YY.MM.DD' 형식으로 변환
+ * @param dateSource - 변환할 날짜 (Date 객체 또는 ISO 문자열)
  */
-export const formatDateToYYMMDD = (dateString: string) => {
-  return dateString.substring(2).replace(/-/g, '.');
+export const formatDateToYYMMDD = (
+  dateSource: string | Date | null | undefined,
+): string => {
+  if (!dateSource) return '';
+
+  const dateObj =
+    typeof dateSource === 'string' ? new Date(dateSource) : dateSource;
+
+  if (isNaN(dateObj.getTime())) return '';
+
+  const year = String(dateObj.getFullYear()).slice(-2);
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const day = String(dateObj.getDate()).padStart(2, '0');
+
+  return `${year}.${month}.${day}`;
 };
 
 /**
