@@ -6,6 +6,7 @@ import type {
   Memoir,
   MemoirData,
   MemoirsRequest,
+  PaginatedCommentList,
   PaginatedMemoirData,
   PaginatedMemoirListData,
 } from '@/types/memoirTypes';
@@ -163,10 +164,21 @@ export const toggleLikeMemoir = async (
 };
 
 // 댓글 목록 조회 API
-export const getMemoirComments = async (
-  memoirId: number,
-): Promise<ApiResponse<Comment[]>> => {
-  const response = await http.get(`/memoirs/${memoirId}/comments`);
+export const getMemoirComments = async ({
+  memoirId,
+  cursor,
+  size,
+}: {
+  memoirId: number;
+  cursor?: string | null;
+  size?: number;
+}): Promise<ApiResponse<PaginatedCommentList>> => {
+  const response = await http.get(`/memoirs/${memoirId}/comments`, {
+    params: {
+      cursor,
+      size,
+    },
+  });
 
   return response.data;
 };
@@ -180,7 +192,7 @@ export const createMemoirComment = async ({
   memoirId: number;
   content: string;
   parentCommentId?: number;
-}): Promise<ApiResponse<Comment>> => {
+}): Promise<ApiResponse<void>> => {
   const response = await http.post(`/memoirs/${memoirId}/comments`, {
     content,
     parentCommentId,

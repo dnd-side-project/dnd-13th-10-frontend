@@ -22,6 +22,7 @@ import type { MemoirData } from '@/types/memoirTypes';
 
 import MemoirDetailContent from './MemoirDetailContent';
 import MemoirDetailAction from './MemoirDetailAction';
+import CommentDrawer from './CommentDrawer';
 
 interface Props {
   memoirData: MemoirData;
@@ -31,6 +32,7 @@ export default function MemoirDetailView({ memoirData }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isCommentDrawerOpen, setIsCommentDrawerOpen] = useState(false);
 
   const { mutate: deleteMemoir } = useMutation(
     memoirMutations.delete(queryClient),
@@ -78,7 +80,10 @@ export default function MemoirDetailView({ memoirData }: Props) {
 
       {memoirData.isPublic && (
         <footer>
-          <MemoirDetailAction isLike={false} />
+          <MemoirDetailAction
+            isLike={false}
+            onCommentClick={() => setIsCommentDrawerOpen(true)}
+          />
         </footer>
       )}
 
@@ -124,6 +129,12 @@ export default function MemoirDetailView({ memoirData }: Props) {
           </Button>
         </BottomDrawerFooter>
       </BottomDrawer>
+
+      <CommentDrawer
+        memoirId={memoirData.id}
+        isOpen={isCommentDrawerOpen}
+        onClose={() => setIsCommentDrawerOpen(false)}
+      />
     </div>
   );
 }

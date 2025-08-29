@@ -198,10 +198,26 @@ export interface Comment {
   author: string;
   profileImageUrl: string;
   createdAt: string;
+  isParent?: boolean;
+  children: Comment[] | null;
+}
+
+export interface PaginatedCommentList {
+  pageSize: number;
+  nextCursor: string | null;
+  hasNext: boolean;
+  result: Comment[];
 }
 
 // 북마크 토글
 export interface BookmarkToggleResponse {
   bookMarked: boolean;
   toggledAt: string;
+}
+
+// 댓글 생성 파라미터
+export interface CreateCommentVariables {
+  memoirId: number;
+  content: string;
+  parentCommentId?: number | null;
 }
