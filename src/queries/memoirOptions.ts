@@ -6,7 +6,10 @@ import {
 } from '@tanstack/react-query';
 
 import * as memoirApi from '@/apis/memoirApi';
-import type { MemoirsRequest } from '@/types/memoirTypes';
+import type {
+  CreateCommentVariables,
+  MemoirsRequest,
+} from '@/types/memoirTypes';
 
 import { memoirKeys } from './queryKeys';
 
@@ -32,11 +35,6 @@ export const memoirQueries = {
     queryOptions({
       queryKey: memoirKeys.tmp(),
       queryFn: memoirApi.getMyTmpMemoirs,
-    }),
-  comments: (memoirId: number) =>
-    queryOptions({
-      queryKey: memoirKeys.comments(memoirId),
-      queryFn: () => memoirApi.getMemoirComments(memoirId),
     }),
 };
 
@@ -96,6 +94,22 @@ export const memoirInfiniteQueries = {
         return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
       },
     }),
+
+  // 전체 댓글 조회
+  comments: (memoirId: number) =>
+    infiniteQueryOptions({
+      queryKey: memoirKeys.comments(memoirId),
+      queryFn: ({ pageParam }) =>
+        memoirApi.getMemoirComments({
+          memoirId: Number(memoirId),
+          cursor: pageParam,
+          size: DEFAULT_PAGE_SIZE,
+        }),
+      initialPageParam: null as string | null,
+      getNextPageParam: lastPage => {
+        return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
+      },
+    }),
 };
 
 export const memoirMutations = {
@@ -143,7 +157,14 @@ export const memoirMutations = {
     }),
   createComment: (queryClient: QueryClient) =>
     mutationOptions({
-      mutationFn: memoirApi.createMemoirComment,
+      mutationFn: (variables: CreateCommentVariables) => {
+        const { memoirId, content, parentCommentId } = variables;
+        return memoirApi.createMemoirComment({
+          memoirId,
+          content,
+          ...(parentCommentId !== null ? { parentCommentId } : {}),
+        });
+      },
       onSuccess: (_, variables) =>
         queryClient.invalidateQueries({
           queryKey: memoirKeys.comments(variables.memoirId),

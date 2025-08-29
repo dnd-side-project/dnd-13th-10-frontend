@@ -34,6 +34,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.kakaocdn.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'devseedstorage.s3.ap-northeast-2.amazonaws.com',
+      },
     ],
   },
 };

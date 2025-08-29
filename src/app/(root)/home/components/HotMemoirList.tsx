@@ -99,7 +99,7 @@ export function HotMemoirItem({ memoir }: { memoir: HotMemoir }) {
         <Badge
           size="xsmall"
           shape="minimal"
-          className={cn(interviewStatusClassName, 'mr-2')}
+          className={cn(interviewStatusClassName, 'mr-1')}
         >
           {memoir.interviewStatus}
         </Badge>
