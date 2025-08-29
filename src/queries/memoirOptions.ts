@@ -13,11 +13,6 @@ import { memoirKeys } from './queryKeys';
 const DEFAULT_PAGE_SIZE = 10;
 
 export const memoirQueries = {
-  all: () =>
-    queryOptions({
-      queryKey: memoirKeys.lists(),
-      queryFn: memoirApi.getAllMemoirs,
-    }),
   detail: (memoirId: number) =>
     queryOptions({
       queryKey: memoirKeys.detail(memoirId),
@@ -46,6 +41,20 @@ export const memoirQueries = {
 };
 
 export const memoirInfiniteQueries = {
+  all: (filters: { position?: string }) =>
+    infiniteQueryOptions({
+      queryKey: memoirKeys.lists(filters),
+      queryFn: ({ pageParam }) =>
+        memoirApi.getAllMemoirs({
+          ...filters,
+          cursor: pageParam,
+          size: DEFAULT_PAGE_SIZE,
+        }),
+      initialPageParam: null as string | null,
+      getNextPageParam: lastPage => {
+        return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
+      },
+    }),
   liked: () =>
     infiniteQueryOptions({
       queryKey: memoirKeys.liked({}),
