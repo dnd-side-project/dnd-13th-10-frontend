@@ -44,6 +44,7 @@ export default function QuestionContainer({
         type: questionType,
         memoirType: selectedFilter,
         condition: submittedTerm,
+        isMine: false,
       },
     }),
     enabled: isSearchQueryEnabled || isFilterQueryEnabled,

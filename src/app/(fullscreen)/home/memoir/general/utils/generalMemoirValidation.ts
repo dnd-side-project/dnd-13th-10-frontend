@@ -20,7 +20,7 @@ export const isGeneralMemoirFormValid = (
   const { questions } = formData;
   if (
     questions.length === 0 ||
-    !questions.every(q => q.questionType && q.content && q.answer)
+    !questions.every(q => q.questionType && q.title && q.answer)
   ) {
     return false;
   }

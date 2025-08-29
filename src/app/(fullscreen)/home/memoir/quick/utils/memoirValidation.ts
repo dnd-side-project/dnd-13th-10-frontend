@@ -28,8 +28,7 @@ export const isStepValid = (
     case 3: {
       const { step3: questions } = formData;
       return (
-        questions.length > 0 &&
-        questions.every(q => q.questionType && q.content)
+        questions.length > 0 && questions.every(q => q.questionType && q.title)
       );
     }
     case 4: {

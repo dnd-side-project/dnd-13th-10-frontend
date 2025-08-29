@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
+import { cookies } from 'next/headers';
 
-import { getMemoirDetail } from '@/apis/memoirApi';
-import { Header } from '@/components/ui/Header';
+import { getMemoirDetails } from '@/apis/memoirApi';
 
-import MemoirDetailContent from './components/MemoirDetailContent';
-import MemoirDetailAction from './components/MemoirDetailAction';
+import MemoirDetailView from './components/MemoirDetailView';
 
 export const metadata: Metadata = {
   title: '면접 회고 상세',
@@ -13,30 +12,21 @@ export const metadata: Metadata = {
 
 interface Params {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 }
 
 export default async function MemoirDetailPage({ params }: Params) {
-  const { id } = await params;
-  const response = await getMemoirDetail(id);
+  const slug = Number((await params).slug);
+
+  const cookieStore = await cookies();
+  const cookie = cookieStore
+    .getAll()
+    .map(c => `${c.name}=${c.value}`)
+    .join('; ');
+
+  const response = await getMemoirDetails(slug, cookie);
   const memoirData = response.data;
 
-  return (
-    <div className="flex h-screen flex-col">
-      <Header
-        title={memoirData.url ? '일반회고' : '퀵회고'}
-        showBackButton={true}
-      />
-      <main className="no-scrollbar flex-1 overflow-y-auto px-5">
-        <MemoirDetailContent data={memoirData} />
-      </main>
-
-      {memoirData.isPublic && (
-        <footer>
-          <MemoirDetailAction isLike={false} />
-        </footer>
-      )}
-    </div>
-  );
+  return <MemoirDetailView memoirData={memoirData} />;
 }

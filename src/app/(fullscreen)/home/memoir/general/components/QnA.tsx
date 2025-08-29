@@ -19,12 +19,9 @@ import {
 import { QUESTION_TYPE } from '@/constants/code';
 import { QUESTION_TYPE_LABELS } from '@/constants/labels';
 import { createOptionsArray } from '@/utils/options';
-import type { QuestionType } from '@/types/memoirTypes';
+import type { QuestionType, Questions } from '@/types/memoirTypes';
 
-import {
-  QuestionItem,
-  useGeneralMemoirFormStore,
-} from '../store/generalMemoirFormStore';
+import { useGeneralMemoirFormStore } from '../store/generalMemoirFormStore';
 
 const QUESTION_TYPE_OPTIONS = createOptionsArray(
   QUESTION_TYPE,
@@ -48,7 +45,7 @@ export default function QnA() {
 
   const handleQuestionChange = (
     index: number,
-    field: 'questionType' | 'content' | 'answer',
+    field: 'questionType' | 'title' | 'answer',
     value: string,
   ) => {
     const newQuestions = questions.map((q, i) =>
@@ -58,21 +55,21 @@ export default function QnA() {
   };
 
   const handleAddQuestion = () => {
-    const newQuestion: QuestionItem = {
-      order: crypto.randomUUID(),
+    const newQuestion: Questions = {
+      order: questions.length + 1,
       questionType: '',
-      content: '',
+      title: '',
       answer: '',
     };
     updateFormData('questions', [...questions, newQuestion]);
   };
 
   const handleOpenDrawer = (index: number) => {
-    setTempSelectedType(questions[index].questionType);
+    setTempSelectedType(questions[index].questionType as QuestionType | '');
     setActiveDrawerIndex(index);
   };
 
-  const handleRemoveQuestion = (order: string) => {
+  const handleRemoveQuestion = (order: number) => {
     if (questions.length <= 1) return;
     const filteredQuestions = questions.filter(q => q.order !== order);
     updateFormData('questions', filteredQuestions);
@@ -118,14 +115,14 @@ export default function QnA() {
               />
               <Input
                 placeholder="질문을 입력하세요."
-                value={question.content}
+                value={question.title}
                 onChange={e =>
-                  handleQuestionChange(index, 'content', e.target.value)
+                  handleQuestionChange(index, 'title', e.target.value)
                 }
               />
               <Input
                 placeholder="답변을 입력하세요."
-                value={question.answer}
+                value={question.answer ?? ''}
                 onChange={e =>
                   handleQuestionChange(index, 'answer', e.target.value)
                 }
