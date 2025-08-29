@@ -7,6 +7,7 @@ import MemoirStats from './components/MemoirStats';
 import HotMemoirList from './components/HotMemoirList';
 import MyMemoirList from './components/MyMemoirList';
 import TodayQuestion from './components/TodayQuestion';
+import TriggerRefreshOnce from '@/components/TriggerRefreshOnce';
 
 export const metadata: Metadata = {
   title: 'SEED를 통해',
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="px-5">
+      <TriggerRefreshOnce />
       <HomeHeader />
       <div className="mt-[18px] flex flex-col gap-8">
         <TodayQuestion />

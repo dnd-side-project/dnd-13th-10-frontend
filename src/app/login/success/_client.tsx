@@ -13,6 +13,7 @@ export default function LoginSuccessClient() {
   const clear = useUserStore(s => s.clear);
 
   const token = sp.get('token');
+  const refresh = sp.get('refresh');
 
   useEffect(() => {
     if (!token || postedRef.current) return;
@@ -23,23 +24,31 @@ export default function LoginSuccessClient() {
         const res = await fetch('/api/set-token', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
+          body: JSON.stringify({
+            token,
+            refreshToken: refresh ?? undefined,
+          }),
+          cache: 'no-store',
         });
+        if (!res.ok) throw new Error('set-token failed');
 
-        if (!res.ok) {
-          alert('로그인에 실패했습니다. 다시 시도해주세요.');
-          router.replace('/');
-          return;
+        if (typeof window !== 'undefined') {
+          const url = new URL(window.location.href);
+          url.searchParams.delete('token');
+          url.searchParams.delete('refresh');
+          window.history.replaceState({}, '', url.toString());
         }
+
         await fetchMyProfile();
+
         router.replace('/home');
       } catch (e) {
         clear();
-        alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.' + e);
+        alert('로그인 처리 중 오류가 발생했습니다. 다시 시도해주세요.' + e);
         router.replace('/');
       }
     })();
-  }, [token, router, fetchMyProfile, clear]);
+  }, [token, refresh, router, fetchMyProfile, clear]);
 
-  return <div></div>;
+  return null;
 }
