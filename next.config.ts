@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_DEVSEED_BASE_URL}/api/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_DEVSEED_BASE_URL}/:path*`,
       },
     ];
   },

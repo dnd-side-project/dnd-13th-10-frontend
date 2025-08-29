@@ -7,7 +7,7 @@ export async function PATCH(_req: NextRequest) {
 
   try {
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEVSEED_BASE_URL}/api/users/delete-account`,
+      `${process.env.NEXT_PUBLIC_DEVSEED_BASE_URL}/users/delete-account`,
       {
         method: 'PATCH',
         headers: {
