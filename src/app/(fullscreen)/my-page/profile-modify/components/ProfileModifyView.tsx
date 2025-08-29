@@ -10,22 +10,22 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import PlusIcon from '@/assets/icon/plus_icon2.svg';
 import { userMutations } from '@/queries/userOptions';
+import { useUserStore } from '@/store/userStore';
 
-interface Props {
-  initialNickname: string;
-}
-
-export default function ProfileModifyView({ initialNickname }: Props) {
+export default function ProfileModifyView() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const updateProfile = useMutation(userMutations.updateProfile(queryClient));
+  const { username, profileImageUrl, fetchMyProfile } = useUserStore();
 
-  const [nickname, setNickname] = useState(initialNickname);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [nickname, setNickname] = useState(username || '');
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    profileImageUrl,
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const isNicknameValid = nickname.trim().length > 0 && nickname.length <= 8;
-  const hasContentChanged = nickname !== initialNickname || !!imageFile;
+  const hasContentChanged = nickname !== username || !!imageFile;
   const isSaveButtonDisabled = !isNicknameValid || !hasContentChanged;
 
   const handleSave = () => {
@@ -34,6 +34,7 @@ export default function ProfileModifyView({ initialNickname }: Props) {
       {
         onSuccess: () => {
           if (imagePreview) URL.revokeObjectURL(imagePreview);
+          fetchMyProfile();
           router.back();
         },
         onError: () => {
