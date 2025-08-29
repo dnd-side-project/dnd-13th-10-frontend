@@ -1,27 +1,49 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { useQuery } from '@tanstack/react-query';
+
 import Logo from '@/assets/logo/logo_icon.svg';
 import { Badge } from '@/components/ui/Badge';
-import { INTERVIEW_STATUS, MEMOIR_TYPES } from '@/constants/code';
 import { cn } from '@/utils/cn';
-import {
-  getInterviewStatusLabel,
-  getMemoirTypeLabel,
-} from '@/utils/labelUtils';
-import type {
-  HotMemoir,
-  InterviewStatus,
-  MemoirType,
-} from '@/types/memoirTypes';
-import { mockHotMemoirs } from '@/app/(root)/home/mocks/mockHotMemoirs';
+import { getInterviewStatusLabel } from '@/utils/labelUtils';
+import { memoirQueries } from '@/queries/memoirOptions';
+import type { HotMemoir, InterviewStatus } from '@/types/memoirTypes';
 import { formatTimeAgo } from '@/utils/date';
 import { PATH } from '@/constants/path';
 
 export default function AllHotMemoirList() {
+  const { data, isPending, isError } = useQuery(memoirQueries.hot());
+
+  if (isPending) {
+    return (
+      <div>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <AllHotMemoirItemSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="py-10 text-center">
+        HOT 회고를 불러오는 데 실패했습니다.
+      </div>
+    );
+  }
+
+  const hotMemoirs = data?.data || [];
+
+  if (hotMemoirs.length === 0) {
+    return <div className="py-10 text-center">이번주 HOT 회고가 없습니다.</div>;
+  }
+
   return (
     <div>
-      {mockHotMemoirs.map((memoir, index) => (
+      {hotMemoirs.map((memoir, index) => (
         <AllHotMemoirItem
           key={memoir.id}
           memoir={memoir}
@@ -40,13 +62,11 @@ function AllHotMemoirItem({
   isFirst: boolean;
 }) {
   const interviewTypeClassName =
-    memoir.type === MEMOIR_TYPES.QUICK
-      ? 'text-secondary-btn'
-      : 'text-foundation-primary';
+    memoir.type === '퀵 회고' ? 'text-secondary-btn' : 'text-primary-btn';
   const interviewStatusClassName =
-    memoir.interviewStatus === INTERVIEW_STATUS.PASS
+    memoir.interviewStatus === '합격'
       ? 'text-primary-btn'
-      : memoir.interviewStatus === INTERVIEW_STATUS.PENDING
+      : memoir.interviewStatus === '결과 대기중'
         ? 'text-foundation-secondary'
         : 'text-warning';
 
@@ -80,7 +100,7 @@ function AllHotMemoirItem({
             shape="minimal"
             className={interviewTypeClassName}
           >
-            {getMemoirTypeLabel(memoir.type as MemoirType)}
+            {memoir.type}
           </Badge>
         </div>
 
@@ -90,6 +110,8 @@ function AllHotMemoirItem({
               <Image
                 src={memoir.imageUrl}
                 alt={memoir.userName}
+                width={40}
+                height={40}
                 className="h-full w-full rounded-full object-cover"
               />
             ) : (
@@ -129,5 +151,27 @@ function AllHotMemoirItem({
         </div>
       </div>
     </Link>
+  );
+}
+
+function AllHotMemoirItemSkeleton() {
+  return (
+    <div className="border-foundation-box animate-pulse border px-5 py-4">
+      <div className="mb-3 flex items-center gap-2">
+        <div className="bg-foundation-bg h-5 w-12 rounded-md" />
+        <div className="bg-foundation-bg h-5 w-14 rounded-md" />
+      </div>
+      <div className="mt-3 mb-2 flex items-center gap-3">
+        <div className="bg-foundation-bg h-10 w-10 shrink-0 rounded-full" />
+        <div className="flex w-full flex-col gap-1.5">
+          <div className="bg-foundation-bg h-5 w-3/4 rounded-md" />
+          <div className="bg-foundation-bg h-4 w-1/4 rounded-md" />
+        </div>
+      </div>
+      <div className="flex items-start justify-between">
+        <div className="bg-foundation-bg h-4 w-1/2 rounded-md" />
+        <div className="bg-foundation-bg h-4 w-16 rounded-md" />
+      </div>
+    </div>
   );
 }
