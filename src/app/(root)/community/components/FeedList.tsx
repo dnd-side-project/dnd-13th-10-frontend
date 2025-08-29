@@ -1,12 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { useInfiniteQuery } from '@tanstack/react-query';
+
 import RotateIcon from '@/assets/icon/rotate_icon.svg';
 import FilterIcon from '@/assets/icon/filter_icon.svg';
-import { mockMemoirs } from '@/app/(fullscreen)/my-page/mocks/memoir';
 import { SortDropdown } from '@/components/ui/SortDropdown';
 import { Badge } from '@/components/ui/Badge';
 import { Chip } from '@/components/ui/Chip';
@@ -17,8 +18,8 @@ import {
   getMemoirTypeLabel,
   getPositionLabel,
 } from '@/utils/labelUtils';
+import { memoirInfiniteQueries } from '@/queries/memoirOptions';
 import { PATH } from '@/constants/path';
-import { INTERVIEW_STATUS, MEMOIR_TYPES } from '@/constants/code';
 import type {
   InterviewStatus,
   Memoir,
@@ -36,31 +37,60 @@ const sortOptions: { label: string; value: SortType }[] = [
 export default function FeedList() {
   const [selectedSort, setSelectedSort] = useState<SortType>('latest');
   const [isSortPopoverOpen, setIsSortPopoverOpen] = useState(false);
+  const observer = useRef<IntersectionObserver | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const positionFilter = searchParams.get('position');
 
-  const filteredAndSortedMemoirs = useMemo(() => {
-    let filtered = mockMemoirs;
-    if (positionFilter) {
-      filtered = mockMemoirs.filter(
-        memoir => memoir.position === positionFilter,
-      );
-    }
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isError,
+  } = useInfiniteQuery(
+    memoirInfiniteQueries.all({ position: positionFilter || undefined }),
+  );
 
-    const sorted = [...filtered];
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isFetchingNextPage) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isFetchingNextPage, fetchNextPage, hasNextPage],
+  );
+
+  const allMemoirs = useMemo(
+    () => data?.pages.flatMap(page => page.data.result) || [],
+    [data],
+  );
+
+  const countText = hasNextPage ? `${allMemoirs.length}+` : allMemoirs.length;
+
+  const sortedMemoirs = useMemo(() => {
+    const sorted = [...allMemoirs];
     switch (selectedSort) {
       case 'latest':
         return sorted.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
-      // 다른 옵션일 경우 추가 가능
+      case 'popularity':
+        return sorted;
       default:
         return sorted;
     }
-  }, [selectedSort, positionFilter]);
+  }, [selectedSort, allMemoirs]);
 
   const handleResetFilter = () => {
     router.push(PATH.COMMUNITY.MAIN.path);
@@ -82,7 +112,7 @@ export default function FeedList() {
         <div className="flex items-center gap-1">
           <h3 className="typo-body-02 text-white">피드</h3>
           <span className="text-foundation-disabled typo-subhead-02">
-            {filteredAndSortedMemoirs.length}
+            {countText}
           </span>
         </div>
         <SortDropdown
@@ -122,22 +152,49 @@ export default function FeedList() {
           </div>
         </Link>
       </div>
-      {filteredAndSortedMemoirs.map((memoir, index) => (
-        <FeedItem key={memoir.id} memoir={memoir} isFirst={index === 0} />
-      ))}
+      {isPending ? (
+        <>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <FeedItemSkeleton key={index} />
+          ))}
+        </>
+      ) : isError ? (
+        <div className="py-10 text-center">피드를 불러오지 못했습니다.</div>
+      ) : sortedMemoirs.length === 0 ? (
+        <div className="py-10 text-center">
+          {positionFilter
+            ? '해당 직무의 회고가 없습니다.'
+            : '작성된 회고가 없습니다.'}
+        </div>
+      ) : (
+        sortedMemoirs.map((memoir, index) => {
+          if (sortedMemoirs.length === index + 1) {
+            return (
+              <div ref={lastElementRef} key={memoir.id}>
+                <FeedItem memoir={memoir} isFirst={index === 0} />
+              </div>
+            );
+          }
+          return (
+            <FeedItem key={memoir.id} memoir={memoir} isFirst={index === 0} />
+          );
+        })
+      )}
+
+      {isFetchingNextPage && <FeedItemSkeleton />}
     </div>
   );
 }
 
 function FeedItem({ memoir, isFirst }: { memoir: Memoir; isFirst: boolean }) {
   const interviewTypeClassName =
-    memoir.type === MEMOIR_TYPES.QUICK
+    memoir.type === '퀵 회고'
       ? 'text-secondary-btn'
       : 'text-foundation-primary';
   const interviewStatusClassName =
-    memoir.interviewStatus === INTERVIEW_STATUS.PASS
+    memoir.interviewStatus === '합격'
       ? 'text-primary-btn'
-      : memoir.interviewStatus === INTERVIEW_STATUS.PENDING
+      : memoir.interviewStatus === '결과 대기중'
         ? 'text-foundation-secondary'
         : 'text-warning';
 
@@ -194,5 +251,23 @@ function FeedItem({ memoir, isFirst }: { memoir: Memoir; isFirst: boolean }) {
         </div>
       </div>
     </Link>
+  );
+}
+
+function FeedItemSkeleton() {
+  return (
+    <div className="border-foundation-box border-b px-5 py-4">
+      <div className="animate-pulse">
+        <div className="mb-2 flex items-center gap-2">
+          <div className="bg-foundation-bg h-5 w-12 rounded-md" />
+          <div className="bg-foundation-bg h-5 w-14 rounded-md" />
+        </div>
+        <div className="bg-foundation-bg mb-2 h-5 w-3/4 rounded-md" />
+        <div className="flex items-center justify-between">
+          <div className="bg-foundation-bg h-4 w-1/2 rounded-md" />
+          <div className="bg-foundation-bg h-4 w-16 rounded-md" />
+        </div>
+      </div>
+    </div>
   );
 }
