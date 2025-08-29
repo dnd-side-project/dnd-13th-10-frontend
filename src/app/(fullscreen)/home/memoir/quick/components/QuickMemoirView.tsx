@@ -18,18 +18,27 @@ import QuickMemoirStep from './QuickMemoirStep';
 import { useMemoirFormStore } from '../store/memoirFormStore';
 import { isStepValid } from '../utils/memoirValidation';
 
+interface Props {
+  mode?: 'create' | 'edit';
+  memoirId?: number;
+}
+
 const TOTAL_STEPS = 4;
 
-export default function QuickMemoirView() {
+export default function QuickMemoirView({ mode = 'create', memoirId }: Props) {
   const [currentStep, setCurrentStep] = useState(1);
   const router = useRouter();
   const queryClient = useQueryClient();
   const formData = useMemoirFormStore(state => state.formData);
   const resetForm = useMemoirFormStore(state => state.resetForm);
 
-  const { mutate: createMemoir } = useMutation(
+  const { mutate: createMemoir, isPending: isCreatePending } = useMutation(
     memoirMutations.create(queryClient),
   );
+  const { mutate: updateMemoir, isPending: isUpdatePending } = useMutation(
+    memoirMutations.update(queryClient),
+  );
+  const isPending = isCreatePending || isUpdatePending;
 
   const isLastStep = currentStep === TOTAL_STEPS;
   const isFirstStep = currentStep === 1;
@@ -38,7 +47,7 @@ export default function QuickMemoirView() {
   const isNextButtonEnabled = isStepValid(currentStep, formData);
 
   const handleSubmit = () => {
-    const payload: MemoirsRequest = {
+    const payload: Omit<MemoirsRequest, 'id'> = {
       type: MEMOIR_TYPES.QUICK,
       companyName: formData.step1.companyName,
       position: formData.step1.position,
@@ -60,30 +69,44 @@ export default function QuickMemoirView() {
       isPublic: formData.step4.isPublic,
     };
 
-    createMemoir(payload, {
-      onSuccess: response => {
-        const newMemoirId = response.data;
-
-        if (newMemoirId) {
-          alert('회고가 성공적으로 저장되었습니다!');
-
-          resetForm();
-
-          const detailPath = PATH.MEMOIR.DETAIL.path.replace(
-            '[id]',
-            String(newMemoirId),
-          );
-
-          router.push(detailPath);
-        } else {
-          alert('회고가 저장되었지만, 홈으로 이동합니다.');
-          router.push(PATH.HOME.path);
-        }
-      },
-      onError: _error => {
-        alert('회고 저장에 실패했습니다. 다시 시도해주세요.');
-      },
-    });
+    if (mode === 'edit' && memoirId) {
+      updateMemoir(
+        { ...payload, id: memoirId },
+        {
+          onSuccess: () => {
+            alert('회고가 성공적으로 수정되었습니다!');
+            resetForm();
+            router.push(
+              PATH.MEMOIR.DETAIL.path.replace('[id]', String(memoirId)),
+            );
+          },
+          onError: _error => {
+            alert('회고 수정에 실패했습니다. 다시 시도해주세요.');
+          },
+        },
+      );
+    } else {
+      createMemoir(payload, {
+        onSuccess: response => {
+          const newMemoirId = response.data;
+          if (newMemoirId) {
+            alert('회고가 성공적으로 저장되었습니다!');
+            resetForm();
+            const detailPath = PATH.MEMOIR.DETAIL.path.replace(
+              '[id]',
+              String(newMemoirId),
+            );
+            router.push(detailPath);
+          } else {
+            alert('회고가 저장되었지만, 홈으로 이동합니다.');
+            router.push(PATH.HOME.path);
+          }
+        },
+        onError: _error => {
+          alert('회고 저장에 실패했습니다. 다시 시도해주세요.');
+        },
+      });
+    }
   };
 
   const handleNext = () => {
@@ -102,7 +125,7 @@ export default function QuickMemoirView() {
 
   return (
     <div className="flex h-screen flex-col">
-      <Header title="퀵회고" />
+      <Header title={mode === 'edit' ? '퀵회고 수정' : '퀵회고'} />
       <div className="h-[7px] overflow-hidden">
         <div
           className={cn(
@@ -133,9 +156,15 @@ export default function QuickMemoirView() {
             size="large"
             onClick={handleNext}
             className="flex-1"
-            disabled={!isNextButtonEnabled}
+            disabled={!isNextButtonEnabled || isPending}
           >
-            {isLastStep ? '저장' : '다음'}
+            {isPending
+              ? '저장 중...'
+              : isLastStep
+                ? mode === 'edit'
+                  ? '수정'
+                  : '저장'
+                : '다음'}
           </Button>
         </div>
       </footer>
