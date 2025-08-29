@@ -198,6 +198,14 @@ export interface Comment {
   author: string;
   profileImageUrl: string;
   createdAt: string;
+  isParent?: boolean;
+}
+
+export interface PaginatedCommentList {
+  pageSize: number;
+  nextCursor: string | null;
+  hasNext: boolean;
+  result: Comment[];
 }
 
 // 북마크 토글

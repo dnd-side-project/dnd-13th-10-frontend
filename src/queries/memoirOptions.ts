@@ -33,11 +33,6 @@ export const memoirQueries = {
       queryKey: memoirKeys.tmp(),
       queryFn: memoirApi.getMyTmpMemoirs,
     }),
-  comments: (memoirId: number) =>
-    queryOptions({
-      queryKey: memoirKeys.comments(memoirId),
-      queryFn: () => memoirApi.getMemoirComments(memoirId),
-    }),
 };
 
 export const memoirInfiniteQueries = {
@@ -88,6 +83,22 @@ export const memoirInfiniteQueries = {
       queryKey: memoirKeys.bookmarked({}),
       queryFn: ({ pageParam }) =>
         memoirApi.getMyBookmarkedMemoirs({
+          cursor: pageParam,
+          size: DEFAULT_PAGE_SIZE,
+        }),
+      initialPageParam: null as string | null,
+      getNextPageParam: lastPage => {
+        return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
+      },
+    }),
+
+  // 전체 댓글 조회
+  comments: (memoirId: number) =>
+    infiniteQueryOptions({
+      queryKey: memoirKeys.comments(memoirId),
+      queryFn: ({ pageParam }) =>
+        memoirApi.getMemoirComments({
+          memoirId: Number(memoirId),
           cursor: pageParam,
           size: DEFAULT_PAGE_SIZE,
         }),
