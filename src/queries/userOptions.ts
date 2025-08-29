@@ -1,3 +1,5 @@
+'use client';
+
 import {
   mutationOptions,
   QueryClient,
@@ -14,6 +16,11 @@ export const userQueries = {
       queryKey: userKeys.history(),
       queryFn: userApi.getUserSearchHistory,
     }),
+  getProfile: () =>
+    queryOptions({
+      queryKey: userKeys.profile(),
+      queryFn: userApi.getProfile,
+    }),
 };
 
 export const userMutations = {
@@ -28,5 +35,29 @@ export const userMutations = {
       mutationFn: userApi.deleteAllUserSearchHistory,
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: userKeys.history() }),
+    }),
+  updateProfile: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationKey: userKeys.profile(),
+      mutationFn: userApi.updateProfile,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: userKeys.profile() });
+      },
+    }),
+  logout: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationKey: userKeys.logout(),
+      mutationFn: userApi.logout,
+      onSuccess: () => {
+        queryClient.clear();
+      },
+    }),
+  withdraw: (queryClient: QueryClient) =>
+    mutationOptions({
+      mutationKey: userKeys.withdraw(),
+      mutationFn: userApi.deleteAccount,
+      onSuccess: () => {
+        queryClient.clear();
+      },
     }),
 };

@@ -1,9 +1,20 @@
+'use client';
+
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/Badge';
 import { Header } from '@/components/ui/Header';
 import { PATH } from '@/constants/path';
 import RightArrow from '@/assets/icon/right_arrow_icon.svg';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { userMutations } from '@/queries/userOptions';
+import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/store/userStore';
+import Image from 'next/image';
+
+type MenuItemLink = { href: string; label: string };
+type MenuItemAction = { label: string; onClick: () => void };
+type MenuItem = MenuItemLink | MenuItemAction;
 
 const MY_PAGE_METADATA = [
   { href: PATH.MY_PAGE.MEMOIRS.path, label: PATH.MY_PAGE.MEMOIRS.label },
@@ -12,9 +23,31 @@ const MY_PAGE_METADATA = [
   { href: PATH.MY_PAGE.COMMENTS.path, label: PATH.MY_PAGE.COMMENTS.label },
   { href: PATH.MY_PAGE.SCRAP.path, label: PATH.MY_PAGE.SCRAP.label },
 ];
-const ETC = ['로그아웃', '탈퇴하기'];
 
 export default function MyPage() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const logout = useMutation(userMutations.logout(queryClient));
+  const withdraw = useMutation(userMutations.withdraw(queryClient));
+  const { username, profileImageUrl } = useUserStore();
+
+  const ETC = [
+    {
+      label: '로그아웃',
+      onClick: () =>
+        logout.mutate(undefined, {
+          onSuccess: () => router.replace('/'),
+        }),
+    },
+    {
+      label: '탈퇴하기',
+      onClick: () =>
+        withdraw.mutate(undefined, {
+          onSuccess: () => router.replace('/'),
+        }),
+    },
+  ];
+
   return (
     <>
       <Header title="마이페이지" showBackButton={false} />
@@ -23,8 +56,20 @@ export default function MyPage() {
           <section className="bg-foundation-box rounded-xl p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="bg-foundation-secondary h-12 w-12 rounded-full" />
-                <span className="typo-subhead-03 text-white">SEED</span>
+                <div className="relative h-12 w-12 overflow-hidden rounded-full bg-gray-200">
+                  {profileImageUrl ? (
+                    <Image
+                      src={profileImageUrl}
+                      alt="프로필 사진"
+                      fill
+                      sizes="48px"
+                      className="object-cover object-center"
+                    />
+                  ) : (
+                    <div className="h-full w-full" />
+                  )}
+                </div>
+                <span className="typo-subhead-03 text-white">{username}</span>
               </div>
               <Link href={PATH.MY_PAGE.PROFILE_MODIFY.path}>
                 <Badge shape="round">{PATH.MY_PAGE.PROFILE_MODIFY.label}</Badge>
@@ -40,44 +85,57 @@ export default function MyPage() {
   );
 }
 
+function isLinkItem(item: MenuItem): item is MenuItemLink {
+  return 'href' in item && typeof item.href === 'string';
+}
+
 function MenuSection({
   title,
   items = [],
 }: {
   title: string;
-  items?: { href: string; label: string }[] | string[];
+  items?: MenuItem[] | string[];
 }) {
   return (
     <section className="bg-foundation-box rounded-xl p-4">
       <h3 className="text-foundation-strong typo-subhead-03 mb-2">{title}</h3>
       <ul className="flex flex-col">
-        {Array.isArray(items)
-          ? items.map(item =>
-              typeof item === 'string' ? (
-                <li
-                  key={item}
+        {Array.isArray(items) &&
+          items.map(item =>
+            typeof item === 'string' ? (
+              <li key={item} className="flex items-center justify-between py-2">
+                <span className="text-foundation-primary typo-body-02">
+                  {item}
+                </span>
+                <RightArrow />
+              </li>
+            ) : isLinkItem(item) ? (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
                   className="flex cursor-pointer items-center justify-between py-2"
                 >
                   <span className="text-foundation-primary typo-body-02">
-                    {item}
+                    {item.label}
                   </span>
                   <RightArrow />
-                </li>
-              ) : (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="flex cursor-pointer items-center justify-between py-2"
-                  >
-                    <span className="text-foundation-primary typo-body-02">
-                      {item.label}
-                    </span>
-                    <RightArrow />
-                  </Link>
-                </li>
-              ),
-            )
-          : null}
+                </Link>
+              </li>
+            ) : (
+              <li key={`action-${item.label}`}>
+                <button
+                  type="button"
+                  onClick={item.onClick}
+                  className="flex w-full items-center justify-between py-2 text-left"
+                >
+                  <span className="text-foundation-primary typo-body-02">
+                    {item.label}
+                  </span>
+                  <RightArrow />
+                </button>
+              </li>
+            ),
+          )}
       </ul>
     </section>
   );
