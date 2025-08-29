@@ -24,10 +24,6 @@ export interface MyMemoir {
   isPublic: boolean;
 }
 
-export interface GetMyMemoirsParams {
-  searchType: string;
-}
-
 export interface ApiResponse<T> {
   code: string;
   message: string;

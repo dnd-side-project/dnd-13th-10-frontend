@@ -1,7 +1,5 @@
 import { ApiResponse, http, internal } from '@/lib/axios';
 import {
-  GetMyMemoirsParams,
-  MyMemoir,
   Profile,
   UpdateProfilePayload,
   UserSearchHistory,
@@ -77,13 +75,5 @@ export const updateProfile = async ({
 export const getProfile = async (): Promise<ApiResponse<Profile>> => {
   const response = await http.get('/users/profile');
 
-  return response.data;
-};
-
-// 나의 회고 가져오기
-export const getMyMemoirs = async (params: GetMyMemoirsParams) => {
-  const response = await http.post<ApiResponse<MyMemoir[]>>('/memoirs/mine', {
-    request: { searchType: params.searchType },
-  });
   return response.data;
 };
