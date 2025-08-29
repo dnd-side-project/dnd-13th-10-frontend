@@ -24,6 +24,18 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '**.kakaocdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.kakaocdn.net',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
