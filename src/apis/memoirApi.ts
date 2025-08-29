@@ -57,7 +57,7 @@ export const getMemoirDetails = async (
 ): Promise<ApiResponse<MemoirData>> => {
   const response = await http.get(`/memoirs/${memoirId}`, {
     headers: {
-      Cookie: cookie || '',
+      Cookie: cookie,
     },
   });
 

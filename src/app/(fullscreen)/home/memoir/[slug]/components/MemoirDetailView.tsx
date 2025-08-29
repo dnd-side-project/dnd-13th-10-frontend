@@ -1,8 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { Header } from '@/components/ui/Header';
 import { Button } from '@/components/ui/Button';
@@ -14,7 +19,11 @@ import {
   BottomDrawerHeader,
 } from '@/components/ui/Drawer';
 import { cn } from '@/utils/cn';
-import { memoirMutations } from '@/queries/memoirOptions';
+import {
+  memoirInfiniteQueries,
+  memoirMutations,
+  memoirQueries,
+} from '@/queries/memoirOptions';
 import { MEMOIR_TYPES } from '@/constants/code';
 import { PATH } from '@/constants/path';
 import MoreIcon from '@/assets/icon/more_icon.svg';
@@ -28,15 +37,34 @@ interface Props {
   memoirData: MemoirData;
 }
 
-export default function MemoirDetailView({ memoirData }: Props) {
+export default function MemoirDetailView({ memoirData: initialData }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isCommentDrawerOpen, setIsCommentDrawerOpen] = useState(false);
 
+  const { data: memoirQueryData } = useQuery({
+    ...memoirQueries.detail(initialData.id),
+    initialData: { data: initialData, code: '200', message: 'Success' },
+  });
+
+  const memoirData = memoirQueryData?.data || initialData;
+
   const { mutate: deleteMemoir } = useMutation(
     memoirMutations.delete(queryClient),
   );
+  const { data: commentsData, hasNextPage } = useInfiniteQuery({
+    ...memoirInfiniteQueries.comments(memoirData.id),
+  });
+
+  const allComments = useMemo(
+    () => commentsData?.pages.flatMap(page => page.data.result) || [],
+    [commentsData],
+  );
+
+  const commentCountText = hasNextPage
+    ? `${allComments.length}+`
+    : String(allComments.length);
 
   const handleEdit = () => {
     router.push(PATH.MEMOIR.EDIT.path.replace('[id]', String(memoirData.id)));
@@ -81,7 +109,11 @@ export default function MemoirDetailView({ memoirData }: Props) {
       {memoirData.isPublic && (
         <footer>
           <MemoirDetailAction
-            isLike={false}
+            memoirId={memoirData.id}
+            isLiked={memoirData.isLiked}
+            isBookmarked={memoirData.isBookmarked}
+            likeCount={memoirData.likeCount ?? 0}
+            commentCountText={commentCountText}
             onCommentClick={() => setIsCommentDrawerOpen(true)}
           />
         </footer>
