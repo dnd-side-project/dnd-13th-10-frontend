@@ -150,6 +150,8 @@ export interface MemoirData {
   createdAt: string;
   isTmp: boolean;
   isPublic: boolean;
+  isLiked: boolean;
+  isBookmarked: boolean;
 }
 
 // 회고 상세 조회
