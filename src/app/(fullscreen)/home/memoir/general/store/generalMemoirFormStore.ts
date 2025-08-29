@@ -14,6 +14,17 @@ import type {
   MemoirData,
 } from '@/types/memoirTypes';
 import { convertISOToTimeValue } from '@/utils/date';
+import {
+  INTERVIEW_FORMAT_LABELS,
+  INTERVIEW_LEVEL_LABELS,
+  INTERVIEW_METHOD_LABELS,
+  INTERVIEW_MOOD_LABELS,
+  INTERVIEW_STATUS_LABELS,
+  INTERVIEW_STEP_LABELS,
+  POSITION_LABELS,
+  QUESTION_TYPE_LABELS,
+  SATISFACTION_NOTE_LABELS,
+} from '@/constants/labels';
 
 const initialFormData: GeneralMemoirFormData = {
   interviewInfo: {
@@ -69,6 +80,17 @@ interface ReferenceData {
   url: string;
 }
 
+const findCodeByLabel = (
+  labelsObject: Record<string, string>,
+  label: string,
+): string => {
+  if (!label) return '';
+  const entry = Object.entries(labelsObject).find(
+    ([_code, lbl]) => lbl === label,
+  );
+  return entry ? entry[0] : '';
+};
+
 export interface GeneralMemoirFormData {
   interviewInfo: InterviewInfoData;
   questions: Questions[];
@@ -105,23 +127,47 @@ export const useGeneralMemoirFormStore = create<GeneralMemoirFormState>(
             interviewDate: new Date(data.interviewDatetime),
             interviewTime:
               convertISOToTimeValue(data.interviewDatetime) ?? null,
-            position: data.position as Position,
-            interviewStep: (data.interviewStep || '') as InterviewStep,
-            interviewFormat: (data.interviewFormat || '') as InterviewFormat,
-            interviewMethod: (data.interviewMethod || '') as InterviewMethod,
-            interviewMood: (data.interviewMood || '') as InterviewMood,
+            position: findCodeByLabel(
+              POSITION_LABELS,
+              data.position,
+            ) as Position,
+            interviewStep: findCodeByLabel(
+              INTERVIEW_STEP_LABELS,
+              data.interviewStep || '',
+            ) as InterviewStep,
+            interviewFormat: findCodeByLabel(
+              INTERVIEW_FORMAT_LABELS,
+              data.interviewFormat || '',
+            ) as InterviewFormat,
+            interviewMethod: findCodeByLabel(
+              INTERVIEW_METHOD_LABELS,
+              data.interviewMethod || '',
+            ) as InterviewMethod,
+            interviewMood: findCodeByLabel(
+              INTERVIEW_MOOD_LABELS,
+              data.interviewMood || '',
+            ) as InterviewMood,
           },
           questions: data.questions.map(q => ({
             order: q.id,
-            questionType: q.questionType,
+            questionType: findCodeByLabel(QUESTION_TYPE_LABELS, q.questionType),
             title: q.title,
             answer: q.answer || '',
           })),
           interviewReview: {
-            interviewLevel: (data.interviewLevel || '') as InterviewLevel,
-            satisfactionNote: (data.satisfactionNote || '') as SatisfactionNote,
-            freeNote: (data.freeNote || '') as string,
-            interviewStatus: (data.interviewStatus || '') as InterviewStatus,
+            interviewLevel: findCodeByLabel(
+              INTERVIEW_LEVEL_LABELS,
+              data.interviewLevel || '',
+            ) as InterviewLevel,
+            satisfactionNote: findCodeByLabel(
+              SATISFACTION_NOTE_LABELS,
+              data.satisfactionNote || '',
+            ) as SatisfactionNote,
+            freeNote: data.freeNote || '',
+            interviewStatus: findCodeByLabel(
+              INTERVIEW_STATUS_LABELS,
+              data.interviewStatus || '',
+            ) as InterviewStatus,
             isPublic: data.isPublic,
           },
           references: {

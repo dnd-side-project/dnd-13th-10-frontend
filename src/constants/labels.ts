@@ -51,7 +51,7 @@ export const INTERVIEW_METHOD_LABELS = {
 export const INTERVIEW_STATUS_LABELS = {
   [INTERVIEW_STATUS.PASS]: '합격',
   [INTERVIEW_STATUS.FAIL]: '불합격',
-  [INTERVIEW_STATUS.PENDING]: '대기중',
+  [INTERVIEW_STATUS.PENDING]: '결과 대기중',
 } as const;
 
 export const INTERVIEW_STEP_LABELS = {
