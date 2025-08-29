@@ -5,6 +5,7 @@ export interface SearchReq {
   type: QuestionType | string;
   memoirType: MemoirType | string;
   condition: string;
+  isMine?: boolean;
 }
 
 // 회사 조회

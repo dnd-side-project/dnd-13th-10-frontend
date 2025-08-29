@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Badge } from '@/components/ui/Badge';
 import { Title } from '@/components/ui/Title';
 import { cn } from '@/utils/cn';
-import { formatDateToYYMMDDHHMM } from '@/utils/date';
+import { formatDateToYYMMDD } from '@/utils/date';
 import type { MemoirData, Question } from '@/types/memoirTypes';
 
 interface Props {
@@ -25,7 +25,7 @@ export default function MemoirDetailContent({ data }: Props) {
         <Title title="면접 정보" />
         <ContentBox className="flex flex-col gap-2">
           <InfoRow label="면접일">
-            {formatDateToYYMMDDHHMM(data.interviewDateTime)}
+            {formatDateToYYMMDD(data.interviewDatetime)}
           </InfoRow>
           <InfoRow label="직무">{data.position}</InfoRow>
           <InfoRow label="유형">{interviewTypeString}</InfoRow>

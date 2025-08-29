@@ -61,6 +61,7 @@ export default async function QuestionCategoryPage({ params }: Props) {
       type: categoryInfo.code,
       memoirType: MEMOIR_TYPES.QUICK,
       condition: '',
+      isMine: false,
     },
     cookie,
   });

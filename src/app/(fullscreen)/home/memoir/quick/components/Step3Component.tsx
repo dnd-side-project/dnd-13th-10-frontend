@@ -18,12 +18,9 @@ import { Button } from '@/components/ui/Button';
 import { QUESTION_TYPE } from '@/constants/code';
 import { QUESTION_TYPE_LABELS } from '@/constants/labels';
 import { createOptionsArray } from '@/utils/options';
-import type { QuestionType } from '@/types/memoirTypes';
+import type { QuestionType, Questions } from '@/types/memoirTypes';
 
-import {
-  type QuestionItem,
-  useMemoirFormStore,
-} from '../store/memoirFormStore';
+import { useMemoirFormStore } from '../store/memoirFormStore';
 
 const QUESTION_TYPE_OPTIONS = createOptionsArray(
   QUESTION_TYPE,
@@ -43,7 +40,7 @@ export default function Step3Component() {
 
   const handleQuestionChange = (
     index: number,
-    field: 'questionType' | 'content',
+    field: 'questionType' | 'title',
     value: string,
   ) => {
     const newQuestions = questions.map((q, i) =>
@@ -53,20 +50,20 @@ export default function Step3Component() {
   };
 
   const handleAddQuestion = () => {
-    const newQuestion: QuestionItem = {
-      order: crypto.randomUUID(),
+    const newQuestion: Questions = {
+      order: questions.length + 1,
       questionType: '',
-      content: '',
+      title: '',
     };
     updateStepData('step3', [...questions, newQuestion]);
   };
 
   const handleOpenDrawer = (index: number) => {
-    setTempSelectedType(questions[index].questionType);
+    setTempSelectedType(questions[index].questionType as QuestionType | '');
     setActiveDrawerIndex(index);
   };
 
-  const handleRemoveQuestion = (order: string) => {
+  const handleRemoveQuestion = (order: number) => {
     if (questions.length <= 1) return;
     const filteredQuestions = questions.filter(q => q.order !== order);
     updateStepData('step3', filteredQuestions);
@@ -111,9 +108,9 @@ export default function Step3Component() {
               />
               <Input
                 placeholder="질문을 입력하세요."
-                value={question.content}
+                value={question.title}
                 onChange={e =>
-                  handleQuestionChange(index, 'content', e.target.value)
+                  handleQuestionChange(index, 'title', e.target.value)
                 }
               />
             </div>
