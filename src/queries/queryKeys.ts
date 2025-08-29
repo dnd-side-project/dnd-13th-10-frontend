@@ -25,6 +25,9 @@ export const scheduleKeys = {
 export const userKeys = {
   all: ['user'] as const,
   history: () => [...userKeys.all, 'history'] as const,
+  profile: () => [...userKeys.all, 'profile'] as const,
+  logout: () => [...userKeys.all, 'logout'] as const,
+  withdraw: () => [...userKeys.all, 'withdraw'] as const,
 };
 
 export const generalKeys = {

@@ -1,10 +1,10 @@
-import type { Memoir } from '@/types/memoirTypes';
+import type { ApiMemoirItem } from '@/types/memoirTypes';
 
 import MemoirItem from './MemoirItem';
 import { EmptyState } from '@/components/ui/Empty';
 
 interface Props {
-  memoirs: Memoir[];
+  memoirs: ApiMemoirItem[];
   hideBadge?: boolean;
   emptyText: string;
 }

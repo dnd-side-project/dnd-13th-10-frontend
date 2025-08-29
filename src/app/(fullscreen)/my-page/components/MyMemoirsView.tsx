@@ -7,7 +7,6 @@ import { Chip } from '@/components/ui/Chip';
 import { MEMOIR_TYPES } from '@/constants/code';
 import { memoirQueries } from '@/queries/memoirOptions';
 import type { MemoirType } from '@/types/memoirTypes';
-
 import MemoirList from './MemoirList';
 
 const filterChips: { label: string; value: 'all' | MemoirType }[] = [

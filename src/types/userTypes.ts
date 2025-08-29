@@ -3,3 +3,29 @@ export interface UserSearchHistory {
   userSearchHistId: number;
   content: string;
 }
+
+export interface Profile {
+  username: string;
+  profileImageUrl: string;
+}
+
+export interface UpdateProfilePayload {
+  username?: string;
+  profileImage?: File | null;
+}
+
+export interface MyMemoir {
+  id: number;
+  type: string;
+  companyName: string;
+  position: string;
+  createdAt: string;
+  isTmp: boolean;
+  isPublic: boolean;
+}
+
+export interface ApiResponse<T> {
+  code: string;
+  message: string;
+  data: T;
+}

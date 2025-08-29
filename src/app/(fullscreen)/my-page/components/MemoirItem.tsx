@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/Badge';
+import type { ApiMemoirItem } from '@/types/memoirTypes';
 import { formatDateToYYMMDD } from '@/utils/date';
 import { PATH } from '@/constants/path';
-import type { Memoir } from '@/types/memoirTypes';
 
 interface Props {
-  memoir: Memoir;
+  memoir: ApiMemoirItem;
   hideBadge?: boolean;
 }
 

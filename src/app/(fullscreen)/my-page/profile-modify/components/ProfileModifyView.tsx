@@ -1,28 +1,47 @@
 'use client';
 
 import { useState, type ChangeEvent } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
 import { Header } from '@/components/ui/Header';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import PlusIcon from '@/assets/icon/plus_icon2.svg';
+import { userMutations } from '@/queries/userOptions';
+import { useUserStore } from '@/store/userStore';
 
-interface Props {
-  initialNickname: string;
-}
+export default function ProfileModifyView() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const updateProfile = useMutation(userMutations.updateProfile(queryClient));
+  const { username, profileImageUrl, fetchMyProfile } = useUserStore();
 
-export default function ProfileModifyView({ initialNickname }: Props) {
-  const [nickname, setNickname] = useState(initialNickname);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [nickname, setNickname] = useState(username || '');
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    profileImageUrl,
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const isNicknameValid = nickname.trim().length > 0 && nickname.length <= 8;
-  const hasContentChanged = nickname !== initialNickname || !!imageFile;
+  const hasContentChanged = nickname !== username || !!imageFile;
   const isSaveButtonDisabled = !isNicknameValid || !hasContentChanged;
 
   const handleSave = () => {
-    history.back();
+    updateProfile.mutate(
+      { username: nickname, profileImage: imageFile ?? undefined },
+      {
+        onSuccess: () => {
+          if (imagePreview) URL.revokeObjectURL(imagePreview);
+          fetchMyProfile();
+          router.back();
+        },
+        onError: () => {
+          alert('프로필 저장에 실패했습니다. 다시 시도해주세요.');
+        },
+      },
+    );
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,9 +50,11 @@ export default function ProfileModifyView({ initialNickname }: Props) {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
-
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreview(previewUrl);
+      const url = URL.createObjectURL(file);
+      setImagePreview(prev => {
+        if (prev) URL.revokeObjectURL(prev);
+        return url;
+      });
     }
   };
 
