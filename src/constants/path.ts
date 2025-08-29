@@ -9,6 +9,7 @@ export const PATH = {
     EXPERIENCE: { path: '/home/questions/experience', label: '경험질문' },
     COMPANY: { path: '/home/questions/company', label: '회사질문' },
     FOLLOW_UP: { path: '/home/questions/follow_up', label: '꼬리질문' },
+    TODAY: { path: '/home/questions/today', label: '오늘의 질문' },
   },
 
   INTERVIEW: {
