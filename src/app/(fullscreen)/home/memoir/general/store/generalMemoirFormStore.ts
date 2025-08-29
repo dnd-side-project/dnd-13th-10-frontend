@@ -11,7 +11,9 @@ import type {
   Position,
   SatisfactionNote,
   Questions,
+  MemoirData,
 } from '@/types/memoirTypes';
+import { convertISOToTimeValue } from '@/utils/date';
 
 const initialFormData: GeneralMemoirFormData = {
   interviewInfo: {
@@ -81,6 +83,7 @@ interface GeneralMemoirFormState {
     value: GeneralMemoirFormData[K],
   ) => void;
   resetForm: () => void;
+  initializeForm: (data: MemoirData) => void;
 }
 
 export const useGeneralMemoirFormStore = create<GeneralMemoirFormState>(
@@ -94,5 +97,38 @@ export const useGeneralMemoirFormStore = create<GeneralMemoirFormState>(
         },
       })),
     resetForm: () => set({ formData: initialFormData }),
+    initializeForm: data => {
+      set({
+        formData: {
+          interviewInfo: {
+            companyName: data.companyName,
+            interviewDate: new Date(data.interviewDatetime),
+            interviewTime:
+              convertISOToTimeValue(data.interviewDatetime) ?? null,
+            position: data.position as Position,
+            interviewStep: (data.interviewStep || '') as InterviewStep,
+            interviewFormat: (data.interviewFormat || '') as InterviewFormat,
+            interviewMethod: (data.interviewMethod || '') as InterviewMethod,
+            interviewMood: (data.interviewMood || '') as InterviewMood,
+          },
+          questions: data.questions.map(q => ({
+            order: q.id,
+            questionType: q.questionType,
+            title: q.title,
+            answer: q.answer || '',
+          })),
+          interviewReview: {
+            interviewLevel: (data.interviewLevel || '') as InterviewLevel,
+            satisfactionNote: (data.satisfactionNote || '') as SatisfactionNote,
+            freeNote: (data.freeNote || '') as string,
+            interviewStatus: (data.interviewStatus || '') as InterviewStatus,
+            isPublic: data.isPublic,
+          },
+          references: {
+            url: data.url || '',
+          },
+        },
+      });
+    },
   }),
 );
