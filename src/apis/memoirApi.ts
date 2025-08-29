@@ -192,7 +192,7 @@ export const createMemoirComment = async ({
   memoirId: number;
   content: string;
   parentCommentId?: number;
-}): Promise<ApiResponse<Comment>> => {
+}): Promise<ApiResponse<void>> => {
   const response = await http.post(`/memoirs/${memoirId}/comments`, {
     content,
     parentCommentId,

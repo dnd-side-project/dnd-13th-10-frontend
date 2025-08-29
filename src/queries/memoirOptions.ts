@@ -6,7 +6,10 @@ import {
 } from '@tanstack/react-query';
 
 import * as memoirApi from '@/apis/memoirApi';
-import type { MemoirsRequest } from '@/types/memoirTypes';
+import type {
+  CreateCommentVariables,
+  MemoirsRequest,
+} from '@/types/memoirTypes';
 
 import { memoirKeys } from './queryKeys';
 
@@ -154,7 +157,14 @@ export const memoirMutations = {
     }),
   createComment: (queryClient: QueryClient) =>
     mutationOptions({
-      mutationFn: memoirApi.createMemoirComment,
+      mutationFn: (variables: CreateCommentVariables) => {
+        const { memoirId, content, parentCommentId } = variables;
+        return memoirApi.createMemoirComment({
+          memoirId,
+          content,
+          ...(parentCommentId !== null ? { parentCommentId } : {}),
+        });
+      },
       onSuccess: (_, variables) =>
         queryClient.invalidateQueries({
           queryKey: memoirKeys.comments(variables.memoirId),

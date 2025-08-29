@@ -199,6 +199,7 @@ export interface Comment {
   profileImageUrl: string;
   createdAt: string;
   isParent?: boolean;
+  children: Comment[] | null;
 }
 
 export interface PaginatedCommentList {
@@ -212,4 +213,11 @@ export interface PaginatedCommentList {
 export interface BookmarkToggleResponse {
   bookMarked: boolean;
   toggledAt: string;
+}
+
+// 댓글 생성 파라미터
+export interface CreateCommentVariables {
+  memoirId: number;
+  content: string;
+  parentCommentId?: number | null;
 }
