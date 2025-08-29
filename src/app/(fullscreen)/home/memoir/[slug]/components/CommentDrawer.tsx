@@ -30,6 +30,8 @@ interface Props {
 export default function CommentDrawer({ memoirId, isOpen, onClose }: Props) {
   const queryClient = useQueryClient();
   const [newComment, setNewComment] = useState('');
+  const [replyToCommentId, setReplyToCommentId] = useState<number | null>(null);
+  const [replyToAuthor, setReplyToAuthor] = useState<string | null>(null);
 
   const {
     data: commentsData,
@@ -78,10 +80,12 @@ export default function CommentDrawer({ memoirId, isOpen, onClose }: Props) {
   const handleCommentSubmit = () => {
     if (!newComment.trim() || isPosting) return;
     createComment(
-      { memoirId, content: newComment },
+      { memoirId, content: newComment, parentCommentId: replyToCommentId },
       {
         onSuccess: () => {
           setNewComment('');
+          setReplyToCommentId(null);
+          setReplyToAuthor(null);
         },
         onError: () => {
           alert('댓글 등록에 실패했습니다.');
@@ -89,6 +93,20 @@ export default function CommentDrawer({ memoirId, isOpen, onClose }: Props) {
       },
     );
   };
+
+  const handleReplyClick = (commentId: number, author: string) => {
+    setReplyToCommentId(commentId);
+    setReplyToAuthor(author);
+  };
+
+  const handleCancelReply = () => {
+    setReplyToCommentId(null);
+    setReplyToAuthor(null);
+  };
+
+  const commentInputPlaceholder = replyToAuthor
+    ? `@${replyToAuthor}님에게 답글 달기...`
+    : '댓글 달기...';
 
   return (
     <BottomDrawer isOpen={isOpen} onOpenChange={open => !open && onClose()}>
@@ -100,6 +118,7 @@ export default function CommentDrawer({ memoirId, isOpen, onClose }: Props) {
           isPending={isPending}
           isError={isError}
           lastCommentRef={lastCommentRef}
+          onReplyClick={handleReplyClick}
         />
         {isFetchingNextPage && (
           <div className="py-2 text-center text-sm text-gray-500">
@@ -113,6 +132,9 @@ export default function CommentDrawer({ memoirId, isOpen, onClose }: Props) {
           onChange={e => setNewComment(e.target.value)}
           onSubmit={handleCommentSubmit}
           isPosting={isPosting}
+          placeholder={commentInputPlaceholder}
+          isReplying={!!replyToCommentId}
+          onCancelReply={handleCancelReply}
         />
       </BottomDrawerFooter>
     </BottomDrawer>

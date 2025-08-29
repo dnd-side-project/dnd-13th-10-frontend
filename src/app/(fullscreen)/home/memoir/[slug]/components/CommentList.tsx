@@ -11,6 +11,7 @@ interface Props {
   isPending: boolean;
   isError: boolean;
   lastCommentRef: (node: HTMLDivElement) => void;
+  onReplyClick: (commentId: number, author: string) => void;
 }
 
 export default function CommentList({
@@ -18,6 +19,7 @@ export default function CommentList({
   isPending,
   isError,
   lastCommentRef,
+  onReplyClick,
 }: Props) {
   if (isPending) {
     return (
@@ -44,51 +46,78 @@ export default function CommentList({
   return (
     <div className="flex flex-col gap-8 p-5">
       {comments.map((comment, index) => {
-        if (comments.length === index + 1) {
-          return (
-            <div ref={lastCommentRef} key={comment.id}>
-              <CommentItem comment={comment} />
-            </div>
-          );
-        }
-        return <CommentItem key={comment.id} comment={comment} />;
+        const isLastItem = comments.length === index + 1;
+
+        return (
+          <div key={comment.id} ref={isLastItem ? lastCommentRef : null}>
+            <CommentItem comment={comment} onReplyClick={onReplyClick} />
+          </div>
+        );
       })}
     </div>
   );
 }
 
-function CommentItem({ comment }: { comment: Comment }) {
+function CommentItem({
+  comment,
+  onReplyClick,
+}: {
+  comment: Comment;
+  onReplyClick: (commentId: number, author: string) => void;
+}) {
   return (
-    <div className="flex items-start gap-3">
-      <figure className="h-10 w-10 shrink-0 rounded-full">
-        {comment.profileImageUrl ? (
-          <Image
-            src={comment.profileImageUrl}
-            alt={comment.author}
-            width={40}
-            height={40}
-            className="h-full w-full rounded-full object-cover"
-          />
-        ) : (
-          <div className="bg-foundation-secondary/20 flex h-full w-full items-center justify-center rounded-full">
-            <Logo height={20} width={20} />
-          </div>
-        )}
-      </figure>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-start gap-3">
+        <figure className="h-10 w-10 shrink-0 rounded-full">
+          {comment.profileImageUrl ? (
+            <Image
+              src={comment.profileImageUrl}
+              alt={comment.author}
+              width={40}
+              height={40}
+              className="h-full w-full rounded-full object-cover"
+            />
+          ) : (
+            <div className="bg-foundation-secondary/20 flex h-full w-full items-center justify-center rounded-full">
+              <Logo height={20} width={20} />
+            </div>
+          )}
+        </figure>
 
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <span className="typo-subhead-02 text-foundation-strong">
-            {comment.author}
-          </span>
-          <span className="typo-caption text-foundation-disabled">
-            {formatTimeAgo(comment.createdAt)}
-          </span>
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="typo-subhead-02 text-foundation-strong">
+              {comment.author}
+            </span>
+            <span className="typo-caption text-foundation-disabled">
+              {formatTimeAgo(comment.createdAt)}
+            </span>
+          </div>
+          <p className="typo-subhead-02 text-foundation-primary whitespace-pre-wrap">
+            {comment.content}
+          </p>
+          {comment.isParent && (
+            <button
+              className="typo-caption text-foundation-disabled mt-px w-fit cursor-pointer"
+              onClick={() => onReplyClick(comment.id, comment.author)}
+            >
+              답글달기
+            </button>
+          )}
         </div>
-        <p className="typo-subhead-02 text-foundation-primary whitespace-pre-wrap">
-          {comment.content}
-        </p>
       </div>
+
+      {comment.children && comment.children.length > 0 && (
+        <div className="ml-8 flex flex-col gap-4">
+          {comment.children.map(reply => (
+            <CommentItem
+              key={reply.id}
+              comment={reply}
+              onReplyClick={onReplyClick}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
