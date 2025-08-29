@@ -7,9 +7,10 @@ import { cn } from '@/utils/cn';
 
 interface Props {
   isLike?: boolean;
+  onCommentClick?: () => void;
 }
 
-export default function MemoirDetailAction({ isLike }: Props) {
+export default function MemoirDetailAction({ isLike, onCommentClick }: Props) {
   return (
     <div className="border-foundation-divider flex items-center justify-between border-t p-5">
       <div className="flex items-center gap-[14px]">
@@ -24,7 +25,7 @@ export default function MemoirDetailAction({ isLike }: Props) {
         </div>
 
         <div className="flex items-center gap-1">
-          <CommentIcon className="cursor-pointer" />
+          <CommentIcon className="cursor-pointer" onClick={onCommentClick} />
           <span className="text-foundation-secondary typo-subhead-03">12</span>
         </div>
       </div>
