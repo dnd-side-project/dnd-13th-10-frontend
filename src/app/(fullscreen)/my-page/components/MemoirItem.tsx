@@ -8,13 +8,20 @@ import { PATH } from '@/constants/path';
 interface Props {
   memoir: ApiMemoirItem;
   hideBadge?: boolean;
+  hrefPattern?: string;
 }
 
-export default function MemoirItem({ memoir, hideBadge = false }: Props) {
+export default function MemoirItem({
+  memoir,
+  hideBadge = false,
+  hrefPattern,
+}: Props) {
   const badgeTextColor =
     memoir.type === '퀵 회고' ? 'text-secondary-btn' : 'text-primary-btn';
 
-  const detailPath = PATH.MEMOIR.DETAIL.path.replace('[id]', String(memoir.id));
+  const detailPath =
+    hrefPattern?.replace('[id]', String(memoir.id)) ??
+    PATH.MEMOIR.DETAIL.path.replace('[id]', String(memoir.id));
 
   return (
     <Link href={detailPath}>

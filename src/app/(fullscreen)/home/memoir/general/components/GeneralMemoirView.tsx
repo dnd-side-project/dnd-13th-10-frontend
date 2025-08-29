@@ -42,8 +42,8 @@ export default function GeneralMemoirView({
   );
   const isPending = isCreatePending || isUpdatePending;
 
-  const handleSave = () => {
-    if (!isSaveButtonEnabled) return;
+  const handleSubmit = (isDraft: boolean) => {
+    if (!isDraft && !isSaveButtonEnabled) return;
 
     const payload: Omit<MemoirsRequest, 'id'> = {
       type: MEMOIR_TYPES.GENERAL,
@@ -58,7 +58,13 @@ export default function GeneralMemoirView({
         answer: q.answer,
         order: index + 1,
       })),
-      isTmp: false,
+      isTmp: isDraft,
+    };
+
+    const handleSuccess = (message: string, redirectPath: string) => {
+      alert(message);
+      resetForm();
+      router.push(redirectPath);
     };
 
     if (mode === 'edit' && memoirId) {
@@ -66,40 +72,41 @@ export default function GeneralMemoirView({
         { ...payload, id: memoirId },
         {
           onSuccess: () => {
-            alert('회고가 성공적으로 수정되었습니다!');
-            resetForm();
-            router.push(
-              PATH.MEMOIR.DETAIL.path.replace('[id]', String(memoirId)),
-            );
+            const message = `회고가 성공적으로 ${isDraft ? '임시저장' : '수정'}되었습니다!`;
+            const path = isDraft
+              ? PATH.MY_PAGE.TEMP_SAVED.path
+              : PATH.MEMOIR.DETAIL.path.replace('[id]', String(memoirId));
+            handleSuccess(message, path);
           },
-          onError: () => {
-            alert('회고 수정에 실패했습니다. 다시 시도해주세요.');
-          },
+          onError: () =>
+            alert(`회고 ${isDraft ? '임시저장' : '수정'}에 실패했습니다.`),
         },
       );
     } else {
       createMemoir(payload, {
         onSuccess: response => {
-          const newMemoirId = response.data;
+          const newMemoirId = response.data.id;
           if (newMemoirId) {
-            alert('회고가 성공적으로 저장되었습니다!');
-            resetForm();
-            const detailPath = PATH.MEMOIR.DETAIL.path.replace(
-              '[id]',
-              String(newMemoirId),
-            );
-            router.push(detailPath);
+            const message = `회고가 성공적으로 ${isDraft ? '임시저장' : '저장'}되었습니다!`;
+            const path = isDraft
+              ? PATH.MY_PAGE.MEMOIRS.path
+              : PATH.MEMOIR.DETAIL.path.replace('[id]', String(newMemoirId));
+            handleSuccess(message, path);
           } else {
-            alert('회고가 저장되었지만, 홈으로 이동합니다.');
-            router.push(PATH.HOME.path);
+            handleSuccess(
+              '회고가 저장되었지만, 홈으로 이동합니다.',
+              PATH.HOME.path,
+            );
           }
         },
-        onError: () => {
-          alert('회고 저장에 실패했습니다. 다시 시도해주세요.');
-        },
+        onError: () =>
+          alert(`회고 ${isDraft ? '임시저장' : '저장'}에 실패했습니다.`),
       });
     }
   };
+
+  const handleSave = () => handleSubmit(false);
+  const handleSaveDraft = () => handleSubmit(true);
 
   return (
     <div className="flex h-screen flex-col">
@@ -114,7 +121,12 @@ export default function GeneralMemoirView({
 
       <footer className="px-5 pt-4 pb-6">
         <div className="flex gap-2">
-          <Button variant="outline" size="small">
+          <Button
+            variant="outline"
+            size="small"
+            onClick={handleSaveDraft}
+            disabled={isPending}
+          >
             임시저장
           </Button>
           <Button
