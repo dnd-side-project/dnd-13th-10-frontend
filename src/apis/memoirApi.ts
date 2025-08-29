@@ -7,11 +7,26 @@ import type {
   MemoirData,
   MemoirsRequest,
   PaginatedMemoirData,
+  PaginatedMemoirListData,
 } from '@/types/memoirTypes';
 
 // 회고 리스트 조회 API (퀵/일반 모두 조회)
-export const getAllMemoirs = async (): Promise<ApiResponse<Memoir[]>> => {
-  const response = await http.get('/memoirs');
+export const getAllMemoirs = async ({
+  position,
+  cursor,
+  size,
+}: {
+  position?: string;
+  cursor?: string | null;
+  size?: number;
+}): Promise<ApiResponse<PaginatedMemoirListData>> => {
+  const response = await http.get('/memoirs', {
+    params: {
+      position,
+      cursor,
+      size,
+    },
+  });
 
   return response.data;
 };

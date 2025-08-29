@@ -74,6 +74,13 @@ export interface Memoir {
   isPublic?: boolean;
 }
 
+export interface PaginatedMemoirListData {
+  pageSize: number;
+  nextCursor: string | null;
+  hasNext: boolean;
+  result: Memoir[];
+}
+
 export type ApiMemoirItem = Omit<
   Memoir,
   'interviewStatus' | 'firstQuestion' | 'isTmp' | 'isPublic'
