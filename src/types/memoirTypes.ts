@@ -41,6 +41,7 @@ export interface Questions {
 
 // 회고 생성/수정 요청
 export interface MemoirsRequest {
+  id?: number;
   scheduleId?: number;
   type: MemoirType | string;
   companyName: string;
