@@ -54,9 +54,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'k.kakaocdn.net', pathname: '/**' },
-    ],
+    domains: ['k.kakaocdn.net'],
   },
 };
 
