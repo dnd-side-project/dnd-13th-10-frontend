@@ -1,6 +1,7 @@
 export const memoirKeys = {
   all: ['memoirs'] as const,
-  lists: () => [...memoirKeys.all, 'list'] as const,
+  lists: (filters: object = {}) =>
+    [...memoirKeys.all, 'list', filters] as const,
   hot: () => [...memoirKeys.lists(), 'hot'] as const,
   mine: (searchType: string) =>
     [...memoirKeys.lists(), 'mine', searchType] as const,
