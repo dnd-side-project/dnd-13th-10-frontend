@@ -4,24 +4,34 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useQuery } from '@tanstack/react-query';
 
 import Logo from '@/assets/logo/logo_icon.svg';
 import { Badge } from '@/components/ui/Badge';
 import { calculateDaysAgo } from '@/utils/date';
 import { cn } from '@/utils/cn';
 import { PATH } from '@/constants/path';
+import { memoirQueries } from '@/queries/memoirOptions';
 import type { HotMemoir } from '@/types/memoirTypes';
-
-import { mockHotMemoirs } from '../mocks/mockHotMemoirs';
 
 interface Props {
   isFullWidth?: boolean;
 }
 
 export default function HotMemoirList({ isFullWidth = true }: Props) {
-  const topMemoirs = [...mockHotMemoirs].sort(
+  const {
+    data: hotMemoirData,
+    isPending,
+    isError,
+  } = useQuery(memoirQueries.hot());
+
+  const topMemoirs = (hotMemoirData?.data || []).sort(
     (a, b) => b.weeklyViewCount - a.weeklyViewCount,
   );
+
+  if (isError || (!isPending && topMemoirs.length === 0)) {
+    return null;
+  }
 
   return (
     <section className={cn('flex flex-col gap-4', isFullWidth && '-mx-5')}>
@@ -30,7 +40,11 @@ export default function HotMemoirList({ isFullWidth = true }: Props) {
           <h3 className="typo-subhead-03 text-foundation-primary">
             이번주 HOT 회고
           </h3>
-          <span className="typo-body-01 text-foundation-secondary">10</span>
+          {!isPending && (
+            <span className="typo-body-01 text-foundation-secondary">
+              {topMemoirs.length}
+            </span>
+          )}
         </div>
         <Link href={PATH.MEMOIR.HOT.path}>
           <span className="typo-body-01 text-foundation-secondary">
@@ -45,11 +59,24 @@ export default function HotMemoirList({ isFullWidth = true }: Props) {
           slidesOffsetBefore={20}
           slidesOffsetAfter={20}
         >
-          {topMemoirs.map(memoir => (
-            <SwiperSlide key={memoir.id} style={{ width: '80%' }}>
-              <HotMemoirItem memoir={memoir} />
-            </SwiperSlide>
-          ))}
+          {isPending
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <SwiperSlide key={index} style={{ width: '80%' }}>
+                  <HotMemoirItemSkeleton />
+                </SwiperSlide>
+              ))
+            : topMemoirs.map(memoir => (
+                <SwiperSlide key={memoir.id} style={{ width: '80%' }}>
+                  <Link
+                    href={PATH.MEMOIR.DETAIL.path.replace(
+                      '[id]',
+                      String(memoir.id),
+                    )}
+                  >
+                    <HotMemoirItem memoir={memoir} />
+                  </Link>
+                </SwiperSlide>
+              ))}
         </Swiper>
       </div>
     </section>
@@ -57,13 +84,28 @@ export default function HotMemoirList({ isFullWidth = true }: Props) {
 }
 
 export function HotMemoirItem({ memoir }: { memoir: HotMemoir }) {
-  const className =
-    memoir.type === 'QUICK' ? 'text-secondary-btn' : 'text-primary-btn';
+  const memoirTypeclassName =
+    memoir.type === '퀵 회고' ? 'text-secondary-btn' : 'text-primary-btn';
+  const interviewStatusClassName =
+    memoir.interviewStatus === '합격'
+      ? 'text-primary-btn'
+      : memoir.interviewStatus === '결과 대기중'
+        ? 'text-foundation-secondary'
+        : 'text-warning';
 
   return (
     <section className="bg-foundation-box rounded-xl px-[14px] py-4">
-      <Badge size="xsmall" shape="minimal" className={className}>
-        {memoir.type === 'QUICK' ? '퀵회고' : '일반회고'}
+      {memoir.interviewStatus && (
+        <Badge
+          size="xsmall"
+          shape="minimal"
+          className={interviewStatusClassName}
+        >
+          {memoir.interviewStatus}
+        </Badge>
+      )}
+      <Badge size="xsmall" shape="minimal" className={memoirTypeclassName}>
+        {memoir.type}
       </Badge>
 
       <div className="mt-3 mb-2 flex items-center gap-3">
@@ -72,6 +114,8 @@ export function HotMemoirItem({ memoir }: { memoir: HotMemoir }) {
             <Image
               src={memoir.imageUrl}
               alt={memoir.userName}
+              width={40}
+              height={40}
               className="h-full w-full rounded-full object-cover"
             />
           ) : (
@@ -118,5 +162,29 @@ export function HotMemoirItem({ memoir }: { memoir: HotMemoir }) {
         </span>
       </div>
     </section>
+  );
+}
+
+function HotMemoirItemSkeleton() {
+  return (
+    <div className="bg-foundation-box animate-pulse rounded-xl px-[14px] py-4">
+      <div className="bg-foundation-bg mb-3 h-5 w-14 rounded-md" />
+      <div className="mb-2 flex items-center gap-3">
+        <div className="bg-foundation-bg h-10 w-10 shrink-0 rounded-full" />
+        <div className="flex w-full flex-col gap-1.5">
+          <div className="bg-foundation-bg h-5 w-full rounded-md" />
+          <div className="bg-foundation-bg h-4 w-1/3 rounded-md" />
+        </div>
+      </div>
+      <div className="space-y-1">
+        <div className="bg-foundation-bg h-4 w-full rounded-md" />
+        <div className="bg-foundation-bg h-4 w-5/6 rounded-md" />
+      </div>
+      <div className="bg-foundation-divider my-2 h-px" />
+      <div className="flex items-center justify-between">
+        <div className="bg-foundation-bg h-4 w-1/4 rounded-md" />
+        <div className="bg-foundation-bg h-4 w-1/5 rounded-md" />
+      </div>
+    </div>
   );
 }
