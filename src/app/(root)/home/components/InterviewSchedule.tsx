@@ -29,12 +29,22 @@ export default function InterviewSchedule() {
   const allSchedules = scheduleData?.data.result || [];
 
   const upcomingSchedules = allSchedules
-    .filter(schedule => new Date(schedule.interviewDateTime) >= today)
-    .sort(
-      (a, b) =>
+    .filter(schedule => {
+      if (!schedule.interviewDateTime) return false;
+      const interviewDate = new Date(schedule.interviewDateTime);
+      if (isNaN(interviewDate.getTime())) return false;
+
+      return interviewDate >= today;
+    })
+    .sort((a, b) => {
+      if (!a.interviewDateTime) return 1;
+      if (!b.interviewDateTime) return -1;
+
+      return (
         new Date(a.interviewDateTime).getTime() -
-        new Date(b.interviewDateTime).getTime(),
-    );
+        new Date(b.interviewDateTime).getTime()
+      );
+    });
 
   if (isError) {
     return <div>일정을 불러오는 데 실패했습니다.</div>;
