@@ -26,7 +26,7 @@ export default function InterviewSchedule() {
     isError,
   } = useQuery(scheduleQueries.all());
 
-  const allSchedules = scheduleData?.data.result || [];
+  const allSchedules = scheduleData?.data?.result || [];
 
   const upcomingSchedules = allSchedules
     .filter(schedule => {
