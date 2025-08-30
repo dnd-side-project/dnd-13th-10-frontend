@@ -27,11 +27,13 @@ function BottomDrawer({
         <Drawer.Overlay className="fixed inset-0 bg-black/50" />
         <Drawer.Content
           className={cn(
-            'bg-foundation-bg max-w-maxWidth fixed right-0 bottom-0 left-0 z-50 mx-auto flex h-fit max-h-[70%] w-full flex-col rounded-t-[20px]',
+            'max-w-maxWidth bg-foundation-bg fixed inset-x-0 bottom-0 z-50 mx-auto w-full rounded-t-[20px]',
             className,
           )}
         >
-          {children}
+          <div className="flex max-h-[70dvh] flex-col overflow-hidden">
+            {children}
+          </div>
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>
