@@ -1,14 +1,33 @@
-![1](https://github.com/user-attachments/assets/03e09573-e8c0-4bd9-994e-f717a38fc55e)
-![2](https://github.com/user-attachments/assets/b9c91bc5-9189-493f-ab17-24445d5fc37d)
-![3](https://github.com/user-attachments/assets/a5c26658-da4d-4377-ad24-9b6a0e228da3)
-![4](https://github.com/user-attachments/assets/bcceda23-aea7-442d-bc25-3cb03825f2cf)
-![5](https://github.com/user-attachments/assets/74ecfd00-3c31-4c59-b61d-78b56139aadd)
-![6](https://github.com/user-attachments/assets/f51d575d-88cf-4d54-8d75-25df93e8dc89)
-![7](https://github.com/user-attachments/assets/79caec60-1a31-48a9-9922-9741e3aa62e3)
-![8](https://github.com/user-attachments/assets/3cc7dcf9-1d67-42e2-ad53-953c9e20bbaf)
-![9](https://github.com/user-attachments/assets/a923e8f8-23ae-40e8-9fd0-f2a61000199f)
-![10](https://github.com/user-attachments/assets/125f0c8d-d416-4bf3-bfaf-70c5fbd19c4b)
-![11](https://github.com/user-attachments/assets/eb84a140-656c-4f97-8dc0-71186913ff1a)
-![12](https://github.com/user-attachments/assets/4b93ef10-d757-4c9f-9768-f7265cf1655a)
-![13](https://github.com/user-attachments/assets/3e5f6939-19b0-4683-8eca-aa4eeee695ce)
-![14](https://github.com/user-attachments/assets/1a303fdc-5674-4ffd-9a26-cfa357ea586c)
+# SEED: Share Experience Examine Develop <img src="https://github.com/user-attachments/assets/24898d5d-1cd5-4b89-9746-bef1dffa9735" align=left width=100>
+
+면접회고 아카이빙 서비스 SEED: 당신의 경험을, 성장의 기록으로✨
+
+&nbsp;
+
+![표지](https://github.com/user-attachments/assets/5851e1b9-59b2-40bc-8de9-f9f2fc9f99d7)
+
+![배경](https://github.com/user-attachments/assets/efaed908-1647-4541-bbd6-5fc6319a24c9)
+
+![유저 리서치](https://github.com/user-attachments/assets/23b8fdc9-8046-4e96-8e2e-bd209d3b2ebc)
+
+![심층 인터뷰](https://github.com/user-attachments/assets/ad6fe3f8-d4c0-43fe-84bd-c8ffbd595ff8)
+
+![가설](https://github.com/user-attachments/assets/93b46216-7d29-4550-a3b1-b901ea470a21)
+
+![IA](https://github.com/user-attachments/assets/58af3dc9-58d9-438a-b587-a1d971535235)
+
+![제작 의도](https://github.com/user-attachments/assets/fa8a174b-edd2-468e-8036-ce9158f27935)
+
+![디자인 시스템](https://github.com/user-attachments/assets/13f756b4-cb37-44df-a4de-4da0f334c94c)
+
+![벤토 그리드](https://github.com/user-attachments/assets/5f3a7130-83a9-4780-9258-2e8bb17a38eb)
+
+![기능1](https://github.com/user-attachments/assets/41e67cc7-08a3-4cc4-8860-5004101e5db8)
+
+![기능2](https://github.com/user-attachments/assets/911f3ea4-f502-49af-b83d-4caa1c097e36)
+
+![기능3](https://github.com/user-attachments/assets/84c060f2-639c-4c6e-8675-212955b7949c)
+
+![회고](https://github.com/user-attachments/assets/1b707d95-ec08-40e0-a85d-99cb8f1df4ca)
+
+![마무리](https://github.com/user-attachments/assets/e8c10f3b-a2a7-4d53-a653-2a9638f75db8)
